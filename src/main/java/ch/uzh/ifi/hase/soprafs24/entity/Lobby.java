@@ -90,4 +90,9 @@ public class Lobby implements Serializable {
   public void setGameActive(Boolean gameActive) {
     this.gameActive = gameActive;
   }
+
+  public Lobby orElse(Object object) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'orElse'");
+  }
 }

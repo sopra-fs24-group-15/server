@@ -1,13 +1,16 @@
 package ch.uzh.ifi.hase.soprafs24.repository;
 
-import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-//TODO change to specification
-@Repository("lobbyRepository")
-public interface LobbyRepository extends JpaRepository<User, Long> {
-  User findByName(String name);
+import java.util.Optional;
 
-  User findByUsername(String username);
+
+@Repository("lobbyRepository")
+public interface LobbyRepository extends JpaRepository<Lobby, Long> {
+  Optional<Lobby> findById(Long id);
+
+  //TODO isn't impemented yet just names changed
+  Lobby findByJoinCode(Long joinCode);
 }

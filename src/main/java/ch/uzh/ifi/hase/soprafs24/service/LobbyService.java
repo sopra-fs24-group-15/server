@@ -1,7 +1,9 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,23 +31,48 @@ public class LobbyService {
 
   private final LobbyRepository lobbyRepository;
 
+  private final UserRepository userRepository;
+
   @Autowired
-  public LobbyService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository) {
+  public LobbyService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository, @Qualifier("userRepository") UserRepository userRepository) {
     this.lobbyRepository = lobbyRepository;
+    this.userRepository = userRepository;
   }
 
   public List<Lobby> getLobbys() {
     return this.lobbyRepository.findAll();
   }
 
-  //TODO implement create Lobby logic
+  //TODO add to class diagram
+  public Lobby getLobby(Long id){
+    Lobby foundLobby = this.lobbyRepository.findById(id).orElse(null);
+    if(foundLobby==null){
+      throw new ResponseStatusException((HttpStatus.NOT_FOUND), "The lobby you searched for doesn't exist");
+    }
+    return foundLobby;
+  }
+
+  //TODO maybe change to return a object lobby
   public Long createLobby(Long userId) {
+    Lobby newLobby;
     
+    newLobby.setLobbyOwner(userId);
+
+    //Saves the lobby in the repository(needs flushing)
+    newLobby = lobbyRepository.save(newLobby);
+    userRepository.flush();
+
+    return newLobby.getLobbyId();
   }
 
   //TODO implement update Lobby logic
   public void updateLobbyOwner(Long userId, Long lobbyId) {
-
+    //finding the lobby by the id 
+    Lobby lobbyToChange = getLobby(lobbyId);
+    //checking if the user even exists
+    this.userRepository.findById(userId);
+    //change the owner
+    lobbyToChange.setLobbyOwner(userId);
   }
 
   //TODO implement delete Lobby logic

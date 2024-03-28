@@ -49,12 +49,9 @@ public class LobbyController {
   @PostMapping("/lobbys")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
-  public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO lobbyPostDTO) {
-    // convert API user to internal representation
-    Lobby lobbyInput = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(lobbyPostDTO);
-
-    // create user
-    Lobby createdLobby = lobbyService.createLobby(lobbyInput);
+  public LobbyGetDTO createLobby(@RequestBody Long userId) {
+    //we could change the getlobby by redefining the return value of create lobby to lobby object
+    Lobby createdLobby = lobbyService.getLobby(lobbyService.createLobby(userId));
     // convert internal representation of user back to API
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
   }
