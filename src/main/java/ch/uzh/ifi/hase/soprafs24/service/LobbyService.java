@@ -90,6 +90,7 @@ public class LobbyService {
   }
 
   //TODO check if every List was updated to use long and not User also change the clas diagram
+  //TODO if we need total users add this to join lobby logic
   public void joinLobby(Long userId, Long lobbyId) {
     //finding the lobby by the id 
     Lobby lobbyToJoin = getLobby(lobbyId);
@@ -100,7 +101,13 @@ public class LobbyService {
   }
 
   //TODO implement leavelobby logic
+  //TODO if we need total users add this to leave lobby logic
   public void leaveLobby(Long userId, Long lobbyId) {
-
+    //finding the lobby by the id 
+    Lobby lobbyToLeave = getLobby(lobbyId);
+    //checking if the user even exists
+    this.userRepository.findById(userId);
+    //removing the user from the lobby
+    lobbyToLeave.removePlayer(userId);
   }
 }

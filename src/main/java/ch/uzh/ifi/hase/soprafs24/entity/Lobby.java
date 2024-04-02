@@ -63,6 +63,11 @@ public class Lobby implements Serializable {
     this.players = players;
   }
 
+  public void removePlayer(Long userId) {
+    this.players.remove(userId);
+  }
+
+  //TODO do we even need totalusers can't we just use the len of list players?
   public Long getTotalUsers() {
     return totalUsers;
   }
