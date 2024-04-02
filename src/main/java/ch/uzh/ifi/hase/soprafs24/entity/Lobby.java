@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Internal User Representation
- * This class composes the internal representation of the user and defines how
- * the user is stored in the database.
+ * Internal Lobby Representation
+ * This class composes the internal representation of the lobby and defines how
+ * the lobby is stored in the database.
  * Every variable will be mapped into a database field with the @Column
  * annotation
  * - nullable = false -> this cannot be left empty
@@ -28,7 +28,7 @@ public class Lobby implements Serializable {
   private Long lobbyId;
 
   @Column()
-  private List<User> players;
+  private List<Long> players;
 
   @Column()
   private Long totalUsers;
@@ -51,11 +51,15 @@ public class Lobby implements Serializable {
     this.lobbyId = lobbyId;
   }
 
-  public List<User> getPlayers() {
+  public List<Long> getPlayers() {
     return players;
   }
 
-  public void setPlayers(List<User> players) {
+  public void setPlayer(Long userId) {
+    this.players.add(userId);
+  }
+
+  public void setPlayers(List<Long> players) {
     this.players = players;
   }
 

@@ -77,17 +77,26 @@ public class LobbyService {
 
   //TODO implement delete Lobby logic
   public void deleteLobby(Long lobbyId) {
+    //finding the lobby by the id 
+    Lobby lobbyToDelete = getLobby(lobbyId);
+    //deleting the lobby
+    lobbyRepository.delete(lobbyToDelete);
 
   }
 
   //TODO implement findlobbybyjoincode logic
   public Long findLobbyByJoinCode(Long lobbyJoinCode) {
-
+    return null;
   }
 
-  //TODO implement joinlobby logic
+  //TODO check if every List was updated to use long and not User also change the clas diagram
   public void joinLobby(Long userId, Long lobbyId) {
-
+    //finding the lobby by the id 
+    Lobby lobbyToJoin = getLobby(lobbyId);
+    //checking if the user even exists
+    this.userRepository.findById(userId);
+    //adding the user to the lobby
+    lobbyToJoin.setPlayer(userId);
   }
 
   //TODO implement leavelobby logic
