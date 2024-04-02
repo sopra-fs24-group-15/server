@@ -52,6 +52,16 @@ public class LobbyService {
     return foundLobby;
   }
 
+  //TODO check after implemtning joincode in lobby entity and findbyjoincode in lobby repository
+  //TODO change output from long to lobby in class diagram
+  public Lobby findLobbyByJoinCode(Long lobbyJoinCode) {
+    Lobby foundLobby = this.lobbyRepository.findByJoinCode(lobbyJoinCode).orElse(null);
+    if(foundLobby==null){
+      throw new ResponseStatusException((HttpStatus.NOT_FOUND), "The lobby you searched for doesn't exist");
+    }
+    return foundLobby;
+  }
+
   //TODO maybe change to return a object lobby
   public Long createLobby(Long userId) {
     Lobby newLobby;
@@ -84,10 +94,6 @@ public class LobbyService {
 
   }
 
-  //TODO implement findlobbybyjoincode logic
-  public Long findLobbyByJoinCode(Long lobbyJoinCode) {
-    return null;
-  }
 
   //TODO check if every List was updated to use long and not User also change the clas diagram
   //TODO if we need total users add this to join lobby logic

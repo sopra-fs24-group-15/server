@@ -16,7 +16,7 @@ import java.util.List;
  * the primary key
  */
 
- //TODO create a Join code
+ //TODO create a automatically generated Join code
 @Entity
 @Table(name = "LOBBY")
 public class Lobby implements Serializable {
@@ -28,13 +28,13 @@ public class Lobby implements Serializable {
   private Long lobbyId;
 
   @Column()
+  private Long lobbyJoinCode;
+
+  @Column()
   private List<Long> players;
 
   @Column()
   private Long totalUsers;
-
-  @Column()
-  private Long lobbyJoinCode;
 
   @Column()
   private Long lobbyOwner;
