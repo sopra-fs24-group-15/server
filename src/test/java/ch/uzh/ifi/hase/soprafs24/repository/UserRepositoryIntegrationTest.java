@@ -27,11 +27,12 @@ public class UserRepositoryIntegrationTest {
 
         entityManager.persist(user);
         entityManager.flush();
+
         // when
         User found = userRepository.findByUsername(user.getUsername());
+
         // then
         assertNotNull(found.getUserId()); // Ensure the found user has a non-null ID
         assertEquals(found.getUsername(), user.getUsername());
-
     }
 }
