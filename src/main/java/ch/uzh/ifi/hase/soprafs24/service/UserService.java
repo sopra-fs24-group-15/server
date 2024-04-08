@@ -28,53 +28,52 @@ import java.util.UUID;
 public class UserService {
 
   private final Logger log = LoggerFactory.getLogger(UserService.class);
-  int a = 5;
   private final UserRepository userRepository;
+  private final LobbyRepository lobbyRepository;
 
   @Autowired
   public UserService(@Qualifier("userRepository") UserRepository userRepository) {
     this.userRepository = userRepository;
+    this.lobbyRepository = lobbyRepository;
   }
 
   public List<User> getUsers() {
     return this.userRepository.findAll();
   }
 
-  public User createUser(User newUser) {
-    newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.OFFLINE);
-    checkIfUserExists(newUser);
-    // saves the given entity but data is only persisted in the database once
-    // flush() is called
-    newUser = userRepository.save(newUser);
-    userRepository.flush();
 
-    log.debug("Created Information for User: {}", newUser);
-    return newUser;
+  public User createUser(String username) {
+      //checks if available
+      if (userRepository.existsByUsername(username)) {
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists.");
+      }
+      //creating one if it was unique
+      User newUser = new User();
+      newUser.setUsername(username);
+      newUser = userRepository.saveAndFlush(newUser);
+      log.debug("Created Information for User: {}", newUser);
+      return newUser;
   }
 
-  /**
-   * This is a helper method that will check the uniqueness criteria of the
-   * username and the name
-   * defined in the User entity. The method will do nothing if the input is unique
-   * and throw an error otherwise.
-   *
-   * @param userToBeCreated
-   * @throws org.springframework.web.server.ResponseStatusException
-   * @see User
-   */
-  private void checkIfUserExists(User userToBeCreated) {
-    User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
-    User userByName = userRepository.findByName(userToBeCreated.getName());
-
-    String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
-    if (userByUsername != null && userByName != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          String.format(baseErrorMessage, "username and the name", "are"));
-    } else if (userByUsername != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "username", "is"));
-    } else if (userByName != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "name", "is"));
-    }
+  // TODO Implement updateDesign method (chrigi)
+  public void updateDesign(Long userId, Object design) {
+      User user = userRepository.findById(userId).orElseThrow(() ->
+              new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+      // TODO Implement logic to update user's design
   }
+
+  // TODO Implement updateProfilePicture method (chrigi) we could save some limited pictures in the backend
+  public void updateProfilePicture(Long userId, String profilePicture) {
+      User user = userRepository.findById(userId).orElseThrow(() ->
+              new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+      user.setProfilePicture(profilePicture);
+      userRepository.save(user);
+  }
+
+  public void deleteUser(Long userId) {
+      User user = userRepository.findById(userId).orElseThrow(() ->
+              new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+      userRepository.delete(user);
+  }
+
 }
