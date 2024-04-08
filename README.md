@@ -38,8 +38,6 @@ More Information about [Gradle Wrapper](https://docs.gradle.org/current/userguid
 ./gradlew build
 ```
 
-hello
-
 ### Run
 
 ```bash
