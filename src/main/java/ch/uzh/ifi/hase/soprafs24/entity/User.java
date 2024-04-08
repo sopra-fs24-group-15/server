@@ -27,21 +27,12 @@ public class User implements Serializable {
   @GeneratedValue
   private Long userId;
 
-  @Column(nullable = false)
-  private String name;
-
   @Column(nullable = false, unique = true)
   private String username;
 
   //TODO define how and from where to get the profile picture. (chrigi)
   @Column()
   private String profilePicture;
-
-  @Column(nullable = false, unique = true)
-  private String token;
-
-  @Column(nullable = false)
-  private UserStatus status;
 
   @Column()
   private Long lobbyId;
@@ -90,11 +81,6 @@ public class User implements Serializable {
 
   public void setLobbyOwner(Boolean lobbyOwner) {
       this.lobbyOwner = lobbyOwner;
-  }
-
-  //TODO How to we want to switch between themes (chrigi)
-  public void updateDesign(/* Parameters for the design */) {
-      //something
   }
 
   //TODO how to handle stuff that isnt possible, is this the way to do it? (chrigi)

@@ -32,7 +32,7 @@ public class UserService {
   private final LobbyRepository lobbyRepository;
 
   @Autowired
-  public UserService(@Qualifier("userRepository") UserRepository userRepository) {
+  public UserService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository, @Qualifier("userRepository") UserRepository userRepository) {
     this.userRepository = userRepository;
     this.lobbyRepository = lobbyRepository;
   }
@@ -55,12 +55,7 @@ public class UserService {
       return newUser;
   }
 
-  // TODO Implement updateDesign method (chrigi)
-  public void updateDesign(Long userId, Object design) {
-      User user = userRepository.findById(userId).orElseThrow(() ->
-              new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
-      // TODO Implement logic to update user's design
-  }
+  //TODO update class diagram updateProfile() (chrigi)
 
   // TODO Implement updateProfilePicture method (chrigi) we could save some limited pictures in the backend
   public void updateProfilePicture(Long userId, String profilePicture) {
