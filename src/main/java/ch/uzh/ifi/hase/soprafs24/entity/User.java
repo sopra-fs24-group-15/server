@@ -25,7 +25,7 @@ public class User implements Serializable {
 
   @Id
   @GeneratedValue
-  private Long id;
+  private Long userId;
 
   @Column(nullable = false)
   private String name;
@@ -33,49 +33,74 @@ public class User implements Serializable {
   @Column(nullable = false, unique = true)
   private String username;
 
+  //TODO define how and from where to get the profile picture. (chrigi)
+  @Column()
+  private String profilePicture;
+
   @Column(nullable = false, unique = true)
   private String token;
 
   @Column(nullable = false)
   private UserStatus status;
 
-  public Long getId() {
-    return id;
+  @Column()
+  private Long lobbyId;
+
+  @Column()
+  private Boolean lobbyOwner;
+
+
+  //getter, setter and update functions
+  public Long getUserId() {
+      return userId;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+  public void setUserId(Long userId) {
+      this.userId = userId;
   }
 
   public String getUsername() {
-    return username;
+      return username;
   }
 
   public void setUsername(String username) {
-    this.username = username;
+      this.username = username;
   }
 
-  public String getToken() {
-    return token;
+  //TODO How to get this and display it? (chrigi)
+  public String getProfilePicture() {
+      return profilePicture;
   }
 
-  public void setToken(String token) {
-    this.token = token;
+  public void setProfilePicture(String profilePicture) {
+      this.profilePicture = profilePicture;
   }
 
-  public UserStatus getStatus() {
-    return status;
+  public Long getLobbyId() {
+      return lobbyId;
   }
 
-  public void setStatus(UserStatus status) {
-    this.status = status;
+  public void setLobbyId(Long lobbyId) {
+      this.lobbyId = lobbyId;
   }
+
+  public Boolean isLobbyOwner() {
+      return lobbyOwner;
+  }
+
+  public void setLobbyOwner(Boolean lobbyOwner) {
+      this.lobbyOwner = lobbyOwner;
+  }
+
+  //TODO How to we want to switch between themes (chrigi)
+  public void updateDesign(/* Parameters for the design */) {
+      //something
+  }
+
+  //TODO how to handle stuff that isnt possible, is this the way to do it? (chrigi)
+  public User orElse(Object object) {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'orElse'");
+  }
+
 }
