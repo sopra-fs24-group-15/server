@@ -11,6 +11,5 @@ import java.util.Optional;
 public interface LobbyRepository extends JpaRepository<Lobby, Long> {
   Optional<Lobby> findById(Long id);
 
-  //TODO check if it works after implementing join code in lobby entity
-  Optional<Lobby> findByJoinCode(Long joinCode);
+  Optional<Lobby> findByLobbyJoinCode(String lobbyJoinCode);
 }

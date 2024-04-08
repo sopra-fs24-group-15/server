@@ -43,7 +43,7 @@ public class LobbyService {
     return this.lobbyRepository.findAll();
   }
 
-  //TODO add to class diagram
+  //TODO add to class diagram(GS)
   public Lobby getLobby(Long id){
     Lobby foundLobby = this.lobbyRepository.findById(id).orElse(null);
     if(foundLobby==null){
@@ -52,17 +52,17 @@ public class LobbyService {
     return foundLobby;
   }
 
-  //TODO check after implemtning joincode in lobby entity and findbyjoincode in lobby repository
-  //TODO change output from long to lobby in class diagram
-  public Lobby findLobbyByJoinCode(Long lobbyJoinCode) {
-    Lobby foundLobby = this.lobbyRepository.findByJoinCode(lobbyJoinCode).orElse(null);
+  //TODO check after implemtning joincode in lobby entity and findbyjoincode in lobby repository(GS)
+  //TODO change output from long to lobby in class diagram(GS)
+  public Lobby findLobbyByJoinCode(String lobbyJoinCode) {
+    Lobby foundLobby = this.lobbyRepository.findByLobbyJoinCode(lobbyJoinCode).orElse(null);
     if(foundLobby==null){
       throw new ResponseStatusException((HttpStatus.NOT_FOUND), "The lobby you searched for doesn't exist");
     }
     return foundLobby;
   }
 
-  //TODO maybe change to return a object lobby
+  //TODO discuss maybe change to return a object lobby(GS)
   public Long createLobby(Long userId) {
     Lobby newLobby;
     
@@ -75,7 +75,6 @@ public class LobbyService {
     return newLobby.getLobbyId();
   }
 
-  //TODO implement update Lobby logic
   public void updateLobbyOwner(Long userId, Long lobbyId) {
     //finding the lobby by the id 
     Lobby lobbyToChange = getLobby(lobbyId);
@@ -85,7 +84,6 @@ public class LobbyService {
     lobbyToChange.setLobbyOwner(userId);
   }
 
-  //TODO implement delete Lobby logic
   public void deleteLobby(Long lobbyId) {
     //finding the lobby by the id 
     Lobby lobbyToDelete = getLobby(lobbyId);
@@ -95,18 +93,16 @@ public class LobbyService {
   }
 
 
-  //TODO check if every List was updated to use long and not User also change the clas diagram
-  //TODO if we need total users add this to join lobby logic
-  public void joinLobby(Long userId, Long lobbyId) {
-    //finding the lobby by the id 
-    Lobby lobbyToJoin = getLobby(lobbyId);
+  //TODO check if every List was updated to use long and not User also change the class diagram(GS)
+  //TODO use this in controller with findbyjoincode to let users join via join code (GS)
+  //TODO if we need total users add this to join lobby logic(GS)
+  public void joinLobby(Long userId, Lobby lobbyToJoin) {
     //checking if the user even exists
     this.userRepository.findById(userId);
     //adding the user to the lobby
-    lobbyToJoin.setPlayer(userId);
+    lobbyToJoin.addPlayer(userId);
   }
 
-  //TODO implement leavelobby logic
   //TODO if we need total users add this to leave lobby logic
   public void leaveLobby(Long userId, Long lobbyId) {
     //finding the lobby by the id 
