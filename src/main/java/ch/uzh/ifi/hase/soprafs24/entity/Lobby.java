@@ -1,107 +1,111 @@
-package ch.uzh.ifi.hase.soprafs24.entity;
-
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * Internal Lobby Representation
- * This class composes the internal representation of the lobby and defines how
- * the lobby is stored in the database.
- * Every variable will be mapped into a database field with the @Column
- * annotation
- * - nullable = false -> this cannot be left empty
- * - unique = true -> this value must be unqiue across the database -> composes
- * the primary key
- */
-
- //TODO create a automatically generated Join code
 @Entity
 @Table(name = "LOBBY")
 public class Lobby implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue
-  private Long lobbyId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long lobbyId;
 
-  @Column()
-  private Long lobbyJoinCode;
+    @Column(unique = true)
+    private String lobbyJoinCode;
 
-  @Column()
-  private List<Long> players;
+    @ElementCollection
+    private List<Long> players = new ArrayList<>();
 
-  @Column()
-  private Long totalUsers;
+    @Column()
+    private Long lobbyOwner;
 
-  @Column()
-  private Long lobbyOwner;
+    @Column()
+    private Boolean gameActive;
 
-  @Column()
-  private Boolean gameActive;
+    // Autowire LobbyRepository
+    @Autowired
+    private LobbyRepository lobbyRepository;
 
+    public Lobby() {
+        generateUniqueJoinCode(); // Generate join code upon lobby creation
+    }
 
-  public Long getLobbyId() {
-    return lobbyId;
-  }
+    public Long getLobbyId() {
+        return lobbyId;
+    }
 
-  public void setLobbyId(Long lobbyId) {
-    this.lobbyId = lobbyId;
-  }
+    public void setLobbyId(Long lobbyId) {
+        this.lobbyId = lobbyId;
+    }
 
-  public List<Long> getPlayers() {
-    return players;
-  }
+    public List<Long> getPlayers() {
+        return players;
+    }
 
-  public void setPlayer(Long userId) {
-    this.players.add(userId);
-  }
+    public void addPlayer(Long userId) {
+        this.players.add(userId);
+    }
 
-  public void setPlayers(List<Long> players) {
-    this.players = players;
-  }
+    public void removePlayer(Long userId) {
+        this.players.remove(userId);
+    }
 
-  public void removePlayer(Long userId) {
-    this.players.remove(userId);
-  }
+    public String getLobbyJoinCode() {
+        return lobbyJoinCode;
+    }
 
-  //TODO do we even need totalusers can't we just use the len of list players?
-  public Long getTotalUsers() {
-    return totalUsers;
-  }
+    public void setLobbyJoinCode(String lobbyJoinCode) {
+        this.lobbyJoinCode = lobbyJoinCode;
+    }
 
-  public void setTotalUsers(Long totalUsers) {
-    this.totalUsers = totalUsers;
-  }
+    public Long getLobbyOwner() {
+        return lobbyOwner;
+    }
 
-  public Long getLobbyJoinCode() {
-    return lobbyJoinCode;
-  }
+    public void setLobbyOwner(Long lobbyOwner) {
+        this.lobbyOwner = lobbyOwner;
+    }
 
-  public void setLobbyJoinCode(Long lobbyJoinCode) {
-    this.lobbyJoinCode = lobbyJoinCode;
-  }
+    public Boolean getGameActive() {
+        return gameActive;
+    }
 
-  public Long getLobbyOwner() {
-    return lobbyOwner;
-  }
+    public void setGameActive(Boolean gameActive) {
+        this.gameActive = gameActive;
+    }
 
-  public void setLobbyOwner(Long lobbyOwner) {
-    this.lobbyOwner = lobbyOwner;
-  }
+    // Method to generate a unique join code
+    private void generateUniqueJoinCode() {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random rnd = new Random();
+        boolean uniqueCodeGenerated = false;
 
-  public Boolean getGameActive() {
-    return gameActive;
-  }
+        // Keep generating until a unique code is found
+        while (!uniqueCodeGenerated) {
+            StringBuilder joinCode = new StringBuilder();
+            while (joinCode.length() < 6) { // 6 characters long
+                int index = (int) (rnd.nextFloat() * characters.length());
+                joinCode.append(characters.charAt(index));
+            }
+            String potentialCode = joinCode.toString();
+            // Check if the potential code already exists in the database
+            if (!checkIfJoinCodeExists(potentialCode)) {
+                this.lobbyJoinCode = potentialCode;
+                uniqueCodeGenerated = true;
+            }
+        }
+    }
 
-  public void setGameActive(Boolean gameActive) {
-    this.gameActive = gameActive;
-  }
-
-  public Lobby orElse(Object object) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'orElse'");
-  }
+    // Helper method to check if the join code already exists in the database
+    private boolean checkIfJoinCodeExists(String code) {
+        Optional<Lobby> existingLobby = lobbyRepository.findByLobbyJoinCode(code);
+        return existingLobby.isPresent();
+    }
 }
