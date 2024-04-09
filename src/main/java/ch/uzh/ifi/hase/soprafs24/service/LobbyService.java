@@ -55,15 +55,16 @@ public class LobbyService {
   //TODO check after implemtning joincode in lobby entity and findbyjoincode in lobby repository(GS)
   //TODO change output from long to lobby in class diagram(GS)
   public Lobby findLobbyByJoinCode(String lobbyJoinCode) {
-    Lobby foundLobby = this.lobbyRepository.findByLobbyJoinCode(lobbyJoinCode).orElse(null);
+    Lobby foundLobby = this.lobbyRepository.findByJoinCode(lobbyJoinCode).orElse(null);
     if(foundLobby==null){
       throw new ResponseStatusException((HttpStatus.NOT_FOUND), "The lobby you searched for doesn't exist");
     }
     return foundLobby;
   }
 
-  //TODO discuss maybe change to return a object lobby(GS)
-  public Long createLobby(Long userId) {
+  //TODO  changed to return a object lobby(GS)
+  //TODO add to class diagram(GS)
+  public Lobby createLobby(Long userId) {
     Lobby newLobby;
     
     newLobby.setLobbyOwner(userId);
@@ -72,7 +73,7 @@ public class LobbyService {
     newLobby = lobbyRepository.save(newLobby);
     userRepository.flush();
 
-    return newLobby.getLobbyId();
+    return newLobby;
   }
 
   public void updateLobbyOwner(Long userId, Long lobbyId) {

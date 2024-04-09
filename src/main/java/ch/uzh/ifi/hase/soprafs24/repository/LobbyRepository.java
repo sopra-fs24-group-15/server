@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface LobbyRepository extends JpaRepository<Lobby, Long> {
   Optional<Lobby> findById(Long id);
 
-  Optional<Lobby> findByLobbyJoinCode(String lobbyJoinCode);
+  Optional<Lobby> findByJoinCode(String lobbyJoinCode);
 }
