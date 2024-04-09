@@ -100,12 +100,12 @@ public class LobbyService {
   public void joinLobby(Long userId, Lobby lobbyToJoin) {
     //checking if the user even exists
     this.userRepository.findById(userId);
-    //check that user is not lobbyowner
-    if (this.userRepository.getlobbyOwner(userID)) {
-    //adding the user to the lobby
-        lobbyToJoin.addPlayer(userId);}
-    else {throw new ResponseStatusException(HttpStatus.NOT_FOUND)
-    }
+    //check that user is not lobbyowner and Lobby is not full yet (Jana)
+      if (this.userRepository.getlobbyOwner(userId) && len(lobbyToJoin.getPlayers()) > 8) {
+        //adding the user to the lobby
+          lobbyToJoin.addPlayer(userId);}
+      else {throw new ResponseStatusException(HttpStatus.NOT_FOUND)
+      }
   }
 
   //TODO if we need total users add this to leave lobby logic
