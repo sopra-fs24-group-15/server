@@ -30,7 +30,7 @@ public class User implements Serializable {
   @Column(nullable = false, unique = true)
   private String username;
 
-  //TODO define how and from where to get the profile picture. (chrigi)
+  //TODO define how and from w here to get the profile picture. (chrigi)
   @Column()
   private String profilePicture;
 
