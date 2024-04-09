@@ -101,10 +101,10 @@ public class LobbyService {
     //checking if the user even exists
     this.userRepository.findById(userId);
     //check that user is not lobbyowner and Lobby is not full yet (Jana)
-      if (this.userRepository.getlobbyOwner(userId) && len(lobbyToJoin.getPlayers()) > 8) {
+      if (lobbyToJoin.getPlayers().size() > 8) {
         //adding the user to the lobby
           lobbyToJoin.addPlayer(userId);}
-      else {throw new ResponseStatusException(HttpStatus.NOT_FOUND)
+      else {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby is full");
       }
   }
 
