@@ -59,11 +59,11 @@ public class User implements Serializable {
   }
 
   //TODO How to get this and display it? (chrigi)
-  public String getProfilePicture() {
+  public Byte getProfilePicture() {
       return profilePicture;
   }
 
-  public void setProfilePicture(String profilePicture) {
+  public void setProfilePicture(Byte profilePicture) {
       this.profilePicture = profilePicture;
   }
 
