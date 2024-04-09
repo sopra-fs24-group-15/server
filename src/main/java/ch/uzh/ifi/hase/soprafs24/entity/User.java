@@ -30,14 +30,14 @@ public class User implements Serializable {
   @Column(nullable = false, unique = true)
   private String username;
 
-  //TODO define how and from w here to get the profile picture. (chrigi)
-  @Column()
-  private String profilePicture;
+  //TODO define how and from where to get the profile picture. (chrigi)
+  @Column(unique = true)
+  private Byte profilePicture;
 
   @Column()
   private Long lobbyId;
 
-  @Column()
+  @Column(nullable = false)
   private Boolean lobbyOwner;
 
 
@@ -59,11 +59,11 @@ public class User implements Serializable {
   }
 
   //TODO How to get this and display it? (chrigi)
-  public String getProfilePicture() {
+  public Byte getProfilePicture() {
       return profilePicture;
   }
 
-  public void setProfilePicture(String profilePicture) {
+  public void setProfilePicture(Byte profilePicture) {
       this.profilePicture = profilePicture;
   }
 

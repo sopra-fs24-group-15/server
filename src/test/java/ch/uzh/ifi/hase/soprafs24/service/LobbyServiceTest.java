@@ -3,6 +3,9 @@ package ch.uzh.ifi.hase.soprafs24.service;
 import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,6 +15,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 public class LobbyServiceTest {
 
     @Mock
@@ -32,8 +41,8 @@ public class LobbyServiceTest {
         // given
         testLobby = new Lobby();
         testLobby.setLobbyId(1L);
-        testLobby.setLobbyOwner(1L); // Assuming the owner is identified by a user ID
-        testLobby.setLobbyJoinCode(123456L);
+        testLobby.setLobbyOwner(1L); 
+        testLobby.setLobbyJoinCode("123456");
 
         when(lobbyRepository.save(any(Lobby.class))).thenReturn(testLobby);
         when(userRepository.existsById(any(Long.class))).thenReturn(true);
@@ -63,7 +72,7 @@ public class LobbyServiceTest {
 
     @Test
     public void findLobbyByJoinCode_nonExistingCode_throwsException() {
-        Long nonExistingCode = 654321L;
+        String nonExistingCode = "654321";
         when(lobbyRepository.findByJoinCode(nonExistingCode)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class, () -> lobbyService.findLobbyByJoinCode(nonExistingCode));

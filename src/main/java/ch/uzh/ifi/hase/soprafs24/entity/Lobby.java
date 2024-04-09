@@ -105,7 +105,7 @@ public class Lobby implements Serializable {
 
     // Helper method to check if the join code already exists in the database
     private boolean checkIfJoinCodeExists(String code) {
-        Optional<Lobby> existingLobby = lobbyRepository.findByLobbyJoinCode(code);
+        Optional<Lobby> existingLobby = lobbyRepository.findByJoinCode(code);
         return existingLobby.isPresent();
     }
 }

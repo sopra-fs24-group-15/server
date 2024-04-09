@@ -5,8 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
 public class LobbyRepositoryIntegrationTest {
@@ -21,7 +25,7 @@ public class LobbyRepositoryIntegrationTest {
     public void findByJoinCode_success() {
         // given
         Lobby lobby = new Lobby();
-        lobby.setLobbyJoinCode(123456L); // Use a unique join code for testing
+        lobby.setLobbyJoinCode("123456"); // Use a unique join code for testing
         lobby.setLobbyOwner(1L); // Assuming lobbyOwner is a user ID
 
         // Persisting lobby to the in-memory database
