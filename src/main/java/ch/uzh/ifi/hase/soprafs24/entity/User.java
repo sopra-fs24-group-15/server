@@ -31,13 +31,13 @@ public class User implements Serializable {
   private String username;
 
   //TODO define how and from where to get the profile picture. (chrigi)
-  @Column()
-  private String profilePicture;
+  @Column(unique = true)
+  private Byte profilePicture;
 
   @Column()
   private Long lobbyId;
 
-  @Column()
+  @Column(nullable = false)
   private Boolean lobbyOwner;
 
 
