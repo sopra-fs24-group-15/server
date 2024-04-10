@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
-import java.util.UUID;
+
 
 /**
  * User Service
@@ -44,7 +43,8 @@ public class UserService {
 
   public User createUser(String username) {
       //checks if available
-      if (userRepository.existsByUsername(username)) {
+      User found = userRepository.findByUsername(username);
+      if (found.getUsername() == username ) {
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists.");
       }
       //creating one if it was unique
