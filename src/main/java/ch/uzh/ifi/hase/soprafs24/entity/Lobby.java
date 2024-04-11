@@ -6,6 +6,7 @@ import java.util.Random;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
 
 @Entity
 @Table(name = "LOBBY")
@@ -28,6 +29,9 @@ public class Lobby implements Serializable {
 
     @Column()
     private Boolean gameActive;
+
+    @Column()
+    private Game game;
 
     // Autowire LobbyRepository
     @Autowired
@@ -79,6 +83,14 @@ public class Lobby implements Serializable {
 
     public void setGameActive(Boolean gameActive) {
         this.gameActive = gameActive;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     // Method to generate a unique join code
