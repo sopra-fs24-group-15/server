@@ -43,7 +43,7 @@ public class LobbyService {
     return this.lobbyRepository.findAll();
   }
 
-  //TODO add to class diagram(GS)
+  
   public Lobby getLobby(Long id){
     Lobby foundLobby = this.lobbyRepository.findById(id).orElse(null);
     if(foundLobby==null){
@@ -53,7 +53,6 @@ public class LobbyService {
   }
 
   //TODO check after implemtning joincode in lobby entity and findbyjoincode in lobby repository(GS)
-  //TODO change output from long to lobby in class diagram(GS)
   public Lobby findLobbyByJoinCode(String lobbyJoinCode) {
     Lobby foundLobby = this.lobbyRepository.findByJoinCode(lobbyJoinCode).orElse(null);
     if(foundLobby==null){
@@ -62,8 +61,7 @@ public class LobbyService {
     return foundLobby;
   }
 
-  //TODO  changed to return a object lobby(GS)
-  //TODO add to class diagram(GS)
+  
   public Lobby createLobby(Long userId) {
     Lobby newLobby;
     
@@ -94,9 +92,8 @@ public class LobbyService {
   }
 
 
-  //TODO check if every List was updated to use long and not User also change the class diagram(GS)
+  //TODO check if every List was updated to use long and not User (GS)
   //TODO use this in controller with findbyjoincode to let users join via join code (GS)
-  //TODO if we need total users add this to join lobby logic(GS)
   public void joinLobby(Long userId, Lobby lobbyToJoin) {
     //checking if the user even exists
     this.userRepository.findById(userId);
@@ -108,7 +105,6 @@ public class LobbyService {
       }
   }
 
-  //TODO if we need total users add this to leave lobby logic
   public void leaveLobby(Long userId, Long lobbyId) {
     //finding the lobby by the id 
     Lobby lobbyToLeave = getLobby(lobbyId);
