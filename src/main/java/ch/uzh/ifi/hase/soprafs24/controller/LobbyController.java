@@ -44,10 +44,9 @@ public class LobbyController {
   @GetMapping("/lobby/{lobbyId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public LobbyGetDTO retrieveLobbyToJoin(@RequestBody Long lobbyId, Long UserId) {
+  public LobbyGetDTO retrieveLobbyToJoin(@RequestBody String lobbyId, Long UserId) {
     //retrieves a lobby to join
     Lobby foundLobby = lobbyService.findLobbyByJoinCode(lobbyId);
-    User user = UserService.getUser(UserId);
     // convert internal representation of lobby back to API
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
   }
