@@ -1,8 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -21,6 +21,7 @@ import java.io.Serializable;
 @Table(name = "USER")
 public class User implements Serializable {
 
+  @Serial
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -32,7 +33,7 @@ public class User implements Serializable {
 
   //TODO define how and from where to get the profile picture. (chrigi)
   @Column(unique = true)
-  private Byte profilePicture;
+  private String profilePicture;
 
   @Column()
   private Long lobbyId;
@@ -59,11 +60,11 @@ public class User implements Serializable {
   }
 
   //TODO How to get this and display it? (chrigi)
-  public Byte getProfilePicture() {
+  public String getProfilePicture() {
       return profilePicture;
   }
 
-  public void setProfilePicture(Byte profilePicture) {
+  public void setProfilePicture(String profilePicture) {
       this.profilePicture = profilePicture;
   }
 

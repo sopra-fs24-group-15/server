@@ -43,7 +43,7 @@ public class LobbyService {
     return this.lobbyRepository.findAll();
   }
 
-  //TODO add to class diagram(GS)
+  
   public Lobby getLobby(Long id){
     Lobby foundLobby = this.lobbyRepository.findById(id).orElse(null);
     if(foundLobby==null){
@@ -53,8 +53,11 @@ public class LobbyService {
   }
 
   //TODO check after implemtning joincode in lobby entity and findbyjoincode in lobby repository(GS)
+<<<<<<< HEAD
   //TODO change output from long to lobby in class diagram(GS)
   //TODO change type of lobbyJoinCode to long(MA)
+=======
+>>>>>>> 5c9f32036ec03e0b6fdf2f63df8b0c34cab9320f
   public Lobby findLobbyByJoinCode(String lobbyJoinCode) {
     Lobby foundLobby = this.lobbyRepository.findByJoinCode(lobbyJoinCode).orElse(null);
     if(foundLobby==null){
@@ -63,8 +66,7 @@ public class LobbyService {
     return foundLobby;
   }
 
-  //TODO  changed to return a object lobby(GS)
-  //TODO add to class diagram(GS)
+  
   public Lobby createLobby(Long userId) {
     Lobby newLobby;
     
@@ -95,21 +97,19 @@ public class LobbyService {
   }
 
 
-  //TODO check if every List was updated to use long and not User also change the class diagram(GS)
+  //TODO check if every List was updated to use long and not User (GS)
   //TODO use this in controller with findbyjoincode to let users join via join code (GS)
-  //TODO if we need total users add this to join lobby logic(GS)
   public void joinLobby(Long userId, Lobby lobbyToJoin) {
     //checking if the user even exists
     this.userRepository.findById(userId);
     //check that user is not lobbyowner and Lobby is not full yet (Jana)
-      if (this.userRepository.getlobbyOwner(userId) && len(lobbyToJoin.getPlayers()) > 8) {
+      if (lobbyToJoin.getPlayers().size() > 8) {
         //adding the user to the lobby
           lobbyToJoin.addPlayer(userId);}
-      else {throw new ResponseStatusException(HttpStatus.NOT_FOUND)
+      else {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby is full");
       }
   }
 
-  //TODO if we need total users add this to leave lobby logic
   public void leaveLobby(Long userId, Long lobbyId) {
     //finding the lobby by the id 
     Lobby lobbyToLeave = getLobby(lobbyId);
