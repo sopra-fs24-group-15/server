@@ -54,6 +54,7 @@ public class LobbyService {
 
   //TODO check after implemtning joincode in lobby entity and findbyjoincode in lobby repository(GS)
   //TODO change output from long to lobby in class diagram(GS)
+  //TODO change type of lobbyJoinCode to long(MA)
   public Lobby findLobbyByJoinCode(String lobbyJoinCode) {
     Lobby foundLobby = this.lobbyRepository.findByJoinCode(lobbyJoinCode).orElse(null);
     if(foundLobby==null){
