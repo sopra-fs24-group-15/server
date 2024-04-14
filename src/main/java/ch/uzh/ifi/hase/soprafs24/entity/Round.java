@@ -1,13 +1,15 @@
-import javax.persistence.*;
+package ch.uzh.ifi.hase.soprafs24.entity;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.List;
-import java.util.Random;
-import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "Round")

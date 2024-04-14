@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,6 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
-import java.util.Map;
-import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 
 /**
  * Game Service
@@ -47,7 +46,10 @@ public class GameService {
 
  //helper function to get game from lobbyId
   public Game getGame(long lobbyId){
-    Lobby lobby = LobbyService.getLobby(lobbyId);
+    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
     Game game = new Game();
     game = lobby.getGame();
     if(game == null){
@@ -58,7 +60,7 @@ public class GameService {
 
   
   public Game createGame(long lobbyId, int totalRounds, GameMode gameMode, int timer){
-    Lobby lobby = lobbyRepository.findById(lobbyId);
+    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
     if(lobby == null){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
     }
@@ -77,7 +79,10 @@ public class GameService {
 
   public void startGame(long lobbyId){
     Game game = getGame(lobbyId);
-    Lobby lobby = LobbyService.getLobby(lobbyId);
+    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
     lobby.setGameActive(true);
     game.setCurrentRound(0);
     nextRound(lobbyId);
@@ -85,6 +90,10 @@ public class GameService {
 
 
   public boolean nextRound(long lobbyId){
+    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
     Game game = getGame(lobbyId);
     if (game.getCurrentRound() < game.getTotalRounds()){
       game.setCurrentRound(game.getCurrentRound() + 1);
@@ -136,8 +145,8 @@ public class GameService {
   }*/
 
 
+  //could also be iplemented directly in entity
   public void updateScore(Game game, long userId, int score){
-    Hashtable<Long, Integer> scores = game.getScores();
     int tempscore = game.getScore(userId);
     game.setScore(userId, tempscore + score);
   }
@@ -157,7 +166,10 @@ public class GameService {
 
 
   public void endGame(Long lobbyId, Game game){
-    Lobby lobby = LobbyService.getLobby(lobbyId);
+    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
     lobby.setGameActive(false);
     //TODO implement end game logic(GS)
   }
