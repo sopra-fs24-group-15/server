@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs24.entity.Round;
 
 @Entity
 @Table(name = "GAME")
@@ -26,13 +27,16 @@ public class Game implements Serializable {
     private int currentRound;
 
     @ElementCollection
-    private Hashtable<Long, Integer> ranking = new Hashtable<>();
+    private Hashtable<Long, Integer> scores = new Hashtable<>();
 
     @Column()
     private GameMode gameMode;
 
     @Column()
     private int timer;
+
+    @Column()
+    private Round round;
 
     public Long getGameId() {
         return gameId;
@@ -58,20 +62,20 @@ public class Game implements Serializable {
         this.currentRound = currentRound;
     }
 
-    public Hashtable<Long, Integer> getRanking() {
-        return ranking;
+    public Hashtable<Long, Integer> getScores() {
+        return scores;
     }   
 
-    public void setRanking(Hashtable<Long, Integer> ranking) {
-        this.ranking = ranking;
+    public void setScores(Hashtable<Long, Integer> scores) {
+        this.scores = scores;
     }
 
-    public void setRank(long userId, int score) {
-        ranking.put(userId, score);
+    public void setScore(long userId, int score) {
+        scores.put(userId, score);
     }
 
-    public int getRank(long userId) {
-        return ranking.get(userId);
+    public int getScore(long userId) {
+        return scores.get(userId);
     }
 
     public GameMode getGameMode() {
@@ -88,5 +92,13 @@ public class Game implements Serializable {
 
     public void setTimer(int timer) {
         this.timer = timer;
+    }
+
+    public Round getRound() {
+        return round;
+    }
+
+    public void setRound(Round round) {
+        this.round = round;
     }
 }

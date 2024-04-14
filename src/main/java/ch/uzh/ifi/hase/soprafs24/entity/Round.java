@@ -57,15 +57,19 @@ public class Round implements Serializable {
     }
     */
 
-    public Hashtable<Long, Integer> getRanking() {
+    public Hashtable<Long, Integer> getRoundScore() {
         return roundScore;
     }
 
-    public void setRanking(Hashtable<Long, Integer> roundScore) {
+    public void setRoundScore(Hashtable<Long, Integer> roundScore) {
         this.roundScore = roundScore;
     }
 
     public void addScore(Long userId, Integer score) {
         this.roundScore.put(userId, score);
+    }
+
+    public Integer getScore(Long userId) {
+        return this.roundScore.get(userId);
     }
 }
