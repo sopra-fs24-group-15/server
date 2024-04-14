@@ -100,7 +100,7 @@ public class GameService {
       Round round = new Round();
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
-      //TODO implement game play with template and voting 
+      //TODO implement game play with template and voting
       //setRoundScore(round);
       for (long userId : lobby.getPlayers()){
         updateScore(game, userId, round.getScore(userId));
