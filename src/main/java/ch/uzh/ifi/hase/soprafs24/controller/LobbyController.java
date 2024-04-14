@@ -34,11 +34,10 @@ public class LobbyController {
   @PostMapping("/lobby")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
-  public LobbyPostDTO createLobby(@RequestBody Long userId) {
+  public Lobby createLobby(@RequestBody Long userId) {
     //creates a lobby with the user as the owner
     Lobby createdLobby = lobbyService.createLobby(userId);
-    // convert internal representation of lobby back to API
-    return DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(createdLobby);
+    return createdLobby;
   }
 
   @GetMapping("/lobby/{lobbyId}")
@@ -51,5 +50,11 @@ public class LobbyController {
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
   }
 
-  
+  @DeleteMapping("/lobby/{lobbyId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public void deleteLobby(@RequestBody Long lobbyId) {
+    //deletes a lobby
+    lobbyService.deleteLobby(lobbyId);
+  }
 }
