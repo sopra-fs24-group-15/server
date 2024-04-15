@@ -4,7 +4,7 @@ Jana Muheim:
 
 Christof Steiner:
 
-Marc Huber: 6(https://github.com/sopra-fs24-group-15/client/issues/6), 5(https://github.com/sopra-fs24-group-15/client/issues/5), 38(https://github.com/sopra-fs24-group-15/client/issues/38)
+Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/6, https://github.com/sopra-fs24-group-15/client/issues/5, https://github.com/sopra-fs24-group-15/client/issues/38
 
 Marc Amsler:
 
@@ -15,7 +15,7 @@ Jana Muheim:
 
 Christof Steiner:
 
-Marc Huber: 14(https://github.com/sopra-fs24-group-15/client/issues/14), 16(https://github.com/sopra-fs24-group-15/client/issues/16), 17(https://github.com/sopra-fs24-group-15/client/issues/17)
+Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/14, https://github.com/sopra-fs24-group-15/client/issues/17
 
 Marc Amsler:
 
