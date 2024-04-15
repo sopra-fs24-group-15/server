@@ -21,9 +21,11 @@ public class Round implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
 
-    //TODO activate template
-    //@Column()
-    //private Template template;
+    @Column()
+    private Template template;
+
+    @Column()
+    private Voting voting;
 
     @ElementCollection
     private Hashtable<Long, Integer> roundScore = new Hashtable<>();
@@ -47,9 +49,7 @@ public class Round implements Serializable {
     public void setCurrentRound(int currentRound) {
         this.currentRound = currentRound;
     }
-
-    //TODO activate template
-    /* 
+     
     public Template getTemplate() {
         return template;
     }
@@ -57,7 +57,14 @@ public class Round implements Serializable {
     public void setTemplate(Template template) {
         this.template = template;
     }
-    */
+    
+    public Voting getVoting() {
+        return voting;
+    }
+
+    public void setVoting(Voting voting) {
+        this.voting = voting;
+    }
 
     public Hashtable<Long, Integer> getRoundScore() {
         return roundScore;

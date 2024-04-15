@@ -30,6 +30,9 @@ public class Lobby implements Serializable {
     @Column()
     private Boolean gameActive;
 
+    @Column()
+    private Game game;
+
     // Autowire LobbyRepository
     @Autowired
     private LobbyRepository lobbyRepository;
@@ -80,6 +83,14 @@ public class Lobby implements Serializable {
 
     public void setGameActive(Boolean gameActive) {
         this.gameActive = gameActive;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     // Method to generate a unique join code

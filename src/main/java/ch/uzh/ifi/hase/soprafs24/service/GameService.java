@@ -19,6 +19,7 @@ import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.entity.Voting;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 
@@ -101,7 +102,7 @@ public class GameService {
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
       //TODO implement game play with template and voting
-      //setRoundScore(round);
+      setRoundScore(round);
       for (long userId : lobby.getPlayers()){
         updateScore(game, userId, round.getScore(userId));
       }
@@ -114,14 +115,10 @@ public class GameService {
   }
 
   //TODO discuss how to handle when votes are the same(GS)
-  //TODO create voting and then activate this method maybe changing to getting the votes are needed(GS)
-  /* 
   public void setRoundScore(Round round){
+    Voting voting = round.getVoting();
     //get the votes in a hashtable
-    Hashtable<Long, Integer> votes = new Hashtable<Long, Integer>();
-    for (long userId : voting.getVotes().keySet()){
-      votes.put(userId, voting.getVotes().get(userId).size());
-    }
+    Hashtable<Long, Integer> votes = voting.getUserVotes();
     //get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
     Collections.sort(list, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
@@ -142,7 +139,7 @@ public class GameService {
       }
       counter++;
     }
-  }*/
+  }
 
 
   //could also be iplemented directly in entity
@@ -172,10 +169,5 @@ public class GameService {
     }
     lobby.setGameActive(false);
     //TODO implement end game logic(GS)
-  }
-
-  //TODO probably not needed(GS)
-  public void delteGame(long gameId){
-    //TODO implement delete game logic
   }
 }
