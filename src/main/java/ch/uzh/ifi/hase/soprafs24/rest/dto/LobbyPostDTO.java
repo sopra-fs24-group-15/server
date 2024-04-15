@@ -8,8 +8,7 @@ public class LobbyPostDTO {
 
   private long lobbyId;
   private List<User> players;
-  private long totalUsers;
-  private long lobbyJoinCode;
+  private String lobbyJoinCode;
   private long lobbyOwner;
   private boolean gameActive;
 
@@ -29,19 +28,11 @@ public class LobbyPostDTO {
     this.players = players;
   }
 
-  public long getTotalUsers() {
-    return totalUsers;
-  }
-
-  public void setTotalUsers(long totalUsers) {
-    this.totalUsers = totalUsers;
-  }
-
-  public long getLobbyJoinCode() {
+  public String getLobbyJoinCode() {
     return lobbyJoinCode;
   }
 
-  public void setLobbyJoinCode(long lobbyJoinCode) {
+  public void setLobbyJoinCode(String lobbyJoinCode) {
     this.lobbyJoinCode = lobbyJoinCode;
   }
 
