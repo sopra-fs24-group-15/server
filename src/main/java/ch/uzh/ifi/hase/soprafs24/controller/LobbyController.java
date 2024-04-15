@@ -37,7 +37,7 @@ public class LobbyController {
   public List<LobbyGetDTO> getAllLobbys() {
     // fetch all users in the internal representation
     List<Lobby> lobbys = lobbyService.getLobbys();
-    List<LobbyGetDTO> userGetDTOs = new ArrayList<>();
+    List<LobbyGetDTO> lobbyGetDTOs = new ArrayList<>();
 
     // convert each user to the API representation
     for (Lobby lobby : lobbys) {
