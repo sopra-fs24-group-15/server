@@ -64,7 +64,7 @@ public class LobbyService {
 
 // Helper method to check if the join code already exists in the database
 private boolean checkIfJoinCodeExists(String code) {
-    Lobby foundLobby = this.lobbyRepository.findByJoinCode(code).orElse(null);
+    Lobby foundLobby = this.lobbyRepository.findByLobbyJoinCode(code).orElse(null);
     if(foundLobby==null){
       return false;
     }
@@ -88,7 +88,7 @@ private boolean checkIfJoinCodeExists(String code) {
   //TODO change output from long to lobby in class diagram(GS)
   //TODO change type of lobbyJoinCode to long(MA) no needs to be string (GS)
   public Lobby findLobbyByJoinCode(String lobbyJoinCode) {
-    Lobby foundLobby = this.lobbyRepository.findByJoinCode(lobbyJoinCode).orElse(null);
+    Lobby foundLobby = this.lobbyRepository.findByLobbyJoinCode(lobbyJoinCode).orElse(null);
     if(foundLobby==null){
       throw new ResponseStatusException((HttpStatus.NOT_FOUND), "The lobby you searched for doesn't exist");
     }
