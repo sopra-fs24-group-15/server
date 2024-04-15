@@ -65,7 +65,7 @@ public class LobbyService {
 
   
   public Lobby createLobby(Long userId) {
-    Lobby newLobby;
+    Lobby newLobby = new Lobby();
     
     newLobby.setLobbyOwner(userId);
 
