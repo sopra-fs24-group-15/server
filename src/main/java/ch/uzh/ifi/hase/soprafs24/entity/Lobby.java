@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,6 +30,10 @@ public class Lobby implements Serializable {
 
     @Column()
     private Boolean gameActive;
+
+
+    @Column()
+    private Game game;
 
     public Long getLobbyId() {
         return lobbyId;
@@ -74,5 +77,14 @@ public class Lobby implements Serializable {
 
     public void setGameActive(Boolean gameActive) {
         this.gameActive = gameActive;
+    }
+
+
+    public Game getGame() {
+        return game;
+    }
+  
+    public void setGame(Game game) {
+      this.game = game;
     }
 }
