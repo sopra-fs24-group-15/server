@@ -20,3 +20,14 @@ Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/14, https://git
 Marc Amsler:
 
 Gian Seifert: 
+
+## Week 3(17.04-24.04)
+Jana Muheim: 18 (https://github.com/sopra-fs24-group-15/client/issues/18), 13 (https://github.com/sopra-fs24-group-15/client/issues/13)
+
+Christof Steiner: 
+
+Marc Huber: 
+
+Marc Amsler:
+
+Gian Seifert: 
