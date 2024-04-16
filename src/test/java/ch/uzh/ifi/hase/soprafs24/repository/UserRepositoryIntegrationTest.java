@@ -7,8 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class UserRepositoryIntegrationTest {
@@ -29,10 +30,13 @@ public class UserRepositoryIntegrationTest {
         entityManager.flush();
 
         // when
-        User found = userRepository.findByUsername(user.getUsername());
+        Optional<User> foundOptional = userRepository.findByUsername(user.getUsername());
 
         // then
+        assertTrue(foundOptional.isPresent(), "User should be found");
+        User found = foundOptional.get();
         assertNotNull(found.getUserId()); // Ensure the found user has a non-null ID
         assertEquals(found.getUsername(), user.getUsername());
     }
+
 }

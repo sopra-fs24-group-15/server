@@ -92,6 +92,10 @@ public class GameService {
     if(lobby.getLobbyOwner() != userId){
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the lobby owner can start the game");
     }
+
+    if(lobby.getPlayers().size() < 3){
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "At least 3 players are required to start the game");
+    }
     lobby.setGameActive(true);
     game.setCurrentRound(0);
     nextRound(lobbyId);
