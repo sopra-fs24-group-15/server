@@ -11,9 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
+
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+
 
 /**
  * User Service
@@ -38,6 +44,37 @@ public class LobbyService {
     this.userRepository = userRepository;
   }
 
+  // Method to generate a unique join code
+  private void generateUniqueJoinCode(Lobby lobby) {
+    String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    Random rnd = new Random();
+    boolean uniqueCodeGenerated = false;
+
+    // Keep generating until a unique code is found
+    while (!uniqueCodeGenerated) {
+        StringBuilder joinCode = new StringBuilder();
+        while (joinCode.length() < 6) { // 6 characters long
+            int index = (int) (rnd.nextFloat() * characters.length());
+            joinCode.append(characters.charAt(index));
+        }
+        String potentialCode = joinCode.toString();
+        // Check if the potential code already exists in the database
+        if (!checkIfJoinCodeExists(potentialCode)) {
+            lobby.setLobbyJoinCode(potentialCode);
+            uniqueCodeGenerated = true;
+        }
+    }
+}
+
+// Helper method to check if the join code already exists in the database
+private boolean checkIfJoinCodeExists(String code) {
+    Lobby foundLobby = this.lobbyRepository.findByLobbyJoinCode(code).orElse(null);
+    if(foundLobby==null){
+      return false;
+    }
+    return true;
+}
+
   public List<Lobby> getLobbys() {
     return this.lobbyRepository.findAll();
   }
@@ -52,8 +89,10 @@ public class LobbyService {
   }
 
   //TODO check after implemtning joincode in lobby entity and findbyjoincode in lobby repository(GS)
+  //TODO change output from long to lobby in class diagram(GS)
+  //TODO change type of lobbyJoinCode to long(MA) no needs to be string (GS)
   public Lobby findLobbyByJoinCode(String lobbyJoinCode) {
-    Lobby foundLobby = this.lobbyRepository.findByJoinCode(lobbyJoinCode).orElse(null);
+    Lobby foundLobby = this.lobbyRepository.findByLobbyJoinCode(lobbyJoinCode).orElse(null);
     if(foundLobby==null){
       throw new ResponseStatusException((HttpStatus.NOT_FOUND), "The lobby you searched for doesn't exist");
     }
@@ -63,6 +102,10 @@ public class LobbyService {
   
   public Lobby createLobby(Long userId) {
     Lobby newLobby = new Lobby();
+
+
+    generateUniqueJoinCode(newLobby);
+
     
     newLobby.setLobbyOwner(userId);
 

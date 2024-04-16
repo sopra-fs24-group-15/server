@@ -1,10 +1,12 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,30 +31,32 @@ public class LobbyController {
     this.lobbyService = lobbyService;
   }
 
-
-
-  @GetMapping("/lobbys")
-  @ResponseStatus(HttpStatus.OK)
-  @ResponseBody
-  public List<LobbyGetDTO> getAllLobbys() {
-    // fetch all users in the internal representation
-    List<Lobby> lobbys = lobbyService.getLobbys();
-    List<LobbyGetDTO> userGetDTOs = new ArrayList<>();
-
-    // convert each user to the API representation
-    for (Lobby lobby : lobbys) {
-      lobbyGetDTOs.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby));
-    }
-    return lobbyGetDTOs;
-  }
-
-  @PostMapping("/lobbys")
+  @PostMapping("/lobby")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
-  public LobbyGetDTO createLobby(@RequestBody Long userId) {
-    //we could change the getlobby by redefining the return value of create lobby to lobby object
-    Lobby createdLobby = lobbyService.getLobby(lobbyService.createLobby(userId));
-    // convert internal representation of user back to API
-    return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
+  public Lobby createLobby(@RequestBody Long userId) {
+    //creates a lobby with the user as the owner
+    Lobby createdLobby = lobbyService.createLobby(userId);
+    return createdLobby;
+  }
+
+  @GetMapping("/lobby/{lobbyId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+
+  public LobbyGetDTO retrieveLobbyToJoin(@RequestBody String lobbyId, Long UserId) {
+    //retrieves a lobby to join
+    Lobby foundLobby = lobbyService.findLobbyByJoinCode(lobbyId);
+    // convert internal representation of lobby back to API
+    return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
+
+  }
+
+  @DeleteMapping("/lobby/{lobbyId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public void deleteLobby(@RequestBody Long lobbyId) {
+    //deletes a lobby
+    lobbyService.deleteLobby(lobbyId);
   }
 }
