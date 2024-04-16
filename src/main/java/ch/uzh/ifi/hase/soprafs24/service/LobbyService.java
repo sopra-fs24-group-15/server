@@ -16,7 +16,6 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -124,6 +123,7 @@ private boolean checkIfJoinCodeExists(String code) {
     //change the owner
     lobbyToChange.setLobbyOwner(userId);
   }
+  
   //TODO implement check if user is the owner of the lobby(MA) todo for GS
   public void deleteLobby(Long lobbyId) {
     //finding the lobby by the id 
