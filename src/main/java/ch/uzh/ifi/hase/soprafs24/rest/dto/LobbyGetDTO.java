@@ -4,15 +4,14 @@ import java.util.List;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 
 
-//TODO change to match Lobby entitiy
+//TODO change to match Lobby entity
 public class LobbyGetDTO {
 
   private Long lobbyId;
-  private List<User> players;
+  private List<Long> players;
   private String lobbyJoinCode;
   private long lobbyOwner;
   private boolean gameActive;
-
 
 
   public Long getLobbyId() {
@@ -23,8 +22,15 @@ public class LobbyGetDTO {
     this.lobbyId = lobbyId;
   }
 
+  public List<Long> getPlayers() {
+      return players;
+  }
 
-  private String getLobbyJoinCode() {
+  public void setPlayers(List<Long> players) {
+      this.players = players;
+  }
+
+    private String getLobbyJoinCode() {
     return lobbyJoinCode;
   }
 

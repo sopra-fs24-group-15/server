@@ -19,7 +19,7 @@ public class Lobby implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lobbyId;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String lobbyJoinCode;
 
     @ElementCollection
