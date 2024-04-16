@@ -121,10 +121,19 @@ private boolean checkIfJoinCodeExists(String code) {
     lobbyToChange.setLobbyOwner(userId);
   }
 
-  //TODO implement check if user is the owner of the lobby(MA) todo for GS
-  public void deleteLobby(Long lobbyId) {
+  
+  public void deleteLobby(Long lobbyId, Long userId) {
     //finding the lobby by the id 
     Lobby lobbyToDelete = getLobby(lobbyId);
+    //checking if the user even exists
+    User user = userRepository.findById(userId).orElse(null);
+    if(user == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
+    //check if user is the owner of the lobby
+    if (lobbyToDelete.getLobbyOwner() != userId) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the owner of the lobby");
+    }
     //deleting the lobby
     lobbyRepository.delete(lobbyToDelete);
 
