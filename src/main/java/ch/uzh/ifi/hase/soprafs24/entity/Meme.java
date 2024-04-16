@@ -56,20 +56,4 @@ public class Meme implements Serializable {
         this.votes = votes;
     }
 
-    // Methods as per class diagram
-
-    public long createMeme(Long templateId, List<String> text) {
-
-        //TODO how to implemet it. where to store things how to communicate with fromntend (chrigi)
-        // Implementation to create a meme
-
-        return 0L;
-    }
-
-    public String getMeme(Long memeId) {
-        //TODO (chrigi)
-        // Implementation to retrieve a meme's URL by its ID
-
-        return this.memeURL;
-    }
 }
