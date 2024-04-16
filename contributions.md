@@ -2,7 +2,7 @@
 ## Week 1(27.03-10.04)
 Jana Muheim:
 
-Christof Steiner: https://github.com/sopra-fs24-group-15/client/issues/99, https://github.com/sopra-fs24-group-15/server/issues/102
+Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/99, https://github.com/sopra-fs24-group-15/server/issues/102
 
 Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/6, https://github.com/sopra-fs24-group-15/client/issues/5, https://github.com/sopra-fs24-group-15/client/issues/38
 
