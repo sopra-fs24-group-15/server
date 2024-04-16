@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 
@@ -146,7 +147,8 @@ private boolean checkIfJoinCodeExists(String code) {
   public boolean checkIfPlayersAreReady(Lobby lobby) {
     //check if all players are ready
     for (Long player : lobby.getPlayers()) {
-      if (userRepository.findById(player).orElse(null).getUserReady() == false){
+      User user = userRepository.findById(player).orElse(null);
+      if (user.getUserReady() == false){
         return false;
       }
     }
