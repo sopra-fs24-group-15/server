@@ -41,6 +41,9 @@ public class User implements Serializable {
   @Column(nullable = false)
   private Boolean lobbyOwner;
 
+  @Column(nullable = false)
+  private Boolean userReady;
+
 
   //getter, setter and update functions
   public Long getUserId() {
@@ -83,6 +86,10 @@ public class User implements Serializable {
   public void setLobbyOwner(Boolean lobbyOwner) {
       this.lobbyOwner = lobbyOwner;
   }
+
+  public Boolean isUserReady() {return userReady;  }
+
+    public void setUserReady(Boolean userReady) {this.userReady = userReady;}
 
   //TODO how to handle stuff that isnt possible, is this the way to do it? (chrigi)
   public User orElse(Object object) {
