@@ -19,6 +19,7 @@ import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.Voting;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
@@ -78,11 +79,18 @@ public class GameService {
     return game;
   }
 
-  public void startGame(long lobbyId){
+  public void startGame(long lobbyId, long userId){
     Game game = getGame(lobbyId);
     Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
     if(lobby == null){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
+    User user = userRepository.findById(userId).orElse(null);
+    if(user == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
+    if(lobby.getLobbyOwner() != userId){
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the lobby owner can start the game");
     }
     lobby.setGameActive(true);
     game.setCurrentRound(0);
