@@ -148,6 +148,9 @@ private boolean checkIfJoinCodeExists(String code) {
     //check if all players are ready
     for (Long player : lobby.getPlayers()) {
       User user = userRepository.findById(player).orElse(null);
+      if(user == null){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+      }
       if (user.getUserReady() == false){
         return false;
       }
