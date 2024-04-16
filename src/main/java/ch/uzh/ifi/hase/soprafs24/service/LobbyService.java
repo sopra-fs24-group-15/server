@@ -101,11 +101,7 @@ private boolean checkIfJoinCodeExists(String code) {
   
   public Lobby createLobby(Long userId) {
     Lobby newLobby = new Lobby();
-
-
     generateUniqueJoinCode(newLobby);
-
-    
     newLobby.setLobbyOwner(userId);
 
     //Saves the lobby in the repository(needs flushing)
@@ -123,7 +119,7 @@ private boolean checkIfJoinCodeExists(String code) {
     //change the owner
     lobbyToChange.setLobbyOwner(userId);
   }
-  
+
   //TODO implement check if user is the owner of the lobby(MA) todo for GS
   public void deleteLobby(Long lobbyId) {
     //finding the lobby by the id 
@@ -145,6 +141,16 @@ private boolean checkIfJoinCodeExists(String code) {
           lobbyToJoin.addPlayer(userId);}
       else {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby is full");
       }
+  }
+
+  public boolean checkIfPlayersAreReady(Lobby lobby) {
+    //check if all players are ready
+    for (Long player : lobby.getPlayers()) {
+      if (userRepository.findById(player).orElse(null).getUserReady() == false){
+        return false;
+      }
+    }
+    return true;
   }
 
   public void leaveLobby(Long userId, Long lobbyId) {
