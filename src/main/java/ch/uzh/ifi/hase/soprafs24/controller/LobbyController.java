@@ -55,11 +55,4 @@ public class LobbyController {
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
   }
 
-  @DeleteMapping("/lobby/{lobbyId}")
-  @ResponseStatus(HttpStatus.OK)
-  @ResponseBody
-  public void deleteLobby(@RequestBody Long lobbyId) {
-    //deletes the lobby
-    lobbyService.deleteLobby(lobbyId);
-  }
 }

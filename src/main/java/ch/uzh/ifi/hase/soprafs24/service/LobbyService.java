@@ -124,15 +124,7 @@ private boolean checkIfJoinCodeExists(String code) {
     //change the owner
     lobbyToChange.setLobbyOwner(userId);
   }
-  //TODO implement check if user is the owner of the lobby(MA) todo for GS
-  public void deleteLobby(Long lobbyId) {
-    //finding the lobby by the id 
-    Lobby lobbyToDelete = getLobby(lobbyId);
-    //deleting the lobby
-    lobbyRepository.delete(lobbyToDelete);
-
-  }
-
+  
 
   //TODO check if every List was updated to use long and not User (GS)
   //TODO use this in controller with findbyjoincode to let users join via join code (GS)
