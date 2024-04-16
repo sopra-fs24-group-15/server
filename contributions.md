@@ -14,6 +14,7 @@ Gian Seifert: 76(https://github.com/sopra-fs24-group-15/server/issues/76), 78(ht
 Jana Muheim:
 
 Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/162, https://github.com/sopra-fs24-group-15/server/issues/163, https://github.com/sopra-fs24-group-15/server/issues/166
+
 Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/14, https://github.com/sopra-fs24-group-15/client/issues/17
 
 Marc Amsler:
