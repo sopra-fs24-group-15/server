@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.persistence.*;
@@ -15,15 +16,15 @@ public class Voting implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
 
-    @ElementCollection
-    @CollectionTable(name = "user_votes", joinColumns = {@JoinColumn(name = "vote_id")})
+    //@ElementCollection
+    //@CollectionTable(name = "user_votes", joinColumns = {@JoinColumn(name = "vote_id")})
     @Column(name = "votes")
-    private Hashtable<Long, Integer> userVotes = new Hashtable<>();
+    private HashMap<Long, Integer> userVotes = new HashMap<>();
 
-    @ElementCollection
-    @CollectionTable(name = "memes_votes", joinColumns = {@JoinColumn(name = "vote_id")})
+    //@ElementCollection
+    //@CollectionTable(name = "memes_votes", joinColumns = {@JoinColumn(name = "vote_id")})
     @Column(name = "meme_id")
-    private Hashtable<Long, Long> memesDict = new Hashtable<>();
+    private HashMap<Long, Long> memesDict = new HashMap<>();
 
 
     public Long getVoteId() {
@@ -34,19 +35,19 @@ public class Voting implements Serializable {
         this.voteId = voteId;
     }
 
-    public Hashtable<Long, Integer> getUserVotes() {
+    public HashMap<Long, Integer> getUserVotes() {
         return userVotes;
     }
 
-    public void setUserVotes(Hashtable<Long, Integer> userVotes) {
+    public void setUserVotes(HashMap<Long, Integer> userVotes) {
         this.userVotes = userVotes;
     }
 
-    public Hashtable<Long, Long> getMemesDict() {
+    public HashMap<Long, Long> getMemesDict() {
         return memesDict;
     }
 
-    public void setMemesDict(Hashtable<Long, Long> memesDict) {
+    public void setMemesDict(HashMap<Long, Long> memesDict) {
         this.memesDict = memesDict;
     }
 

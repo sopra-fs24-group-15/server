@@ -1,7 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import java.io.Serializable;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -29,8 +32,8 @@ public class Game implements Serializable {
     @Column()
     private int currentRound;
 
-    @ElementCollection
-    private Hashtable<Long, Integer> scores = new Hashtable<>();
+    @Column()
+    private HashMap<Long, Integer> scores = new HashMap<>();
 
     @Column()
     private GameMode gameMode;
@@ -40,6 +43,9 @@ public class Game implements Serializable {
 
     @Column()
     private Round round;
+
+    @Column(nullable = false, unique = true)
+    private Long lobbyId;
 
     public Long getGameId() {
         return gameId;
@@ -65,11 +71,11 @@ public class Game implements Serializable {
         this.currentRound = currentRound;
     }
 
-    public Hashtable<Long, Integer> getScores() {
+    public HashMap<Long, Integer> getScores() {
         return scores;
-    }   
+    }
 
-    public void setScores(Hashtable<Long, Integer> scores) {
+    public void setScores(HashMap<Long, Integer> scores) {
         this.scores = scores;
     }
 
@@ -104,4 +110,8 @@ public class Game implements Serializable {
     public void setRound(Round round) {
         this.round = round;
     }
+
+    public Long getLobbyId() {return lobbyId;}
+
+    public void setLobbyId(Long lobbyId) {this.lobbyId = lobbyId;}
 }

@@ -21,7 +21,7 @@ import java.util.List;
  * UserService and finally return the result.
  */
 
-//TODO implement Rest interface calls
+//TODO implement Rest interface calls 
 @RestController
 public class LobbyController {
 
@@ -34,29 +34,32 @@ public class LobbyController {
   @PostMapping("/lobby")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
-  public Lobby createLobby(@RequestBody Long userId) {
-    //creates a lobby with the user as the owner
-    Lobby createdLobby = lobbyService.createLobby(userId);
-    return createdLobby;
+  public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO LobbyPostDTO) {
+    //create a lobby object from the input
+    Lobby LobbyInput = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(LobbyPostDTO);
+    //create a lobby by calling user service
+    Lobby createdLobby = lobbyService.createLobby(LobbyInput.getLobbyId());
+    //convert internal representation of lobby back to API
+    return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
   }
 
   @GetMapping("/lobby/{lobbyId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-
   public LobbyGetDTO retrieveLobbyToJoin(@RequestBody String lobbyId, Long UserId) {
     //retrieves a lobby to join
     Lobby foundLobby = lobbyService.findLobbyByJoinCode(lobbyId);
+    //join the lobby
+    lobbyService.joinLobby(UserId, foundLobby);
     // convert internal representation of lobby back to API
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
-
   }
 
   @DeleteMapping("/lobby/{lobbyId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   public void deleteLobby(@RequestBody Long lobbyId) {
-    //deletes a lobby
+    //deletes the lobby
     lobbyService.deleteLobby(lobbyId);
   }
 }
