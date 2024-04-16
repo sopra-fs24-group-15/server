@@ -124,7 +124,7 @@ private boolean checkIfJoinCodeExists(String code) {
     //change the owner
     lobbyToChange.setLobbyOwner(userId);
   }
-
+  //TODO implement check if user is the owner of the lobby(MA) todo for GS
   public void deleteLobby(Long lobbyId) {
     //finding the lobby by the id 
     Lobby lobbyToDelete = getLobby(lobbyId);
