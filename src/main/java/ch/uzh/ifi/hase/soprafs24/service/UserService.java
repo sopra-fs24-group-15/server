@@ -74,4 +74,10 @@ public class UserService {
       userRepository.delete(user);
   }
 
+  public void setUserReady(Long userId){
+      User user = userRepository.findById(userId).orElseThrow(() ->
+              new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+      user.setUserReady(true);
+  }
+
 }
