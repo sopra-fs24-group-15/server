@@ -6,7 +6,7 @@ Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/99, https
 
 Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/6, https://github.com/sopra-fs24-group-15/client/issues/5, https://github.com/sopra-fs24-group-15/client/issues/38
 
-Marc Amsler:
+Marc Amsler: https://github.com/sopra-fs24-group-15/server/issues/159, https://github.com/sopra-fs24-group-15/server/issues/158
 
 Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/76, https://github.com/sopra-fs24-group-15/server/issues/78
 
