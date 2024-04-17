@@ -171,7 +171,10 @@ private boolean checkIfJoinCodeExists(String code) {
     //finding the lobby by the id 
     Lobby lobbyToLeave = getLobby(lobbyId);
     //checking if the user even exists
-    this.userRepository.findById(userId);
+    User user = userRepository.findById(userId).orElse(null);
+      if(user == null){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+      }
     //removing the user from the lobby
     lobbyToLeave.removePlayer(userId);
   }
