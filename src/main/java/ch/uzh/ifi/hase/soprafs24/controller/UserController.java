@@ -71,9 +71,8 @@ public class UserController {
     //TODO: implement userService.deleteUser(); fallses Problem demit git, bide Jana melde
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@RequestBody UserDeleteDTO userDeleteDTO, @PathVariable("id") String id) {
+    public void deleteUser(@PathVariable("id") String id) {
         Long idlong = convertStringtoLong(id);
-        //User userToDelete = DTOMapper.INSTANCE.convertUserDeleteDTOtoEntity(userDeleteDTO);
         userService.deleteUser(idlong);
     }
 
