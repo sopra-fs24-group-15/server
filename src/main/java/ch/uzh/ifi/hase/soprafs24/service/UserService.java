@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -41,21 +42,25 @@ public class UserService {
   }
 
 
-  public User createUser(String username) {
-      //checks if available
-      User found = userRepository.findByUsername(username);
-      if (found.getUsername() == username ) {
+  public User createUser(String username, boolean lobbyOwner) {
+        // Check if username is already taken
+      Optional<User> found = userRepository.findByUsername(username);
+      if (found.isPresent()) {
           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username already exists.");
       }
-      //creating one if it was unique
+
+        // Create a new user if the username is unique
       User newUser = new User();
       newUser.setUsername(username);
+      newUser.setUserReady(false);
+      newUser.setLobbyOwner(lobbyOwner);
       newUser = userRepository.saveAndFlush(newUser);
       log.debug("Created Information for User: {}", newUser);
       return newUser;
   }
 
-  //TODO update class diagram updateProfile() (chrigi)
+
+    //TODO update class diagram updateProfile() (chrigi)
 
   // TODO Implement updateProfilePicture method (chrigi) we could save some limited pictures in the backend
   public void updateProfilePicture(Long userId, String profilePicture) {

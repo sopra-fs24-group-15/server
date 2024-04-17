@@ -4,26 +4,10 @@ import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 
 public class UserGetDTO {
 
-  private Long id;
-  private String name;
+
   private String username;
-  private UserStatus status;
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
+  private Long userId;
+  private boolean lobbyOwner;
 
   public String getUsername() {
     return username;
@@ -33,11 +17,19 @@ public class UserGetDTO {
     this.username = username;
   }
 
-  public UserStatus getStatus() {
-    return status;
+  public Long getUserId() {
+    return userId;
   }
 
-  public void setStatus(UserStatus status) {
-    this.status = status;
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
+
+  public boolean getLobbyOwner() {
+    return lobbyOwner;
+  }
+
+  public void setLobbyOwner(boolean lobbyOwner) {
+    this.lobbyOwner = lobbyOwner;
   }
 }

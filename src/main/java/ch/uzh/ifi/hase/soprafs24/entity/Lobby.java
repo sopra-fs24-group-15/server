@@ -19,7 +19,7 @@ public class Lobby implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lobbyId;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String lobbyJoinCode;
 
     @ElementCollection
@@ -31,13 +31,9 @@ public class Lobby implements Serializable {
     @Column()
     private Boolean gameActive;
 
-    // Autowire LobbyRepository
-    @Autowired
-    private LobbyRepository lobbyRepository;
 
-    public Lobby() {
-        generateUniqueJoinCode(); // Generate join code upon lobby creation
-    }
+    @Column()
+    private Game game;
 
     public Long getLobbyId() {
         return lobbyId;
@@ -83,31 +79,12 @@ public class Lobby implements Serializable {
         this.gameActive = gameActive;
     }
 
-    // Method to generate a unique join code
-    private void generateUniqueJoinCode() {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random rnd = new Random();
-        boolean uniqueCodeGenerated = false;
 
-        // Keep generating until a unique code is found
-        while (!uniqueCodeGenerated) {
-            StringBuilder joinCode = new StringBuilder();
-            while (joinCode.length() < 6) { // 6 characters long
-                int index = (int) (rnd.nextFloat() * characters.length());
-                joinCode.append(characters.charAt(index));
-            }
-            String potentialCode = joinCode.toString();
-            // Check if the potential code already exists in the database
-            if (!checkIfJoinCodeExists(potentialCode)) {
-                this.lobbyJoinCode = potentialCode;
-                uniqueCodeGenerated = true;
-            }
-        }
+    public Game getGame() {
+        return game;
     }
-
-    // Helper method to check if the join code already exists in the database
-    private boolean checkIfJoinCodeExists(String code) {
-        Optional<Lobby> existingLobby = lobbyRepository.findByJoinCode(code);
-        return existingLobby.isPresent();
+  
+    public void setGame(Game game) {
+      this.game = game;
     }
 }
