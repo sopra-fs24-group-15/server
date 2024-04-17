@@ -36,7 +36,6 @@ public class UserServiceTest {
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
     }
 
-    /*
     @Test
     public void createUser_validInputs_success() {
 
@@ -53,8 +52,6 @@ public class UserServiceTest {
         assertEquals(testUser.getUsername(), createdUser.getUsername());
     }
 
-    
-
     @Test
     public void createUser_duplicateUsername_throwsException() {
         // given -> a first user has already been created
@@ -63,5 +60,4 @@ public class UserServiceTest {
         // then -> attempt to create second user with same username -> check that an error is thrown
         assertThrows(ResponseStatusException.class, () -> userService.createUser("testUsername"));
     }
-    */
 }

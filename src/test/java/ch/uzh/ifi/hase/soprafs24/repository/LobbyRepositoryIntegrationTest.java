@@ -33,7 +33,7 @@ public class LobbyRepositoryIntegrationTest {
         entityManager.flush();
 
         // when
-        Optional<Lobby> found = lobbyRepository.findByLobbyJoinCode(lobby.getLobbyJoinCode());
+        Optional<Lobby> found = lobbyRepository.findByJoinCode(lobby.getLobbyJoinCode());
 
         // then
         assertTrue(found.isPresent()); // Ensure the found lobby is present

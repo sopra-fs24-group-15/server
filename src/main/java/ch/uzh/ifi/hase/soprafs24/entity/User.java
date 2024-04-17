@@ -21,7 +21,7 @@ import java.io.Serializable;
 @Table(name = "USER")
 public class User implements Serializable {
 
-
+  @Serial
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -38,12 +38,8 @@ public class User implements Serializable {
   @Column()
   private Long lobbyId;
 
-  //TODO can this be null?
   @Column(nullable = false)
   private Boolean lobbyOwner;
-
-  @Column(nullable = false)
-  private Boolean userReady;
 
 
   //getter, setter and update functions
@@ -80,17 +76,13 @@ public class User implements Serializable {
       this.lobbyId = lobbyId;
   }
 
-  public Boolean getLobbyOwner() {
+  public Boolean isLobbyOwner() {
       return lobbyOwner;
   }
 
   public void setLobbyOwner(Boolean lobbyOwner) {
       this.lobbyOwner = lobbyOwner;
   }
-
-  public Boolean isUserReady() {return userReady;  }
-
-    public void setUserReady(Boolean userReady) {this.userReady = userReady;}
 
   //TODO how to handle stuff that isnt possible, is this the way to do it? (chrigi)
   public User orElse(Object object) {
