@@ -88,15 +88,13 @@ public class LobbyServiceTest {
         assertEquals(newOwnerId, testLobby.getLobbyOwner());
     }
 
-    //TODO test ahpasse, deleteLobby het als input etzt lobbyid und eh userid
-    /*
     @Test
     public void deleteLobby_existingLobby_deletesLobby() {
         when(lobbyRepository.findById(testLobby.getLobbyId())).thenReturn(Optional.of(testLobby));
 
-        lobbyService.deleteLobby(testLobby.getLobbyId());
+        lobbyService.deleteLobby(testLobby.getLobbyId(), testLobby.getLobbyOwner());
 
         verify(lobbyRepository, times(1)).delete(testLobby);
     }
-    */
+    
 }
