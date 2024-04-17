@@ -62,7 +62,7 @@ public class LobbyServiceTest {
 
     @Test
     public void findLobbyByJoinCode_existingCode_success() {
-        when(lobbyRepository.findByLobbyJoinCode(testLobby.getLobbyJoinCode())).thenReturn(Optional.of(testLobby));
+        when(lobbyRepository.findByJoinCode(testLobby.getLobbyJoinCode())).thenReturn(Optional.of(testLobby));
 
         Lobby foundLobby = lobbyService.findLobbyByJoinCode(testLobby.getLobbyJoinCode());
 
@@ -73,7 +73,7 @@ public class LobbyServiceTest {
     @Test
     public void findLobbyByJoinCode_nonExistingCode_throwsException() {
         String nonExistingCode = "654321";
-        when(lobbyRepository.findByLobbyJoinCode(nonExistingCode)).thenReturn(Optional.empty());
+        when(lobbyRepository.findByJoinCode(nonExistingCode)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class, () -> lobbyService.findLobbyByJoinCode(nonExistingCode));
     }

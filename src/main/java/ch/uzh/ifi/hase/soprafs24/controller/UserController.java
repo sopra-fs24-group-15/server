@@ -30,6 +30,7 @@ public class UserController {
     }
 
 
+
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -58,9 +59,9 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
-    private long convertStringtoLong(String userId) {
+    private long convertStringtoLong(String id) {
         Long idLong;
-        try { idLong = Long.parseLong(userId);
+        try { idLong = Long.parseLong(id);
         }
         catch (NumberFormatException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

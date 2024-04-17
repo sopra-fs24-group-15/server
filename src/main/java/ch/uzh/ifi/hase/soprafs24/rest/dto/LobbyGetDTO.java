@@ -1,59 +1,35 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-import java.util.List;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
 
-
-//TODO change to match Lobby entity
+//TODO change to match Lobby entitiy
 public class LobbyGetDTO {
 
-  private Long lobbyId;
-  private List<Long> players;
-  private String lobbyJoinCode;
-  private long lobbyOwner;
-  private boolean gameActive;
+  private Long id;
+  private String name;
+  private String username;
 
 
-  public Long getLobbyId() {
-    return lobbyId;
+  public Long getId() {
+    return id;
   }
 
-  public void setLobbyId(Long lobbyId) {
-    this.lobbyId = lobbyId;
+  public void setId(Long id) {
+    this.id = id;
   }
 
-  public List<Long> getPlayers() {
-      return players;
+  public String getName() {
+    return name;
   }
 
-  public void setPlayers(List<Long> players) {
-      this.players = players;
+  public void setName(String name) {
+    this.name = name;
   }
 
-    private String getLobbyJoinCode() {
-    return lobbyJoinCode;
+  public String getUsername() {
+    return username;
   }
 
-  private void setLobbyJoinCode(String lobbyJoinCode) {
-    this.lobbyJoinCode = lobbyJoinCode;
+  public void setUsername(String username) {
+    this.username = username;
   }
-
-  private long getLobbyOwner() {
-    return lobbyOwner;
-  }
-
-  private void setLobbyOwner(long lobbyOwner) {
-    this.lobbyOwner = lobbyOwner;
-  }
-
-  private boolean isGameActive() {
-    return gameActive;
-  }
-
-  private void setGameActive(boolean gameActive) {
-    this.gameActive = gameActive;
-  }
-
 }
-
-

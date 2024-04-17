@@ -2,16 +2,16 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 public class UserPostDTO {
 
-  private String userId;
+  private String name;
 
   private String username;
 
   public String getName() {
-    return userId;
+    return name;
   }
 
-  public void setName(String userId) {
-    this.userId = this.userId;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getUsername() {
