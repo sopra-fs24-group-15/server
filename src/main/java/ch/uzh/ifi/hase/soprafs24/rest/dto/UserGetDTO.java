@@ -6,6 +6,8 @@ public class UserGetDTO {
 
 
   private String username;
+  private Long userId;
+  private boolean lobbyOwner;
 
 
   public String getUsername() {
@@ -14,5 +16,21 @@ public class UserGetDTO {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public Long getUserId() {
+    return userId;
+  }
+
+  public void setUserId(Long userId) {
+    this.userId = userId;
+  }
+
+  public boolean getLobbyOwner() {
+    return lobbyOwner;
+  }
+
+  public void setLobbyOwner(boolean lobbyOwner) {
+    this.lobbyOwner = lobbyOwner;
   }
 }
