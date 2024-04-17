@@ -4,7 +4,7 @@ Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/173, https://g
 
 Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/99, https://github.com/sopra-fs24-group-15/server/issues/102
 
-Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/6, https://github.com/sopra-fs24-group-15/client/issues/5, https://github.com/sopra-fs24-group-15/client/issues/38
+Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/5, https://github.com/sopra-fs24-group-15/client/issues/6, https://github.com/sopra-fs24-group-15/client/issues/5, https://github.com/sopra-fs24-group-15/client/issues/38
 
 Marc Amsler: https://github.com/sopra-fs24-group-15/server/issues/159, https://github.com/sopra-fs24-group-15/server/issues/158
 
