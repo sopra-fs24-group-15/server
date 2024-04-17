@@ -92,7 +92,7 @@ public class LobbyServiceTest {
     public void deleteLobby_existingLobby_deletesLobby() {
         when(lobbyRepository.findById(testLobby.getLobbyId())).thenReturn(Optional.of(testLobby));
 
-        lobbyService.deleteLobby(testLobby.getLobbyId());
+        lobbyService.deleteLobby(testLobby.getLobbyId(), testLobby.getLobbyOwner());
 
         verify(lobbyRepository, times(1)).delete(testLobby);
     }

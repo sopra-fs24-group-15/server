@@ -58,8 +58,8 @@ public class LobbyController {
   @DeleteMapping("/lobby/{lobbyId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public void deleteLobby(@RequestBody Long lobbyId) {
+  public void deleteLobby(@RequestBody Long lobbyId, Long userId) {
     //deletes the lobby
-    lobbyService.deleteLobby(lobbyId);
+    lobbyService.deleteLobby(lobbyId, userId);
   }
 }
