@@ -42,6 +42,12 @@ public class Template implements Serializable {
     @Column()
     private String topic;
 
+    @Column()
+    private String textTop;
+
+    @Column()
+    private String textBottom;
+
     // getters and setters
 
     public Long getId() {
@@ -107,4 +113,22 @@ public class Template implements Serializable {
     public void setTopic(String topic) {
         this.topic = topic;
     }
+
+    public String getTextTop() {
+        return textTop;
+    }
+
+    public void setTextTop(String textTop) {
+        this.textTop = textTop;
+    }
+
+    public String getTextBottom() {
+        return textBottom;
+    }
+
+    public void setTextBottom(String textBottom) {
+        this.textBottom = textBottom;
+    }
+
+    
 }

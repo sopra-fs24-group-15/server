@@ -1,61 +1,69 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-import ch.uzh.ifi.hase.soprafs24.repository.MemeRepository;
 import ch.uzh.ifi.hase.soprafs24.entity.Template;
-
+import ch.uzh.ifi.hase.soprafs24.repository.TemplateRepository;
+import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 public class TemplateService {
 
     private final RestTemplate restTemplate;
+    private final TemplateRepository templateRepository;
 
     @Autowired
-    public TemplateService(RestTemplate restTemplate, MemeRepository memeRepository) {
+    public TemplateService(RestTemplate restTemplate, TemplateRepository templateRepository) {
         this.restTemplate = restTemplate;
+        this.templateRepository = templateRepository;
     }
 
 
-    public ResponseEntity<String> fetchTemplate() {
+    
+    public List<Template> fetchTemplate() {
         String url = "https://api.imgflip.com/get_memes";
         try {
             String result = restTemplate.getForObject(url, String.class);
-            return ResponseEntity.ok(result);
-        } catch (HttpClientErrorException e) {
-            //TODO return message
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    
+            // Parse the JSON response
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode root = mapper.readTree(result);
+            JsonNode memes = root.path("data").path("memes");
+    
+            // Convert each meme in the response to a Template object and save it in the database
+            // As I understand it we fetch the memes from the API and save them in the database so we can use them later (chrigi)
+            List<Template> templates = new ArrayList<>();
+            for (JsonNode meme : memes) {
+                Template template = new Template();
+                template.setTemplateId(meme.path("id").asText());
+                template.setName(meme.path("name").asText());
+                template.setUrl(meme.path("url").asText());
+                template.setWidth(meme.path("width").asInt());
+                template.setHeight(meme.path("height").asInt());
+                template.setBoxCount(meme.path("box_count").asInt());
+                templates.add(template);
+    
+                templateRepository.save(template);
+            }
+            return templates;
+        } catch (HttpClientErrorException | IOException e) {
+            //TODO handle exception
+            return null;
         }
+
     }
 
-    public ResponseEntity<String> createTemplate(String templateId, String textTop, String textBottom) {
-        String url = "https://api.imgflip.com/caption_image";
-        String requestBody = "template_id=" + templateId +
-                "&username=" + "MemeBattle2024" +
-                "&password=" + "MemeBattle" +
-                "&text0=" + textTop +
-                "&text1=" + textBottom;
-        try {
-            String result = restTemplate.postForObject(url, requestBody, String.class);
-
-            // Create a new Template object and populate it with the meme data
-            Template template = new Template();
-            template.setTemplateId(templateId);
-            template.setTextTop(textTop);
-            template.setTextBottom(textBottom);
-
-            // Save the Template object to the database
-            templateRepository.save(template);
-
-            return ResponseEntity.ok(result);
-        } catch (HttpClientErrorException e) {
-            //TODO return message
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    //return template for user
+    // I think we have a list of templates in the database and we want to fix on template for each round (chrigi)
+    public Template getTemplateForUser() {
+        //TODO implement
+        return null;
     }
 }
