@@ -1,8 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
+
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -17,18 +20,43 @@ import org.mapstruct.factory.Mappers;
  * Always created one mapper for getting information (GET) and one mapper for
  * creating information (POST).
  */
+
+//TODO change post and get for lobby to match entity and needs
 @Mapper
 public interface DTOMapper {
 
   DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  @Mapping(source = "name", target = "name")
   @Mapping(source = "username", target = "username")
+  @Mapping(source = "lobbyOwner", target = "lobbyOwner")
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
   @Mapping(source = "username", target = "username")
-  @Mapping(source = "status", target = "status")
+  @Mapping(source = "lobbyOwner", target = "lobbyOwner")
+  @Mapping(source = "userId", target = "userId")
   UserGetDTO convertEntityToUserGetDTO(User user);
+
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "players", target = "players")
+  Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
+
+  //TODO: only quickfix, need to check Mapping again
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "players", target = "players")
+  //@Mapping(source = "lobbyJoinCode", target = "lobbyJoinCode")
+  //@Mapping(source = "lobbyOwner", target = "lobbyOwner")
+  //@Mapping(source = "gameActive", target = "gameActive")
+  LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+ 
+  @Mapping(source = "gameId", target = "gameId")
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  Game convertGamePutDTOtoEntity(GamePutDTO gamePutDTO);
+
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "gameId", target = "gameId")
+  GamePutDTO convertEntityToGamePutDTO(Game game);
+
+  //@Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "roundId", target = "roundId")
+  RoundGetDTO convertEntityToRoundGetDTO(Round round);
 }

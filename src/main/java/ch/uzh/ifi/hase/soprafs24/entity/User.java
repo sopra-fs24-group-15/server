@@ -1,79 +1,101 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * Internal User Representation
  * This class composes the internal representation of the user and defines how
  * the user is stored in the database.
- * Every variable will be mapped into a database field with the @Column
+ * Every variable will  be mapped into a database field with the @Column
  * annotation
  * - nullable = false -> this cannot be left empty
  * - unique = true -> this value must be unqiue across the database -> composes
  * the primary key
  */
+
+//TODO change according to class diagram
 @Entity
 @Table(name = "USER")
 public class User implements Serializable {
+
 
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue
-  private Long id;
-
-  @Column(nullable = false)
-  private String name;
+  private Long userId;
 
   @Column(nullable = false, unique = true)
   private String username;
 
-  @Column(nullable = false, unique = true)
-  private String token;
+  //TODO define how and from where to get the profile picture. (chrigi)
+  @Column(unique = true)
+  private String profilePicture;
+
+  @Column()
+  private Long lobbyId;
+
+  //TODO can this be null?
+  @Column(nullable = false)
+  private Boolean lobbyOwner;
 
   @Column(nullable = false)
-  private UserStatus status;
+  private Boolean userReady;
 
-  public Long getId() {
-    return id;
+
+  //getter, setter and update functions
+  public Long getUserId() {
+      return userId;
   }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+  public void setUserId(Long userId) {
+      this.userId = userId;
   }
 
   public String getUsername() {
-    return username;
+      return username;
   }
 
   public void setUsername(String username) {
-    this.username = username;
+      this.username = username;
   }
 
-  public String getToken() {
-    return token;
+  //TODO How to get this and display it? (chrigi)
+  public String getProfilePicture() {
+      return profilePicture;
   }
 
-  public void setToken(String token) {
-    this.token = token;
+  public void setProfilePicture(String profilePicture) {
+      this.profilePicture = profilePicture;
   }
 
-  public UserStatus getStatus() {
-    return status;
+  public Long getLobbyId() {
+      return lobbyId;
   }
 
-  public void setStatus(UserStatus status) {
-    this.status = status;
+  public void setLobbyId(Long lobbyId) {
+      this.lobbyId = lobbyId;
   }
+
+  public Boolean getLobbyOwner() {
+      return lobbyOwner;
+  }
+
+  public void setLobbyOwner(Boolean lobbyOwner) {
+      this.lobbyOwner = lobbyOwner;
+  }
+
+  public Boolean isUserReady() {return userReady;  }
+
+    public void setUserReady(Boolean userReady) {this.userReady = userReady;}
+
+  //TODO how to handle stuff that isnt possible, is this the way to do it? (chrigi)
+  public User orElse(Object object) {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'orElse'");
+  }
+
 }
