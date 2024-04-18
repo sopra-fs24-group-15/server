@@ -19,72 +19,83 @@ public class Template implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long templateId;
+    private Long id;
 
-    @Column(nullable = false)
-    private Long apiId;
+    @Column(unique = true)
+    private String templateId;
 
-    @Column(nullable = false, length = 2048)
-    private String templateUrl;
+    @Column()
+    private String name;
 
-    @Column(nullable = false)
+    @Column()
+    private String url;
+
+    @Column()
     private int width;
 
-    @Column(nullable = false)
+    @Column()
     private int height;
 
-    @Column(nullable = false)
+    @Column()
     private int boxCount;
 
-    @Column(nullable = false)
+    @Column()
     private String topic;
 
+    // getters and setters
 
+    public Long getId() {
+        return id;
+    }
 
-    public Long getTemplateId() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTemplateId() {
         return templateId;
     }
 
-    public void setTemplateId(Long templateId) {
+    public void setTemplateId(String templateId) {
         this.templateId = templateId;
     }
 
-    public Long getApiId() {
-        return apiId;
+    public String getName() {
+        return name;
     }
 
-    public void setApiId(Long apiId) {
-        this.apiId = apiId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTemplateUrl() {
-        return templateUrl;
+    public String getUrl() {
+        return url;
     }
-
-    public void setTemplateUrl(String templateUrl) {
-        this.templateUrl = templateUrl;
+    
+    public void setUrl(String url) {
+        this.url = url;
     }
-
+    
     public int getWidth() {
         return width;
     }
-
+    
     public void setWidth(int width) {
         this.width = width;
     }
-
+    
     public int getHeight() {
         return height;
     }
-
+    
     public void setHeight(int height) {
         this.height = height;
     }
-
+    
     public int getBoxCount() {
         return boxCount;
     }
-
+    
     public void setBoxCount(int boxCount) {
         this.boxCount = boxCount;
     }
@@ -95,19 +106,5 @@ public class Template implements Serializable {
 
     public void setTopic(String topic) {
         this.topic = topic;
-    }
-
-    // Methods as per class diagram
-
-    public String fetchTopic() {
-        //TODO Implementation for fetching the topic (chrigi)
-        return this.topic;
-    }
-
-    public long fetchImage(Long apiId, String templateUrl, int width, int height, int boxCount) {
-        //TODO Implementation for fetching an image (chrigi)
-        //TODO This method would involve the service that communicates with an image API =MemeService(chrigi)
-        long fetchedImageId = 0L;
-        return fetchedImageId;
     }
 }
