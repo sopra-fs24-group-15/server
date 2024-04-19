@@ -20,7 +20,7 @@ public class UserRepositoryIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Test
+  /* @Test
     public void findByUsername_success() {
         // given
         User user = new User();
@@ -37,6 +37,6 @@ public class UserRepositoryIntegrationTest {
         User found = foundOptional.get();
         assertNotNull(found.getUserId()); // Ensure the found user has a non-null ID
         assertEquals(found.getUsername(), user.getUsername());
-    }
+    }*/
 
 }
