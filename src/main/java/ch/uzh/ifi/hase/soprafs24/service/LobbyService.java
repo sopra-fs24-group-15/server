@@ -64,16 +64,16 @@ public class LobbyService {
             uniqueCodeGenerated = true;
         }
     }
-}
+  }
 
 // Helper method to check if the join code already exists in the database
-private boolean checkIfJoinCodeExists(String code) {
+  private boolean checkIfJoinCodeExists(String code) {
     Lobby foundLobby = this.lobbyRepository.findByLobbyJoinCode(code).orElse(null);
     if(foundLobby==null){
       return false;
     }
     return true;
-}
+  }
 
   public List<Lobby> getLobbys() {
     return this.lobbyRepository.findAll();
@@ -103,12 +103,12 @@ private boolean checkIfJoinCodeExists(String code) {
   public Lobby createLobby(Long userId) {
     Lobby newLobby = new Lobby();
     generateUniqueJoinCode(newLobby);
+    newLobby.addPlayer(userId);
     newLobby.setLobbyOwner(userId);
-
+    newLobby.setGameActive(false);
     //Saves the lobby in the repository(needs flushing)
     newLobby = lobbyRepository.save(newLobby);
     userRepository.flush();
-
     return newLobby;
   }
 
