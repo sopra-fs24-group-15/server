@@ -87,9 +87,13 @@ public class User implements Serializable {
       this.lobbyOwner = lobbyOwner;
   }
 
-  public Boolean isUserReady() {return userReady;  }
+  public Boolean getUserReady() {
+        return userReady;
+  }
 
-    public void setUserReady(Boolean userReady) {this.userReady = userReady;}
+  public void setUserReady(Boolean userReady) {
+        this.userReady = userReady;
+  }
 
   //TODO how to handle stuff that isnt possible, is this the way to do it? (chrigi)
   public User orElse(Object object) {

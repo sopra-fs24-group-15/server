@@ -41,6 +41,11 @@ public class UserService {
     return this.userRepository.findAll();
   }
 
+  public User getUser(Long userId) {
+    return userRepository.findById(userId).orElseThrow(() ->
+            new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+  }
+
 
   public User createUser(String username, boolean lobbyOwner) {
         // Check if username is already taken
@@ -74,6 +79,12 @@ public class UserService {
       User user = userRepository.findById(userId).orElseThrow(() ->
               new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
       userRepository.delete(user);
+  }
+
+  public void setUserReady(Long userId){
+      User user = userRepository.findById(userId).orElseThrow(() ->
+              new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+      user.setUserReady(true);
   }
 
 }

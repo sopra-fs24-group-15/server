@@ -96,7 +96,6 @@ public class GameService {
     if(!Objects.equals(lobby.getLobbyOwner(), user.getUserId())){
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the lobby owner can start the game");
     }
-
     if(lobby.getPlayers().size() < 3){
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "At least 3 players are required to start the game");
     }
@@ -122,6 +121,9 @@ public class GameService {
     }
     Game game = getGame(lobbyId);
     if (game.getCurrentRound() < game.getTotalRounds()){
+      if(lobby.getPlayers().size() < 3){
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "At least 3 players are required to play");
+      }
       game.setCurrentRound(game.getCurrentRound() + 1);
       Round round = new Round();
       round.setCurrentRound(game.getCurrentRound());
@@ -146,12 +148,12 @@ public class GameService {
     HashMap<Long, Integer> votes = voting.getUserVotes();
     //get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
-    Collections.sort(list, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+    Collections.sort(list, (e1, e2) -> e1.getValue().compareTo(e2.getValue()));
     //counter to check for the best 3
     int counter = 0;
     for (Map.Entry<Long, Integer> entry : list){
       //if the player has 3 votes he gets no points
-      if (entry.getValue() == null){
+      if (entry.getValue() == 0){
         round.addScore(entry.getKey(), 0);
       }
       //the first 3 get points

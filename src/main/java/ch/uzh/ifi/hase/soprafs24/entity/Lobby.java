@@ -47,6 +47,10 @@ public class Lobby implements Serializable {
         return players;
     }
 
+    public void setPlayers(List<Long> players) {
+        this.players = players;
+    }
+
     public void addPlayer(Long userId) {
         this.players.add(userId);
     }

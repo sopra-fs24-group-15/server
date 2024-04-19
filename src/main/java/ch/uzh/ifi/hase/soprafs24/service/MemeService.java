@@ -1,4 +1,12 @@
+
 package ch.uzh.ifi.hase.soprafs24.service;
+
+
+import ch.uzh.ifi.hase.soprafs24.entity.Meme;
+import ch.uzh.ifi.hase.soprafs24.repository.MemeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,11 +35,28 @@ import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 
 @Service
 @Transactional
-public class MemeService {
-    //TODO how to handle api calls to memeflip (chrigi)
-    //TODO how to send the information to the client
-    public long fetchImage(String apiId, String templateURL, int width, int height, int boxCount) {
 
-        return 3L;
+public class MemeService {
+
+    private final RestTemplate restTemplate;
+    private final MemeRepository memeRepository;
+
+    @Autowired
+    public MemeService(RestTemplate restTemplate, MemeRepository memeRepository) {
+        this.restTemplate = restTemplate;
+        this.memeRepository = memeRepository;
     }
+
+    public Meme saveMeme(Meme meme) {
+        return memeRepository.save(meme);
+    }
+
+    public boolean handleSuccessResponse(Meme meme) {
+        return true;
+    }
+
+    public boolean handleErrorResponse(Meme meme) {
+        return false;
+    }
+
 }

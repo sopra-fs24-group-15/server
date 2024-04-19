@@ -13,10 +13,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -102,11 +102,7 @@ private boolean checkIfJoinCodeExists(String code) {
   
   public Lobby createLobby(Long userId) {
     Lobby newLobby = new Lobby();
-
-
     generateUniqueJoinCode(newLobby);
-
-    
     newLobby.setLobbyOwner(userId);
 
     //Saves the lobby in the repository(needs flushing)
@@ -125,24 +121,62 @@ private boolean checkIfJoinCodeExists(String code) {
     lobbyToChange.setLobbyOwner(userId);
   }
   
+  public void deleteLobby(Long lobbyId, Long userId) {
+    //finding the lobby by the id 
+    Lobby lobbyToDelete = getLobby(lobbyId);
+    //checking if the user even exists
+    User user = userRepository.findById(userId).orElse(null);
+    if(user == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
+    //check if user is the owner of the lobby
+    if (lobbyToDelete.getLobbyOwner() != userId) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the owner of the lobby");
+    }
+    //deleting the lobby
+    lobbyRepository.delete(lobbyToDelete);
+
+  }
+
   //TODO check if every List was updated to use long and not User (GS)
   //TODO use this in controller with findbyjoincode to let users join via join code (GS)
   public void joinLobby(Long userId, Lobby lobbyToJoin) {
     //checking if the user even exists
-    this.userRepository.findById(userId);
+    User user = userRepository.findById(userId).orElse(null);
+    if(user == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
     //check that user is not lobbyowner and Lobby is not full yet (Jana)
       if (lobbyToJoin.getPlayers().size() > 8) {
         //adding the user to the lobby
-          lobbyToJoin.addPlayer(userId);}
+          lobbyToJoin.addPlayer(userId);
+        }
       else {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby is full");
       }
+  }
+
+  public boolean checkIfPlayersAreReady(Lobby lobby) {
+    //check if all players are ready
+    for (Long player : lobby.getPlayers()) {
+      User user = userRepository.findById(player).orElse(null);
+      if(user == null){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+      }
+      if (user.getUserReady() == false){
+        return false;
+      }
+    }
+    return true;
   }
 
   public void leaveLobby(Long userId, Long lobbyId) {
     //finding the lobby by the id 
     Lobby lobbyToLeave = getLobby(lobbyId);
     //checking if the user even exists
-    this.userRepository.findById(userId);
+    User user = userRepository.findById(userId).orElse(null);
+      if(user == null){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+      }
     //removing the user from the lobby
     lobbyToLeave.removePlayer(userId);
   }
