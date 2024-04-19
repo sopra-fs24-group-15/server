@@ -218,8 +218,9 @@ public class GameServiceTest {
 
     @Test
     public void testGetRanking_regularCase_success() {
-        //Lobby mockLobby = new Lobby();
+        Lobby mockLobby = new Lobby();
         Game mockGame = new Game();
+        mockLobby.setGame(mockGame);
         HashMap<Long, Integer> scores = new HashMap<>();
         scores.put(1L, 10);
         scores.put(2L, 30);
@@ -227,7 +228,7 @@ public class GameServiceTest {
         scores.put(4L, 40);
         mockGame.setScores(scores);
 
-        when(gameService.getGame(anyLong())).thenReturn(mockGame);
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
 
         List<Long> ranking = gameService.getRanking(1L);
         assertEquals(Arrays.asList(4L, 2L, 3L, 1L), ranking);
@@ -235,14 +236,16 @@ public class GameServiceTest {
 
     @Test
     public void testGetRanking_allZeroScores_success() {
+        Lobby mockLobby = new Lobby();
         Game mockGame = new Game();
+        mockLobby.setGame(mockGame);
         HashMap<Long, Integer> scores = new HashMap<>();
         scores.put(1L, 0);
         scores.put(2L, 0);
         scores.put(3L, 0);
         mockGame.setScores(scores);
 
-        when(gameService.getGame(anyLong())).thenReturn(mockGame);
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
 
         List<Long> ranking = gameService.getRanking(1L);
         // The exact order doesn't matter here since all scores are the same
@@ -273,7 +276,7 @@ public class GameServiceTest {
         Game mockGame = new Game();
 
         when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
-        doNothing().when(lobbyRepository).save(any(Lobby.class));
+        
 
         gameService.endGame(1L, mockGame);
         assertFalse(mockLobby.getGameActive());

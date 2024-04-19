@@ -144,11 +144,15 @@ private boolean checkIfJoinCodeExists(String code) {
   //TODO use this in controller with findbyjoincode to let users join via join code (GS)
   public void joinLobby(Long userId, Lobby lobbyToJoin) {
     //checking if the user even exists
-    this.userRepository.findById(userId);
+    User user = userRepository.findById(userId).orElse(null);
+    if(user == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
     //check that user is not lobbyowner and Lobby is not full yet (Jana)
       if (lobbyToJoin.getPlayers().size() > 8) {
         //adding the user to the lobby
-          lobbyToJoin.addPlayer(userId);}
+          lobbyToJoin.addPlayer(userId);
+        }
       else {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby is full");
       }
   }
