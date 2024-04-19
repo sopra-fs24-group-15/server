@@ -7,7 +7,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 public class LobbyPostDTO {
 
   private long lobbyId;
-  private List<User> players;
+  private List<Long> players;
   private String lobbyJoinCode;
   private long lobbyOwner;
   private boolean gameActive;
@@ -20,11 +20,11 @@ public class LobbyPostDTO {
     this.lobbyId = lobbyId;
   }
 
-  public List<User> getPlayers() {
+  public List<Long> getPlayers() {
     return players;
   }
 
-  public void setPlayers(List<User> players) {
+  public void setPlayers(List<Long> players) {
     this.players = players;
   }
 

@@ -1,10 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,15 +57,23 @@ public class GameService {
   }
 
   
-  public Game createGame(long lobbyId, int totalRounds, GameMode gameMode, int timer){
+  public Game createGame(long lobbyId, long userId, int totalRounds, GameMode gameMode, int timer){
     Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
     if(lobby == null){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
     }
+    User user = userRepository.findById(userId).orElse(null);
+    if(user == null){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
+    if(!Objects.equals(lobby.getLobbyOwner(), user.getUserId())){
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the lobby owner can start the game");
+    }
+
     Game game = new Game();
-    Hashtable<Long, Integer> tempScores = new Hashtable<Long, Integer>();
-    for (long userId : lobby.getPlayers()){
-      tempScores.put(userId, 0);
+    HashMap<Long, Integer> tempScores = new HashMap<Long, Integer>();
+    for (Long id : lobby.getPlayers()){
+      tempScores.put(id, 0);
     }
     game.setScores(tempScores);
     game.setTotalRounds(totalRounds);
@@ -89,8 +93,11 @@ public class GameService {
     if(user == null){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
-    if(lobby.getLobbyOwner() != userId){
+    if(!Objects.equals(lobby.getLobbyOwner(), user.getUserId())){
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the lobby owner can start the game");
+    }
+    if(lobby.getPlayers().size() < 3){
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "At least 3 players are required to start the game");
     }
     lobby.setGameActive(true);
     game.setCurrentRound(0);
@@ -105,6 +112,9 @@ public class GameService {
     }
     Game game = getGame(lobbyId);
     if (game.getCurrentRound() < game.getTotalRounds()){
+      if(lobby.getPlayers().size() < 3){
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "At least 3 players are required to play");
+      }
       game.setCurrentRound(game.getCurrentRound() + 1);
       Round round = new Round();
       round.setCurrentRound(game.getCurrentRound());
@@ -126,7 +136,7 @@ public class GameService {
   public void setRoundScore(Round round){
     Voting voting = round.getVoting();
     //get the votes in a hashtable
-    Hashtable<Long, Integer> votes = voting.getUserVotes();
+    HashMap<Long, Integer> votes = voting.getUserVotes();
     //get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
     Collections.sort(list, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
@@ -150,7 +160,7 @@ public class GameService {
   }
 
 
-  //could also be iplemented directly in entity
+  //could also be implemented directly in entity
   public void updateScore(Game game, long userId, int score){
     int tempscore = game.getScore(userId);
     game.setScore(userId, tempscore + score);

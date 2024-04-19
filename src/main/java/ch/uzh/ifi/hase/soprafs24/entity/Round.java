@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.persistence.Column;
@@ -27,8 +28,8 @@ public class Round implements Serializable {
     @Column()
     private Voting voting;
 
-    @ElementCollection
-    private Hashtable<Long, Integer> roundScore = new Hashtable<>();
+    @Column
+    private HashMap<Long, Integer> roundScore = new HashMap<>();
 
     @Column()
     private int currentRound;
@@ -66,11 +67,11 @@ public class Round implements Serializable {
         this.voting = voting;
     }
 
-    public Hashtable<Long, Integer> getRoundScore() {
+    public HashMap<Long, Integer> getRoundScore() {
         return roundScore;
     }
 
-    public void setRoundScore(Hashtable<Long, Integer> roundScore) {
+    public void setRoundScore(HashMap<Long, Integer> roundScore) {
         this.roundScore = roundScore;
     }
 
