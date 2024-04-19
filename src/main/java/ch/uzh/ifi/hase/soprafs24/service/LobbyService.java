@@ -180,16 +180,4 @@ private boolean checkIfJoinCodeExists(String code) {
     //removing the user from the lobby
     lobbyToLeave.removePlayer(userId);
   }
-
-  //TODO implement check if user is the owner of the lobby(MA) todo for GS, hans selber gmacht vlt mal schnell drüber luege
-  public void deleteLobby(Long lobbyId, Long userId) {
-    //finding the lobby by the id 
-    Lobby lobbyToDelete = getLobby(lobbyId);
-    //deleting the lobby
-    if (lobbyToDelete.getLobbyOwner() != userId) {
-      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the lobby owner can delete the lobby");
-    }
-    lobbyRepository.delete(lobbyToDelete);
-
-  }
 }
