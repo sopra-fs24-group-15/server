@@ -31,32 +31,47 @@ public class LobbyController {
     this.lobbyService = lobbyService;
   }
 
-  @PostMapping("/lobby")
+  @PostMapping("/lobbys")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
   public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO LobbyPostDTO) {
     //create a lobby object from the input
     Lobby LobbyInput = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(LobbyPostDTO);
     //create a lobby by calling user service
-    Lobby createdLobby = lobbyService.createLobby(LobbyInput.getLobbyId());
+    Lobby createdLobby = lobbyService.createLobby(LobbyInput.getLobbyOwner());
     //convert internal representation of lobby back to API
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
   }
 
-  @GetMapping("/lobby/{lobbyId}")
+  @GetMapping("/lobbys")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public LobbyGetDTO retrieveLobbyToJoin(@RequestBody String lobbyId, Long UserId) {
+  public List<LobbyGetDTO> getAllLobbys() {
+    //fetch all lobbys in the internal representation
+    List<Lobby> lobbys = lobbyService.getLobbys();
+    List<LobbyGetDTO> lobbyGetDTOs = new ArrayList<>();
+
+    //convert each lobby to the API representation
+    for (Lobby lobby : lobbys) {
+      lobbyGetDTOs.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby));
+    }
+    return lobbyGetDTOs;
+  }
+
+  @GetMapping("/lobbys/{lobbyId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public LobbyGetDTO retrieveLobbyToJoin(@RequestBody String lobbyJoinCode, Long userId) {
     //retrieves a lobby to join
-    Lobby foundLobby = lobbyService.findLobbyByJoinCode(lobbyId);
+    Lobby foundLobby = lobbyService.findLobbyByJoinCode(lobbyJoinCode);
     //join the lobby
-    lobbyService.joinLobby(UserId, foundLobby);
+    lobbyService.joinLobby(userId, foundLobby);
     // convert internal representation of lobby back to API
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
   }
 
   
-  @DeleteMapping("/lobby/{lobbyId}")
+  @DeleteMapping("/lobbys/{lobbyId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
   public void deleteLobby(@RequestBody Long lobbyId, Long userId) {

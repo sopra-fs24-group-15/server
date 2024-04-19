@@ -36,16 +36,14 @@ public interface DTOMapper {
   @Mapping(source = "userId", target = "userId")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
-  @Mapping(source = "lobbyId", target = "lobbyId")
-  @Mapping(source = "players", target = "players")
+  @Mapping(source = "lobbyOwner", target = "lobbyOwner")
   Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
 
-  //TODO: only quickfix, need to check Mapping again
   @Mapping(source = "lobbyId", target = "lobbyId")
   @Mapping(source = "players", target = "players")
-  //@Mapping(source = "lobbyJoinCode", target = "lobbyJoinCode")
-  //@Mapping(source = "lobbyOwner", target = "lobbyOwner")
-  //@Mapping(source = "gameActive", target = "gameActive")
+  @Mapping(source = "lobbyJoinCode", target = "lobbyJoinCode")
+  @Mapping(source = "lobbyOwner", target = "lobbyOwner")
+  @Mapping(source = "gameActive", target = "gameActive")
   LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
  
   @Mapping(source = "gameId", target = "gameId")
