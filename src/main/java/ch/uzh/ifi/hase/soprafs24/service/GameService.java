@@ -104,6 +104,15 @@ public class GameService {
     nextRound(lobbyId);
   }
 
+  //TODO implement a function to get the current round, han etz mal so gmacht aber kp ob da funktioniert (GS)
+  public Round getCurrentRound(Game game){
+    return game.getRound();
+  }
+
+  //TODO implement a function to get the number of users still editing, same wie dobe (GS)
+  public Long getUsersStillEditing(Round round){
+    return (long) round.getVoting().getUserVotes().size();
+  }
 
   public boolean nextRound(long lobbyId){
     Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);

@@ -79,7 +79,7 @@ public class User implements Serializable {
       this.lobbyId = lobbyId;
   }
 
-  public Boolean isLobbyOwner() {
+  public Boolean getLobbyOwner() {
       return lobbyOwner;
   }
 
