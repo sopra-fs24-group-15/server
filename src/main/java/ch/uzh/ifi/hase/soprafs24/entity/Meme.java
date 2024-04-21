@@ -28,6 +28,7 @@ public class Meme implements Serializable {
     private String pageUrl;
 
     private String creator; // username of the user who created the meme
+    
     private int votes; // the number of votes the meme received
 
     // getters and setters

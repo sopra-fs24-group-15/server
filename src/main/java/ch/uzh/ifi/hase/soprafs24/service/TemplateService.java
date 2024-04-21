@@ -61,9 +61,9 @@ public class TemplateService {
     }
 
     //return template for user
-    // I think we have a list of templates in the database and we want to fix on template for each round (chrigi)
+    // I think we have templates in the database and we want to fix one template for each round (chrigi)
     public Template getTemplateForUser() {
         //TODO implement
-        return null;
+        return templateRepository.getOne(3L);
     }
 }

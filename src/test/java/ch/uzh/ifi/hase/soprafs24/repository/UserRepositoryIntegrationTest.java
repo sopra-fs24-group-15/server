@@ -20,11 +20,14 @@ public class UserRepositoryIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+    
     @Test
     public void findByUsername_success() {
         // given
         User user = new User();
         user.setUsername("uniqueUsername"); // Use a unique username for testing
+        user.setLobbyOwner(false); // Set lobbyOwner to false
+        user.setUserReady(false); // Set userReady to false
 
         entityManager.persist(user);
         entityManager.flush();
