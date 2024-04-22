@@ -101,20 +101,26 @@ public class GameService {
     }
     lobby.setGameActive(true);
     game.setCurrentRound(0);
-    nextRound(lobbyId);
+    startNextRound(lobbyId);
   }
 
-  //TODO implement a function to get the current round, han etz mal so gmacht aber kp ob da funktioniert (GS)
-  public Round getCurrentRound(Game game){
-    return game.getRound();
+  //TODO implement a function to get the number of users still editing, same wie dobe Gian (MA)
+  public Boolean getUsersStillEditing(Long gameId){
+    Game game = getGame(gameId);
+    Round round = game.getRound();
+    Lobby lobby = lobbyRepository.findById(gameId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
+    if(round.getVoting().getUserVotes().size() != lobby.getPlayers().size()){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
-  //TODO implement a function to get the number of users still editing, same wie dobe (GS)
-  public Long getUsersStillEditing(Round round){
-    return (long) round.getVoting().getUserVotes().size();
-  }
-
-  public boolean nextRound(long lobbyId){
+  public boolean startNextRound(long lobbyId){
     Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
     if(lobby == null){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
@@ -129,6 +135,12 @@ public class GameService {
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
       //TODO implement game play with template and voting
+      /*
+       * 1. set the template in template service for the round
+       * 2. make all the calls for creating meme in meme service
+       * 3. return the meme to the users in the meme service
+       * 4. get the votes from the users and save them in voting in game service
+       */
       setRoundScore(round);
       for (long userId : lobby.getPlayers()){
         updateScore(game, userId, round.getScore(userId));
@@ -140,6 +152,16 @@ public class GameService {
       return false;
     }
   }
+
+  public void setVoting(long userId, long lobbyId){
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    Voting voting = round.getVoting();
+    Integer currentVote = voting.getUserVote(userId);
+    voting.setUserVote(userId, currentVote + 1);
+  }
+
+
 
   //TODO discuss how to handle when votes are the same(GS)
   public void setRoundScore(Round round){
