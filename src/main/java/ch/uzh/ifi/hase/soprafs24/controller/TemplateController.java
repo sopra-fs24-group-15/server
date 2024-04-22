@@ -31,6 +31,8 @@ public class TemplateController {
     @Autowired
     private UserService userService;
 
+
+    //TODO save template first in game service to round and then return it from round
     @GetMapping("/template/{userId}")
     public ResponseEntity<Template> fetchTemplate(@PathVariable Long lobbyId, @PathVariable Long userId) {
         Lobby lobby = lobbyService.getLobby(lobbyId);
