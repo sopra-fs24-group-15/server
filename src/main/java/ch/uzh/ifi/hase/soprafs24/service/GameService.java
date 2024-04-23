@@ -1,5 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.entity.Template;
+
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -35,6 +40,9 @@ public class GameService {
   private final LobbyRepository lobbyRepository;
 
   private final UserRepository userRepository;
+
+  @Autowired
+  private TemplateService templateService;
 
   @Autowired
   public GameService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository, @Qualifier("userRepository") UserRepository userRepository) {
@@ -136,7 +144,11 @@ public class GameService {
       game.setRound(round);
       //TODO call template service to get the template for the round chrigi (GS)
       //where the null value is call the template service to get the template chrigi (GS)
-      round.setTemplate(null);;
+
+      //TODO Which Id do the saved Template get? here just 1L as a placeholder (chrigi)
+      Template template = templateService.getTemplateForUser(1L);
+      round.setTemplate(template);
+
       return true;
     }
     else{
