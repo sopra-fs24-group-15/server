@@ -95,5 +95,5 @@ public class Round implements Serializable {
 
     public Boolean getRoundInEdit() {return roundInEdit; }
 
-    public void setRoundInEdit(Boolean gameInEdit) {this.roundInEdit = gameInEdit;}
+    public void setRoundInEdit(Boolean roundInEdit) {this.roundInEdit = roundInEdit;}
 }
