@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyDeleteDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
@@ -75,12 +76,14 @@ public class LobbyController {
   }
 
   
-  @DeleteMapping("/lobbys/{lobbyId}")
+  @DeleteMapping("/lobbys/{userId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public void deleteLobby(@RequestBody Long lobbyId, Long userId) {
+  public void deleteLobby(@RequestBody LobbyDeleteDTO lobbyDeleteDTO, @PathVariable Long userId) {
+    //get the lobby id from the input
+    Lobby lobbyToDelete = DTOMapper.INSTANCE.convertLobbyDeleteDTOtoEntity(lobbyDeleteDTO);
     //deletes the lobby
-    lobbyService.deleteLobby(lobbyId, userId);
+    lobbyService.deleteLobby(lobbyToDelete.getLobbyId(), userId);
   }
 
 }
