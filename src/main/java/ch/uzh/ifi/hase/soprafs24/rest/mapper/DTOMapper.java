@@ -56,11 +56,11 @@ public interface DTOMapper {
 
   //@Mapping(source = "lobbyId", target = "lobbyId")
   @Mapping(source = "roundId", target = "roundId")
-  @Mapping(source= "gameInEdit", target = "gameInEdit")
+  //@Mapping(source= "gameInEdit", target = "gameInEdit")
   RoundGetDTO convertEntityToRoundGetDTO(Round round);
 
   @Mapping(source = "roundId", target = "roundId")
-  @Mapping(source= "gameInEdit", target = "gameInEdit")
+  //@Mapping(source= "gameInEdit", target = "gameInEdit")
   Round convertRoundGetDTOtoEntity(RoundGetDTO roundGetDTO);
 
   @Mapping(source = "roundId", target = "roundId")
