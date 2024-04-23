@@ -44,6 +44,3 @@ public class UserRepositoryIntegrationTest {
         assertEquals(found.get().getUsername(), user.getUsername());
     }
     */
-        
-      
-    }

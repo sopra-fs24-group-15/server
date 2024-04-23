@@ -134,7 +134,9 @@ public class GameService {
       Round round = new Round();
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
-      //TODO call template service to get the template for the round(GS)
+      //TODO call template service to get the template for the round chrigi (GS)
+      //where the null value is call the template service to get the template chrigi (GS)
+      round.setTemplate(null);;
       return true;
     }
     else{

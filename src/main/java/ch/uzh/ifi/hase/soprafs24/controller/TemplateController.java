@@ -7,6 +7,9 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ch.uzh.ifi.hase.soprafs24.service.GameService;
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
+import ch.uzh.ifi.hase.soprafs24.entity.Round;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,25 +32,15 @@ public class TemplateController {
     private LobbyService lobbyService;
 
     @Autowired
-    private UserService userService;
+    private GameService gameService;
 
 
-    //TODO save template first in game service to round and then return it from round
-    @GetMapping("/template/{userId}")
-    public ResponseEntity<Template> fetchTemplate(@PathVariable Long lobbyId, @PathVariable Long userId) {
-        Lobby lobby = lobbyService.getLobby(lobbyId);
-        User user = userService.getUser(userId);
-
-        if (lobby == null || user == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-
-        Template template = templateService.getTemplateForUser();
-        if (template != null) {
-            return ResponseEntity.ok(template);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+    //TODO save template first in game service to round and then return it from round (GS)
+    @GetMapping("/template")
+    public ResponseEntity<Template> fetchTemplate(@PathVariable Long lobbyId) {
+        Game game = gameService.getGame(lobbyId);
+        Round round = game.getRound();
+        Template template = round.getTemplate();
+        return ResponseEntity.status(HttpStatus.OK).body(template);
     }
-
     }
