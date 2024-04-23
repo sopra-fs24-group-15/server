@@ -125,7 +125,7 @@ public class GameServiceTest {
         mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
 
         when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
-        assertTrue(gameService.nextRound(1L));
+        assertTrue(gameService.startNextRound(1L));
         assertEquals(2, mockGame.getCurrentRound());
     }
     */
@@ -140,7 +140,7 @@ public class GameServiceTest {
         mockLobby.setPlayers(Arrays.asList(1L, 2L));
 
         when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
-        assertThrows(ResponseStatusException.class, () -> gameService.nextRound(1L));
+        assertThrows(ResponseStatusException.class, () -> gameService.startNextRound(1L));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class GameServiceTest {
         mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
 
         when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
-        assertFalse(gameService.nextRound(1L));
+        assertFalse(gameService.startNextRound(1L));
     }
 
     @Test

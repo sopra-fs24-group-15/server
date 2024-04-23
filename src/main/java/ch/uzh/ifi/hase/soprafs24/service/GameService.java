@@ -101,20 +101,26 @@ public class GameService {
     }
     lobby.setGameActive(true);
     game.setCurrentRound(0);
-    nextRound(lobbyId);
+    startNextRound(lobbyId);
   }
 
-  //TODO implement a function to get the current round, han etz mal so gmacht aber kp ob da funktioniert (GS)
-  public Round getCurrentRound(Game game){
-    return game.getRound();
+
+  public Boolean getUsersStillEditing(Long gameId){
+    Game game = getGame(gameId);
+    Round round = game.getRound();
+    Lobby lobby = lobbyRepository.findById(gameId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
+    if(round.getVoting().getUserVotes().size() != lobby.getPlayers().size()){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
-  //TODO implement a function to get the number of users still editing, same wie dobe (GS)
-  public Long getUsersStillEditing(Round round){
-    return (long) round.getVoting().getUserVotes().size();
-  }
-
-  public boolean nextRound(long lobbyId){
+  public boolean startNextRound(long lobbyId){
     Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
     if(lobby == null){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
@@ -128,11 +134,7 @@ public class GameService {
       Round round = new Round();
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
-      //TODO implement game play with template and voting
-      setRoundScore(round);
-      for (long userId : lobby.getPlayers()){
-        updateScore(game, userId, round.getScore(userId));
-      }
+      //TODO call template service to get the template for the round(GS)
       return true;
     }
     else{
@@ -140,6 +142,31 @@ public class GameService {
       return false;
     }
   }
+
+  public void endRound(long lobbyId){
+    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    setRoundScore(round);
+    for (long userId : lobby.getPlayers()){
+      updateScore(game, userId, round.getScore(userId));
+    
+    }
+  }
+
+
+  public void setVote(long userId, long lobbyId){
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    Voting voting = round.getVoting();
+    Integer currentVote = voting.getUserVote(userId);
+    voting.setUserVote(userId, currentVote + 1);
+  }
+
+
 
   //TODO discuss how to handle when votes are the same(GS)
   public void setRoundScore(Round round){

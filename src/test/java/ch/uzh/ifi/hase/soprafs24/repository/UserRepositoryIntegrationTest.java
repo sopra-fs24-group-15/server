@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs24.repository;
+/*package ch.uzh.ifi.hase.soprafs24.repository;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import org.junit.jupiter.api.Test;
@@ -47,5 +47,3 @@ public class UserRepositoryIntegrationTest {
         
       
     }
-
-

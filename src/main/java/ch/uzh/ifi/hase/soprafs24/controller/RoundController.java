@@ -29,18 +29,10 @@ public class RoundController {
   @GetMapping
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public RoundGetDTO getUsersStillEditing(@RequestBody Long gameId) {
-    //find the game
-    Game foundGame = GameService.getGame(gameId);
-    //get the round
-    Round foundRound = GameService.getCurrentRound(foundGame);
+  public Boolean getUsersStillEditing(@RequestBody Long gameId) {
     //get the number of users still editing
-    Long UsersStillEditing = GameService.getUsersStillEditing(foundRound);
+    Boolean UsersStillEditing = GameService.getUsersStillEditing(gameId);
     //convert internal representation of round back to API
-    return DTOMapper.INSTANCE.convertEntityToRoundGetDTO(foundRound);
+    return UsersStillEditing;
   }
-
-
-
-  
 }

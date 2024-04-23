@@ -43,6 +43,14 @@ public class Voting implements Serializable {
         this.userVotes = userVotes;
     }
 
+    public Integer getUserVote(long userId) {
+        return userVotes.get(userId);
+    }
+
+    public void setUserVote(long userId, Integer vote){
+        this.userVotes.put(userId, vote);
+    }
+
     public HashMap<Long, Long> getMemesDict() {
         return memesDict;
     }

@@ -88,9 +88,6 @@ public class LobbyService {
     return foundLobby;
   }
 
-  //TODO check after implemtning joincode in lobby entity and findbyjoincode in lobby repository(GS)
-  //TODO change output from long to lobby in class diagram(GS)
-  //TODO change type of lobbyJoinCode to long(MA) no needs to be string (GS)
   public Lobby findLobbyByJoinCode(String lobbyJoinCode) {
     Lobby foundLobby = this.lobbyRepository.findByLobbyJoinCode(lobbyJoinCode).orElse(null);
     if(foundLobby==null){
@@ -108,7 +105,7 @@ public class LobbyService {
     newLobby.setGameActive(false);
     //Saves the lobby in the repository(needs flushing)
     newLobby = lobbyRepository.save(newLobby);
-    userRepository.flush();
+    lobbyRepository.flush();
     return newLobby;
   }
 
@@ -147,7 +144,7 @@ public class LobbyService {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
     //check that user is not lobbyowner and Lobby is not full yet (Jana)
-      if (lobbyToJoin.getPlayers().size() > 8) {
+      if (lobbyToJoin.getPlayers().size() < 8) {
         //adding the user to the lobby
           lobbyToJoin.addPlayer(userId);
         }
