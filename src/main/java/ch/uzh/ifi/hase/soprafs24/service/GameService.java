@@ -105,7 +105,7 @@ public class GameService {
   }
 
 
-  public Boolean getUsersStillEditing(Long gameId){
+  public Round getUsersStillEditing(Long gameId){
     Game game = getGame(gameId);
     Round round = game.getRound();
     Lobby lobby = lobbyRepository.findById(gameId).orElse(null);
@@ -113,11 +113,12 @@ public class GameService {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
     }
     if(round.getVoting().getUserVotes().size() != lobby.getPlayers().size()){
-      return true;
+      round.setRoundInEdit(true);
     }
     else{
-      return false;
+      round.setRoundInEdit(false);
     }
+    return round;
   }
 
   public boolean startNextRound(long lobbyId){

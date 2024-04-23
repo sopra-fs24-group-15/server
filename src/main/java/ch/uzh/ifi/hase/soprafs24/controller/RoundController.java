@@ -26,13 +26,16 @@ public class RoundController {
     this.GameService = gameService;
   }
 
-  @GetMapping
-  @ResponseStatus(HttpStatus.OK)
-  @ResponseBody
-  public Boolean getUsersStillEditing(@RequestBody Long gameId) {
-    //get the number of users still editing
-    Boolean UsersStillEditing = GameService.getUsersStillEditing(gameId);
-    //convert internal representation of round back to API
-    return UsersStillEditing;
-  }
+    @GetMapping("/lobby/{lobbyId}/round")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public RoundGetDTO getUsersStillEditing(@RequestBody RoundGetDTO roundGetDTO, @PathVariable("lobbyId") Long lobbyId) {
+        // convert API user to internal representation
+        Round gameInput = DTOMapper.INSTANCE.convertRoundGetDTOtoEntity(roundGetDTO);
+        Long gameId = gameInput.getGameId();
+        // see set roundInEdit Boolean in round &return round (jana)
+        // see set roundInEdit Boolean in round &return round (jana)
+        Round roundInEdit = GameService.getUsersStillEditing(gameId);
+        return DTOMapper.INSTANCE.convertEntityToRoundGetDTO(roundInEdit);
+    }
 }

@@ -34,6 +34,12 @@ public class Round implements Serializable {
     @Column()
     private int currentRound;
 
+    @Column()
+    private Long gameId;
+
+    @Column()
+    private Boolean roundInEdit;
+
 
     public Long getRoundId() {
         return roundId;
@@ -82,4 +88,12 @@ public class Round implements Serializable {
     public Integer getScore(Long userId) {
         return this.roundScore.get(userId);
     }
+
+    public Long getGameId() {return gameId;}
+
+    public void setGameId(Long gameId) {this.gameId = gameId;}
+
+    public Boolean getRoundInEdit() {return roundInEdit; }
+
+    public void setRoundInEdit(Boolean gameInEdit) {this.roundInEdit = gameInEdit;}
 }
