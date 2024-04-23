@@ -108,7 +108,7 @@ public class LobbyService {
     newLobby.setGameActive(false);
     //Saves the lobby in the repository(needs flushing)
     newLobby = lobbyRepository.save(newLobby);
-    userRepository.flush();
+    lobbyRepository.flush();
     return newLobby;
   }
 
@@ -147,7 +147,7 @@ public class LobbyService {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
     //check that user is not lobbyowner and Lobby is not full yet (Jana)
-      if (lobbyToJoin.getPlayers().size() > 8) {
+      if (lobbyToJoin.getPlayers().size() < 8) {
         //adding the user to the lobby
           lobbyToJoin.addPlayer(userId);
         }
