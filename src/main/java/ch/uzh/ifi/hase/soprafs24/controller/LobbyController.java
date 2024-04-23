@@ -46,6 +46,16 @@ public class LobbyController {
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
   }
 
+  @GetMapping("/lobbys/{lobbyId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public LobbyGetDTO getLobby(@PathVariable Long lobbyId) {
+    //fetch lobby in the internal representation
+    Lobby lobby = lobbyService.getLobby(lobbyId);
+    //convert internal representation of lobby back to API
+    return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+  }
+
   @GetMapping("/lobbys")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
