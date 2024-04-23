@@ -1,6 +1,5 @@
 /*package ch.uzh.ifi.hase.soprafs24.repository;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +19,31 @@ public class UserRepositoryIntegrationTest {
     @Autowired
     private UserRepository userRepository;
 
+
+    /*  //TODO dont work like this (chrigi)
     @Test
     public void findByUsername_success() {
         // given
         User user = new User();
-        user.setUsername("uniqueUsername"); // Use a unique username for testing
-
-        entityManager.persist(user);
+        user.setUsername("testUsername");
+    
+        // Check if there are other properties that need to be set
+        // For example, if your User entity has a non-nullable 'email' field
+        // user.setEmail("testEmail@example.com");
+    
+        // Save the user to the database
+        userRepository.save(user);
+    
         entityManager.flush();
-
+    
         // when
-        Optional<User> foundOptional = userRepository.findByUsername(user.getUsername());
-
+        Optional<User> found = userRepository.findByUsername(user.getUsername());
+    
         // then
-        assertTrue(foundOptional.isPresent(), "User should be found");
-        User found = foundOptional.get();
-        assertNotNull(found.getUserId()); // Ensure the found user has a non-null ID
-        assertEquals(found.getUsername(), user.getUsername());
+        assertTrue(found.isPresent()); 
+        assertEquals(found.get().getUsername(), user.getUsername());
     }
-
-}
-*/
+    */
+        
+      
+    }
