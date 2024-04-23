@@ -104,7 +104,7 @@ public class GameService {
     startNextRound(lobbyId);
   }
 
-  //TODO implement a function to get the number of users still editing, same wie dobe Gian (MA)
+
   public Boolean getUsersStillEditing(Long gameId){
     Game game = getGame(gameId);
     Round round = game.getRound();
@@ -134,17 +134,7 @@ public class GameService {
       Round round = new Round();
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
-      //TODO implement game play with template and voting
-      /*
-       * 1. set the template in template service for the round
-       * 2. make all the calls for creating meme in meme service
-       * 3. return the meme to the users in the meme service
-       * 4. get the votes from the users and save them in voting in game service
-       */
-      setRoundScore(round);
-      for (long userId : lobby.getPlayers()){
-        updateScore(game, userId, round.getScore(userId));
-      }
+      //TODO call template service to get the template for the round(GS)
       return true;
     }
     else{
@@ -153,7 +143,22 @@ public class GameService {
     }
   }
 
-  public void setVoting(long userId, long lobbyId){
+  public void endRound(long lobbyId){
+    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    setRoundScore(round);
+    for (long userId : lobby.getPlayers()){
+      updateScore(game, userId, round.getScore(userId));
+    
+    }
+  }
+
+
+  public void setVote(long userId, long lobbyId){
     Game game = getGame(lobbyId);
     Round round = game.getRound();
     Voting voting = round.getVoting();
