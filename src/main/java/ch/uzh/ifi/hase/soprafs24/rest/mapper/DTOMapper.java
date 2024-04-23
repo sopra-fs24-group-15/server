@@ -42,6 +42,9 @@ public interface DTOMapper {
   Lobby convertLobbyPutDTOtoEntity(LobbyPutDTO lobbyPutDTO);
 
   @Mapping(source = "lobbyId", target = "lobbyId")
+  Lobby convertLobbyDeleteDTOtoEntity(LobbyDeleteDTO lobbyDeleteDTO);
+
+  @Mapping(source = "lobbyId", target = "lobbyId")
   @Mapping(source = "players", target = "players")
   @Mapping(source = "lobbyJoinCode", target = "lobbyJoinCode")
   @Mapping(source = "lobbyOwner", target = "lobbyOwner")
