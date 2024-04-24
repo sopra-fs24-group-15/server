@@ -30,4 +30,4 @@ Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/2, https://gith
 
 Marc Amsler: https://github.com/sopra-fs24-group-15/server/issues/189, https://github.com/sopra-fs24-group-15/client/issues/47
 
-Gian Seifert: 
+Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/79, https://github.com/sopra-fs24-group-15/server/issues/179
