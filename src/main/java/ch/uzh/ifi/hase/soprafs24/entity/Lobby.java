@@ -22,7 +22,9 @@ public class Lobby implements Serializable {
     @Column(nullable = false, unique = true)
     private String lobbyJoinCode;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "lobby_players", joinColumns = @JoinColumn(name = "lobby_id"))
+    @Column(name = "player_id")
     private List<Long> players = new ArrayList<>();
 
     @Column()
@@ -32,7 +34,8 @@ public class Lobby implements Serializable {
     private Boolean gameActive;
 
 
-    @Column()
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "game_id", referencedColumnName = "gameId")
     private Game game;
 
     public Long getLobbyId() {

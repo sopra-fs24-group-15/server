@@ -48,12 +48,14 @@ public interface DTOMapper {
   @Mapping(source = "gameActive", target = "gameActive")
   LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
  
-  @Mapping(source = "gameId", target = "gameId")
-  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "totalRounds", target = "totalRounds")
+  //@Mapping(source = "gameMode", target = "gameMode")
+  @Mapping(source = "timer", target = "timer")
   Game convertGamePutDTOtoEntity(GamePutDTO gamePutDTO);
 
-  @Mapping(source = "lobbyId", target = "lobbyId")
-  @Mapping(source = "gameId", target = "gameId")
+  @Mapping(source = "totalRounds", target = "totalRounds")
+  //@Mapping(source = "gameMode", target = "gameMode")
+  @Mapping(source = "timer", target = "timer")
   GamePutDTO convertEntityToGamePutDTO(Game game);
 
   //@Mapping(source = "lobbyId", target = "lobbyId")

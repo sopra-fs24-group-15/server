@@ -5,16 +5,23 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "GAME")
@@ -32,8 +39,11 @@ public class Game implements Serializable {
     @Column()
     private int currentRound;
 
-    @Column()
-    private HashMap<Long, Integer> scores = new HashMap<>();
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "game_scores", joinColumns = @JoinColumn(name = "game_id"))
+    @MapKeyColumn(name = "player_id")
+    @Column(name = "score")
+    private Map<Long, Integer> scores = new HashMap<>();
 
     @Column()
     private GameMode gameMode;
@@ -41,14 +51,16 @@ public class Game implements Serializable {
     @Column()
     private int timer;
 
-    @Column()
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id", referencedColumnName = "roundId")
     private Round round;
+    
+    //TODO why is here the lobbyid and roundid? (GS)
+    //@Column(nullable = false, unique = true)
+    //private Long lobbyId;
 
-    @Column(nullable = false, unique = true)
-    private Long lobbyId;
-
-    @Column()
-    private Long roundId;
+    //@Column()
+    //private Long roundId;
 
     public Long getGameId() {
         return gameId;
@@ -74,11 +86,11 @@ public class Game implements Serializable {
         this.currentRound = currentRound;
     }
 
-    public HashMap<Long, Integer> getScores() {
+    public Map<Long, Integer> getScores() {
         return scores;
     }
 
-    public void setScores(HashMap<Long, Integer> scores) {
+    public void setScores(Map<Long, Integer> scores) {
         this.scores = scores;
     }
 
@@ -114,11 +126,11 @@ public class Game implements Serializable {
         this.round = round;
     }
 
-    public Long getLobbyId() {return lobbyId;}
+    //public Long getLobbyId() {return lobbyId;}
 
-    public void setLobbyId(Long lobbyId) {this.lobbyId = lobbyId;}
+    //public void setLobbyId(Long lobbyId) {this.lobbyId = lobbyId;}
 
-    public Long getRoundId() {return roundId;}
+    //public Long getRoundId() {return roundId;}
 
-    public void setRoundId(Long roundId) {this.roundId = roundId;}
+    //public void setRoundId(Long roundId) {this.roundId = roundId;}
 }

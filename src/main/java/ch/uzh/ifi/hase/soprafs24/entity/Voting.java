@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import javax.persistence.*;
 
@@ -16,15 +17,18 @@ public class Voting implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
 
-    //@ElementCollection
-    //@CollectionTable(name = "user_votes", joinColumns = {@JoinColumn(name = "vote_id")})
+    
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "user_votes", joinColumns = @JoinColumn(name = "round_id"))
+    @MapKeyColumn(name = "user_id")
     @Column(name = "votes")
-    private HashMap<Long, Integer> userVotes = new HashMap<>();
+    private Map<Long, Integer> userVotes = new HashMap<>();
 
-    //@ElementCollection
-    //@CollectionTable(name = "memes_votes", joinColumns = {@JoinColumn(name = "vote_id")})
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "meme_dict", joinColumns = @JoinColumn(name = "round_id"))
+    @MapKeyColumn(name = "user_id")
     @Column(name = "meme_id")
-    private HashMap<Long, Long> memesDict = new HashMap<>();
+    private Map<Long, Long> memesDict = new HashMap<>();
 
 
     public Long getVoteId() {
@@ -35,11 +39,11 @@ public class Voting implements Serializable {
         this.voteId = voteId;
     }
 
-    public HashMap<Long, Integer> getUserVotes() {
+    public Map<Long, Integer> getUserVotes() {
         return userVotes;
     }
 
-    public void setUserVotes(HashMap<Long, Integer> userVotes) {
+    public void setUserVotes(Map<Long, Integer> userVotes) {
         this.userVotes = userVotes;
     }
 
@@ -51,11 +55,11 @@ public class Voting implements Serializable {
         this.userVotes.put(userId, vote);
     }
 
-    public HashMap<Long, Long> getMemesDict() {
+    public Map<Long, Long> getMemesDict() {
         return memesDict;
     }
 
-    public void setMemesDict(HashMap<Long, Long> memesDict) {
+    public void setMemesDict(Map<Long, Long> memesDict) {
         this.memesDict = memesDict;
     }
 

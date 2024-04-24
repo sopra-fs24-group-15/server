@@ -1,22 +1,37 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
+import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
+
 public class GamePutDTO {
 
-    private Long lobbyId;
+    private Integer totalRounds;
 
-    private Long userId;
+    //private GameMode gameMode;
 
-    private Long gameId;
+    private Integer timer;
 
-    public Long getLobbyId() {return lobbyId;}
+    public Integer getTotalRounds() {
+        return totalRounds;
+    }
 
-    public void setLobbyId(Long lobbyId) {this.lobbyId = lobbyId;}
+    public void setTotalRounds(Integer totalRounds) {
+        this.totalRounds = totalRounds;
+    }
 
-    public Long getUserId() {return userId;}
+    /* 
+    public GameMode getGameMode() {
+        return gameMode;
+    }
 
-    public void setUserId(Long userId) {this.userId = userId;}
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }*/
 
-    public Long getGameId() {return gameId;}
+    public Integer getTimer() {
+        return timer;
+    }
 
-    public void setGameId(Long gameId) {this.gameId = gameId;}
+    public void setTimer(Integer timer) {
+        this.timer = timer;
+    }
 }
