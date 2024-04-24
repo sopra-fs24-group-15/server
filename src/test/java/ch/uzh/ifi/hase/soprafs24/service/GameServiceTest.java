@@ -113,9 +113,8 @@ public class GameServiceTest {
         assertThrows(ResponseStatusException.class, () -> gameService.startGame(1L, 1L));
     }
 
-    //TODO first finish implementing nextRound
-    /* 
-    @Test
+    //TODO chrigi throws error because of template service(GS)
+    /*@Test
     public void testNextRound_success() {
         Lobby mockLobby = new Lobby();
         Game mockGame = new Game();
@@ -127,8 +126,8 @@ public class GameServiceTest {
         when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
         assertTrue(gameService.startNextRound(1L));
         assertEquals(2, mockGame.getCurrentRound());
-    }
-    */
+    }*/
+    
 
     @Test
     public void testNextRound_notEnoughPlayers_throwsException() {
@@ -197,7 +196,7 @@ public class GameServiceTest {
     }
 
     //TODO implement tie logic first
-    /*@Test
+    @Test
     public void testSetRoundScore_tieVotes_success() {
         Voting voting = new Voting();
         HashMap<Long, Integer> votes = new HashMap<>();
@@ -211,10 +210,10 @@ public class GameServiceTest {
 
         gameService.setRoundScore(round);
 
-        assertEquals(2, round.getScore(1L));
-        assertEquals(1, round.getScore(2L));
-        assertEquals(0, round.getScore(3L)); // Assumes specific tie-breaking logic
-    } */
+        assertEquals(3, round.getScore(1L));
+        assertEquals(2, round.getScore(2L));
+        assertEquals(1, round.getScore(3L)); 
+    } 
 
     @Test
     public void testGetRanking_regularCase_success() {
