@@ -43,4 +43,7 @@ public class UserRepositoryIntegrationTest {
         assertTrue(found.isPresent()); 
         assertEquals(found.get().getUsername(), user.getUsername());
     }
-    */
+        
+      
+    }
+*/

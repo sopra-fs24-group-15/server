@@ -47,6 +47,9 @@ public class Game implements Serializable {
     @Column(nullable = false, unique = true)
     private Long lobbyId;
 
+    @Column()
+    private Long roundId;
+
     public Long getGameId() {
         return gameId;
     }
@@ -114,4 +117,8 @@ public class Game implements Serializable {
     public Long getLobbyId() {return lobbyId;}
 
     public void setLobbyId(Long lobbyId) {this.lobbyId = lobbyId;}
+
+    public Long getRoundId() {return roundId;}
+
+    public void setRoundId(Long roundId) {this.roundId = roundId;}
 }

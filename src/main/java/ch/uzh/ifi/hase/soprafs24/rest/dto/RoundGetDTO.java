@@ -7,6 +7,7 @@ public class RoundGetDTO {
     
     private Long LobbyId;
     private Long RoundId;
+    private Boolean gameInEdit;
 
     public Long getLobbyId() { 
         return LobbyId; 
@@ -23,4 +24,8 @@ public class RoundGetDTO {
     public void setRoundId(Long RoundId) { 
         this.RoundId = RoundId; 
     }
+
+    public Boolean getGameInEdit() {return gameInEdit;}
+
+    public void setGameInEdit(Boolean gameInEdit) {this.gameInEdit = gameInEdit;}
 }

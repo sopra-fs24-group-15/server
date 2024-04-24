@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 import java.util.List;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
 
 
 //TODO change to match Lobby entity

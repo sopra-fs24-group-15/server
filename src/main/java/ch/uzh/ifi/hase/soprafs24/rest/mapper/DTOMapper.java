@@ -32,12 +32,17 @@ public interface DTOMapper {
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
   @Mapping(source = "username", target = "username")
-  @Mapping(source = "lobbyOwner", target = "lobbyOwner")
   @Mapping(source = "userId", target = "userId")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
   @Mapping(source = "lobbyOwner", target = "lobbyOwner")
   Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
+
+  @Mapping(source = "lobbyJoinCode", target = "lobbyJoinCode")
+  Lobby convertLobbyPutDTOtoEntity(LobbyPutDTO lobbyPutDTO);
+
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  Lobby convertLobbyDeleteDTOtoEntity(LobbyDeleteDTO lobbyDeleteDTO);
 
   @Mapping(source = "lobbyId", target = "lobbyId")
   @Mapping(source = "players", target = "players")
@@ -56,5 +61,18 @@ public interface DTOMapper {
 
   //@Mapping(source = "lobbyId", target = "lobbyId")
   @Mapping(source = "roundId", target = "roundId")
+  //@Mapping(source= "gameInEdit", target = "gameInEdit")
   RoundGetDTO convertEntityToRoundGetDTO(Round round);
+
+  @Mapping(source = "roundId", target = "roundId")
+  //@Mapping(source= "gameInEdit", target = "gameInEdit")
+  Round convertRoundGetDTOtoEntity(RoundGetDTO roundGetDTO);
+
+  @Mapping(source = "roundId", target = "roundId")
+  @Mapping(source = "gameId", target = "gameId")
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  Game convertGamePostDTOtoEntity(GamePostDTO gamePostDTO);
+
+  @Mapping(source = "roundId", target = "roundId")
+  GamePostDTO convertEntitytoGamePostDTO(Game game);
 }
