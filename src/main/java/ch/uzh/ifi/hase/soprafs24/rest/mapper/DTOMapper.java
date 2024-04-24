@@ -1,9 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs24.entity.Game;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 
 import org.mapstruct.*;
@@ -75,4 +72,16 @@ public interface DTOMapper {
 
   @Mapping(source = "roundId", target = "roundId")
   GamePostDTO convertEntitytoGamePostDTO(Game game);
+
+  @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "textTop", target = "textTop")
+  @Mapping(source = "textBottom", target = "textBottom")
+  Meme convertMemePutDTOtoEntity(MemePutDTO memePutDTO);
+
+  @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "textTop", target = "textTop")
+  @Mapping(source = "textBottom", target = "textBottom")
+  MemePutDTO convertEntityToMemePutDTO(Meme meme);
 }
