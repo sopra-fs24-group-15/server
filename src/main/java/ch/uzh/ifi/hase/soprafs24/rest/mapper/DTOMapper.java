@@ -67,13 +67,13 @@ public interface DTOMapper {
   //@Mapping(source= "gameInEdit", target = "gameInEdit")
   Round convertRoundGetDTOtoEntity(RoundGetDTO roundGetDTO);
 
-  @Mapping(source = "roundId", target = "roundId")
-  @Mapping(source = "gameId", target = "gameId")
-  @Mapping(source = "lobbyId", target = "lobbyId")
-  Game convertGamePostDTOtoEntity(GamePostDTO gamePostDTO);
+  //@Mapping(source = "roundId", target = "roundId")
+  //@Mapping(source = "gameId", target = "gameId")
+  //@Mapping(source = "lobbyId", target = "lobbyId")
+  //Game convertGamePostDTOtoEntity(GamePostDTO gamePostDTO);
 
-  @Mapping(source = "roundId", target = "roundId")
-  GamePostDTO convertEntitytoGamePostDTO(Game game);
+  //@Mapping(source = "roundId", target = "roundId")
+  //GamePostDTO convertEntitytoGamePostDTO(Game game);
 
   @Mapping(source = "userId", target = "userId")
   @Mapping(source = "lobbyId", target = "lobbyId")
