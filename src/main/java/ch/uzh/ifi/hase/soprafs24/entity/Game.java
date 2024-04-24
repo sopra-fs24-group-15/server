@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -16,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
@@ -49,7 +51,8 @@ public class Game implements Serializable {
     @Column()
     private int timer;
 
-    @Column()
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "round_id", referencedColumnName = "roundId")
     private Round round;
     
     //TODO why is here the lobbyid and roundid? (GS)

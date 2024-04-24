@@ -109,7 +109,6 @@ public class GameService {
     }
     lobby.setGameActive(true);
     game.setCurrentRound(0);
-    startNextRound(lobbyId);
   }
 
 
@@ -140,12 +139,18 @@ public class GameService {
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "At least 3 players are required to play");
       }
       game.setCurrentRound(game.getCurrentRound() + 1);
+      System.out.println("Break1");
       Round round = new Round();
+      System.out.println("Break2");
       round.setCurrentRound(game.getCurrentRound());
+      System.out.println("Break3");
       game.setRound(round);
+      System.out.println("Break4");
       //TODO Which Id do the saved Template get? here just 1L as a placeholder (chrigi)
       Template template = templateService.getTemplateForUser(1L);
+      System.out.println("Break5");
       round.setTemplate(template);
+      System.out.println("Break6");
 
       return true;
     }
@@ -184,7 +189,7 @@ public class GameService {
   public void setRoundScore(Round round){
     Voting voting = round.getVoting();
     //get the votes in a hashtable
-    HashMap<Long, Integer> votes = voting.getUserVotes();
+    Map<Long, Integer> votes = voting.getUserVotes();
     //get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
     Collections.sort(list, (e1, e2) -> e1.getValue().compareTo(e2.getValue()));

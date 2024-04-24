@@ -40,4 +40,22 @@ public class LobbyRepositoryIntegrationTest {
         assertEquals(found.get().getLobbyJoinCode(), lobby.getLobbyJoinCode());
         assertEquals(found.get().getLobbyOwner(), lobby.getLobbyOwner());
     }
+
+    @Test
+    public void findByJoinCode_failure() {
+        // given
+        Lobby lobby = new Lobby();
+        lobby.setLobbyJoinCode("123456");
+        lobby.setLobbyOwner(1L);
+
+        // Persisting lobby to the in-memory database
+        entityManager.persist(lobby);
+        entityManager.flush();
+
+        // when
+        Optional<Lobby> found = lobbyRepository.findByLobbyJoinCode("654321"); // Use a different join code
+        
+        // then
+        assertTrue(found.isEmpty()); // Ensure the found lobby is not present
+    }
 }

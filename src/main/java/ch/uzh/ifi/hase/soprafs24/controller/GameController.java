@@ -16,8 +16,15 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 @RestController
+@RequestMapping("/lobbys/{lobbyId}")
 public class GameController {
     private final GameService gameService;
     private final LobbyRepository lobbyRepository;
@@ -28,8 +35,8 @@ public class GameController {
     }
 
     //working postman tested(GS)
-    //return a bit more useful infoprmation
-    @PutMapping("/lobbys/{lobbyId}/settings/{userId}")
+    //return a bit more useful information
+    @PutMapping("/settings/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public GamePutDTO createGame(@RequestBody GamePutDTO gamePutDTO,@PathVariable("lobbyId") Long lobbyId, @PathVariable("userId") Long userId) {
@@ -43,23 +50,48 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGamePutDTO(startGame);
     }
   
-  
-    @PostMapping("/lobbys/{lobbyId}/start/{userId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    //working postman tested(GS)
+    //works without nextroundstart in startgame
+    @PostMapping("/start/{userId}")
+    @ResponseStatus(HttpStatus.OK)
     public void startGame(@PathVariable("lobbyId") Long lobbyId, @PathVariable("userId") Long userId) {
         // start Game
         gameService.startGame(lobbyId, userId);
     }
 
-    /*
-    @PostMapping("/round")
+
+    //working postman tested(GS)
+    @PostMapping("/rounds/start")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void startNextRound(@RequestBody GamePostDTO gamePostDTO, @PathVariable("lobbyId") Long lobbyId) {
-        // convert API user to internal representation
-        Game gameInput = DTOMapper.INSTANCE.convertGamePostDTOtoEntity(gamePostDTO);
-        Long gameId = gameInput.getGameId();
+    public boolean startNextRound(@PathVariable("lobbyId") Long lobbyId) {
         // start Next Round
-        gameService.startNextRound(gameId);
-    }*/
+        return gameService.startNextRound(lobbyId);
+    }
+
+    //working postman tested(GS)
+    @PostMapping("/rounds/end")
+    @ResponseStatus(HttpStatus.OK)
+    public void endRound(@PathVariable("lobbyId") Long lobbyId) {
+        // end Round
+        gameService.endRound(lobbyId);
+    }
+
+    //working postman tested(GS)
+    //here userid ios the id of the user who gets the vote not the user who votes therfore in the request body(GS)
+    @PostMapping("/votes")
+    @ResponseStatus(HttpStatus.OK)
+    public void vote(@PathVariable("lobbyId") Long lobbyId, @RequestBody Long userId) {
+        // vote
+        gameService.setVote(lobbyId, userId);
+    }
+    
+    //working postman tested(GS)
+    @GetMapping("/ranks")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<Long> getRanking(@PathVariable("lobbyId") Long lobbyId) {
+        //returns a sorted list with ranks at position 0 is the first place
+        return gameService.getRanking(lobbyId);
+    }
 }

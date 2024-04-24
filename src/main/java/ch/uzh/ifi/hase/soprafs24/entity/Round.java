@@ -3,14 +3,22 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+
 
 @Entity
 @Table(name = "Round")
@@ -22,20 +30,25 @@ public class Round implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
 
-    @Column()
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "template_id", referencedColumnName = "id")
     private Template template;
 
-    @Column()
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "voting_id", referencedColumnName = "voteId")
     private Voting voting;
 
-    @Column
-    private HashMap<Long, Integer> roundScore = new HashMap<>();
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "round_scores", joinColumns = @JoinColumn(name = "round_id"))
+    @MapKeyColumn(name = "user_id")
+    @Column(name = "score")
+    private Map<Long, Integer> roundScore = new HashMap<>();
 
     @Column()
     private int currentRound;
 
-    @Column()
-    private Long gameId;
+    //@Column()
+    //private Long gameId;
 
     @Column()
     private Boolean roundInEdit;
@@ -73,11 +86,11 @@ public class Round implements Serializable {
         this.voting = voting;
     }
 
-    public HashMap<Long, Integer> getRoundScore() {
+    public Map<Long, Integer> getRoundScore() {
         return roundScore;
     }
 
-    public void setRoundScore(HashMap<Long, Integer> roundScore) {
+    public void setRoundScore(Map<Long, Integer> roundScore) {
         this.roundScore = roundScore;
     }
 
@@ -88,10 +101,10 @@ public class Round implements Serializable {
     public Integer getScore(Long userId) {
         return this.roundScore.get(userId);
     }
-
+    /*
     public Long getGameId() {return gameId;}
 
-    public void setGameId(Long gameId) {this.gameId = gameId;}
+    public void setGameId(Long gameId) {this.gameId = gameId;}*/
 
     public Boolean getRoundInEdit() {return roundInEdit; }
 
