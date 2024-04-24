@@ -33,7 +33,7 @@ public class MemeService {
         this.memeRepository = memeRepository;
     }
 
-    public Meme createMeme(Long lobbyId, Long userId, List<String> texts) {
+    public Meme saveMeme(Long lobbyId, Long userId, List<String> texts) {
         String templateId = "some-template-id";
         String username = "MemeBattle2024";
         String password = "MemeBattle";

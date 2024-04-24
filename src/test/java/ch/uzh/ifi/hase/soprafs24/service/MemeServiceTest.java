@@ -42,7 +42,7 @@ class MemeServiceTest {
     }
 
     @Test   
-    void createMeme_SuccessfulCreation_ReturnsMeme() {
+    void saveMeme_SuccessfulCreation_ReturnsMeme() {
         // Arrange
         String jsonResponse = "{\"data\":{\"url\":\"http://example.com/meme.jpg\", \"page_url\":\"http://example.com/page\"}}";
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResponse, HttpStatus.OK);
@@ -50,7 +50,7 @@ class MemeServiceTest {
         when(memeRepository.save(any(Meme.class))).thenAnswer(i -> i.getArguments()[0]);
     
         // Act
-        Meme result = memeService.createMeme(1L, 1L, List.of("Text1", "Text2"));
+        Meme result = memeService.saveMeme(1L, 1L, List.of("Text1", "Text2"));
     
         // Assert
         assertNotNull(result);
@@ -67,7 +67,7 @@ class MemeServiceTest {
         when(restTemplate.postForEntity(any(String.class), any(), eq(String.class))).thenReturn(responseEntity);
     
         // Act
-        Meme result = memeService.createMeme(1L, 1L, List.of("Text1", "Text2"));
+        Meme result = memeService.saveMeme(1L, 1L, List.of("Text1", "Text2"));
     
         // Assert
         assertNull(result);
@@ -80,7 +80,7 @@ class MemeServiceTest {
         when(restTemplate.postForEntity(any(String.class), any(), eq(String.class))).thenReturn(responseEntity);
     
         // Act
-        Meme result = memeService.createMeme(1L, 1L, List.of("Text1", "Text2"));
+        Meme result = memeService.saveMeme(1L, 1L, List.of("Text1", "Text2"));
     
         // Assert
         assertNull(result);

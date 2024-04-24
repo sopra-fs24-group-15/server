@@ -34,8 +34,8 @@ public class RoundController {
         Round gameInput = DTOMapper.INSTANCE.convertRoundGetDTOtoEntity(roundGetDTO);
         Long gameId = gameInput.getGameId();
         // see set roundInEdit Boolean in round &return round (jana)
-        // see set roundInEdit Boolean in round &return round (jana)
         Round roundInEdit = GameService.getUsersStillEditing(gameId);
         return DTOMapper.INSTANCE.convertEntityToRoundGetDTO(roundInEdit);
     }
+
 }
