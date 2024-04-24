@@ -30,6 +30,16 @@ public class Meme implements Serializable {
     private String creator; // username of the user who created the meme
     private int votes; // the number of votes the meme received
 
+    @Column()
+    private String textTop;
+
+    @Column()
+    private String textBottom;
+
+    private Long userId;
+
+    private Long lobbyId;
+
     // getters and setters
     public Long getMemeId() {
         return memeId;
@@ -78,5 +88,17 @@ public class Meme implements Serializable {
     public void setVotes(int votes) {
         this.votes = votes;
     }
+
+    public String getTextTop() {return textTop;}
+    public void setTextTop(String textTop) {this.textTop = textTop;}
+
+    public String getTextBottom() {return textBottom;}
+    public void setTextBottom(String textBottom) {this.textBottom = textBottom;}
+
+    public Long getUserId() {return userId;}
+    public void setUserId(Long userId) {this.userId = userId;}
+
+    public Long getLobbyId() {return lobbyId;}
+    public void setLobbyId(Long lobbyId) {this.lobbyId = lobbyId;}
 
 }

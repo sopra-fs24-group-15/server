@@ -2,13 +2,11 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import ch.uzh.ifi.hase.soprafs24.entity.Template;
 import ch.uzh.ifi.hase.soprafs24.repository.TemplateRepository;
 import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,8 +51,8 @@ public class TemplateService {
                 templateRepository.save(template);
             }
             return templates;
-        } catch (HttpClientErrorException | IOException e) {
-            //TODO handle exception
+        } catch (Exception e) {
+            // Log the exception and return null
             return null;
         }
 

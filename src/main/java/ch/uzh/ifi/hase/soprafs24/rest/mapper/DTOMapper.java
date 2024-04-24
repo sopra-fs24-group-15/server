@@ -1,9 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs24.entity.Game;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 
 import org.mapstruct.*;
@@ -60,4 +57,33 @@ public interface DTOMapper {
   //@Mapping(source = "gameMode", target = "gameMode")
   @Mapping(source = "timer", target = "timer")
   GamePutDTO convertEntityToGamePutDTO(Game game);
+
+  //@Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "roundId", target = "roundId")
+  //@Mapping(source= "gameInEdit", target = "gameInEdit")
+  RoundGetDTO convertEntityToRoundGetDTO(Round round);
+
+  @Mapping(source = "roundId", target = "roundId")
+  //@Mapping(source= "gameInEdit", target = "gameInEdit")
+  Round convertRoundGetDTOtoEntity(RoundGetDTO roundGetDTO);
+
+  @Mapping(source = "roundId", target = "roundId")
+  @Mapping(source = "gameId", target = "gameId")
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  Game convertGamePostDTOtoEntity(GamePostDTO gamePostDTO);
+
+  @Mapping(source = "roundId", target = "roundId")
+  GamePostDTO convertEntitytoGamePostDTO(Game game);
+
+  @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "textTop", target = "textTop")
+  @Mapping(source = "textBottom", target = "textBottom")
+  Meme convertMemePutDTOtoEntity(MemePutDTO memePutDTO);
+
+  @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "textTop", target = "textTop")
+  @Mapping(source = "textBottom", target = "textBottom")
+  MemePutDTO convertEntityToMemePutDTO(Meme meme);
 }
