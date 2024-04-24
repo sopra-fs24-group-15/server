@@ -62,8 +62,8 @@ public class TemplateService {
 
     //return template for user
     // I think we have a list of templates in the database and we want to fix on template for each round (chrigi)
-    public Template getTemplateForUser() {
+    public Template getTemplateForUser(Long id) {
         //TODO implement
-        return null;
+        return templateRepository.findById(id).orElse(null);
     }
 }
