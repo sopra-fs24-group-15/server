@@ -27,30 +27,32 @@ public class GameController {
         this.lobbyRepository = lobbyRepository;
     }
 
-
-    @PutMapping("/lobby/{lobbyId}/settings")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    //working postman tested(GS)
+    //return a bit more useful infoprmation
+    @PutMapping("/lobbys/{lobbyId}/settings/{userId}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GamePutDTO createGame(@RequestBody GamePutDTO gamePutDTO,@PathVariable("lobbyId") Long lobbyId, int totalRounds, GameMode gameMode, int timer) {
+    public GamePutDTO createGame(@RequestBody GamePutDTO gamePutDTO,@PathVariable("lobbyId") Long lobbyId, @PathVariable("userId") Long userId) {
         // convert API user to internal representation
         Game gameInput = DTOMapper.INSTANCE.convertGamePutDTOtoEntity(gamePutDTO);
+        System.out.println("GamePutDTO: " + gamePutDTO);
 
         // create game
-        Game startGame = gameService.createGame(lobbyId, lobbyId, totalRounds, gameMode, timer);
+        Game startGame = gameService.createGame(lobbyId, userId, gameInput.getTotalRounds(), GameMode.BASIC, gameInput.getTimer());
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToGamePutDTO(startGame);
     }
-    //TODO POST instead of PUT
-    @PutMapping("/lobby/{lobbyId}/start")
+  
+  
+    @PostMapping("/lobbys/{lobbyId}/start/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void startGame(@RequestBody GamePutDTO gamePutDTO,@PathVariable("lobbyId") Long lobbyId, Long userId) {
-        // convert API user to internal representation
-        Game gameInput = DTOMapper.INSTANCE.convertGamePutDTOtoEntity(gamePutDTO);
+    public void startGame(@PathVariable("lobbyId") Long lobbyId, @PathVariable("userId") Long userId) {
         // start Game
         gameService.startGame(lobbyId, userId);
     }
 
-    @PostMapping("/lobby/{lobbyId}/round")
+    /*
+    @PostMapping("/round")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void startNextRound(@RequestBody GamePostDTO gamePostDTO, @PathVariable("lobbyId") Long lobbyId) {
@@ -59,5 +61,5 @@ public class GameController {
         Long gameId = gameInput.getGameId();
         // start Next Round
         gameService.startNextRound(gameId);
-    }
+    }*/
 }

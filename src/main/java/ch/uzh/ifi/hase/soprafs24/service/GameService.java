@@ -143,9 +143,6 @@ public class GameService {
       Round round = new Round();
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
-      //TODO call template service to get the template for the round chrigi (GS)
-      //where the null value is call the template service to get the template chrigi (GS)
-
       //TODO Which Id do the saved Template get? here just 1L as a placeholder (chrigi)
       Template template = templateService.getTemplateForUser(1L);
       round.setTemplate(template);
