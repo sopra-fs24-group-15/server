@@ -85,6 +85,7 @@ public class UserService {
       User user = userRepository.findById(userId).orElseThrow(() ->
               new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
       user.setUserReady(true);
+      userRepository.saveAndFlush(user);
   }
 
 }
