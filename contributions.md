@@ -31,3 +31,14 @@ Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/2, https://gith
 Marc Amsler: https://github.com/sopra-fs24-group-15/server/issues/189, https://github.com/sopra-fs24-group-15/client/issues/47
 
 Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/79, https://github.com/sopra-fs24-group-15/server/issues/186
+
+## Week 4(24.04-01.05)
+Jana Muheim:
+
+Christoph Steiner:
+
+Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/48, https://github.com/sopra-fs24-group-15/client/issues/47, https://github.com/sopra-fs24-group-15/client/issues/16
+
+Marc Amsler:
+
+Gian Seifert:
