@@ -52,10 +52,7 @@ public class GameService {
 
  //helper function to get game from lobbyId
   public Game getGame(long lobbyId){
-    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
-    if(lobby == null){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
-    }
+    Lobby lobby = getLobby(lobbyId);
     Game game = new Game();
     game = lobby.getGame();
     if(game == null){
@@ -64,12 +61,17 @@ public class GameService {
     return game;
   }
 
-  
-  public Game createGame(long lobbyId, long userId, int totalRounds, GameMode gameMode, int timer){
+  public Lobby getLobby(long lobbyId){
     Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
     if(lobby == null){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
     }
+    return lobby;
+  }
+
+  
+  public Game createGame(long lobbyId, long userId, int totalRounds, GameMode gameMode, int timer){
+    Lobby lobby = getLobby(lobbyId);
     User user = userRepository.findById(userId).orElse(null);
     if(user == null){
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
@@ -93,10 +95,7 @@ public class GameService {
 
   public void startGame(long lobbyId, long userId){
     Game game = getGame(lobbyId);
-    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
-    if(lobby == null){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
-    }
+    Lobby lobby = getLobby(lobbyId);
     User user = userRepository.findById(userId).orElse(null);
     if(user == null){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
@@ -112,13 +111,10 @@ public class GameService {
   }
 
 
-  public Round getUsersStillEditing(Long gameId){
-    Game game = getGame(gameId);
+  public Round getUsersStillEditing(Long lobbyId){
+    Lobby lobby = getLobby(lobbyId);
+    Game game = getGame(lobbyId);
     Round round = game.getRound();
-    Lobby lobby = lobbyRepository.findById(gameId).orElse(null);
-    if(lobby == null){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
-    }
     if(round.getVoting().getUserVotes().size() != lobby.getPlayers().size()){
       round.setRoundInEdit(true);
     }
@@ -129,10 +125,7 @@ public class GameService {
   }
 
   public boolean startNextRound(long lobbyId){
-    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
-    if(lobby == null){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
-    }
+    Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
     if (game.getCurrentRound() < game.getTotalRounds()){
       if(lobby.getPlayers().size() < 3){
@@ -140,8 +133,18 @@ public class GameService {
       }
       game.setCurrentRound(game.getCurrentRound() + 1);
       Round round = new Round();
+      //initalize round scores so that every player has 0 points
+      for (long userId : lobby.getPlayers()){
+        round.addScore(userId, 0);
+      }
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
+      //initialize voting so that every player has 0 votes
+      Voting emptyvoting = new Voting();
+      for (long userId : lobby.getPlayers()){
+        emptyvoting.setUserVote(userId, 0);
+      }
+      game.getRound().setVoting(emptyvoting);
       //TODO Which Id do the saved Template get? here just 1L as a placeholder (chrigi)
       Template template = templateService.getTemplateForUser(1L);
       round.setTemplate(template);
@@ -154,10 +157,7 @@ public class GameService {
   }
 
   public void endRound(long lobbyId){
-    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
-    if(lobby == null){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
-    }
+    Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
     Round round = game.getRound();
     setRoundScore(round);
@@ -172,6 +172,11 @@ public class GameService {
     Game game = getGame(lobbyId);
     Round round = game.getRound();
     Voting voting = round.getVoting();
+    //check if the user exists
+    User user = userRepository.findById(userId).orElse(null);
+    if(user == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
     Integer currentVote = voting.getUserVote(userId);
     voting.setUserVote(userId, currentVote + 1);
   }
@@ -227,10 +232,7 @@ public class GameService {
 
 
   public void endGame(Long lobbyId, Game game){
-    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
-    if(lobby == null){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
-    }
+    Lobby lobby = getLobby(lobbyId);
     lobby.setGameActive(false);
     //TODO implement end game logic(GS)
   }

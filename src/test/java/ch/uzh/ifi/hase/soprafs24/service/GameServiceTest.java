@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,6 +69,34 @@ public class GameServiceTest {
     }
 
     @Test
+    public void testGetGame_gameNotFound_throwsException() {
+        Lobby mockLobby = new Lobby();
+        mockLobby.setGame(null);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        assertThrows(ResponseStatusException.class, () -> gameService.getGame(1L));
+    }
+
+    @Test
+    public void testGetLobby_lobbyFound_success() {
+        Lobby mockLobby = new Lobby();
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        Lobby lobby = gameService.getLobby(1L);
+        assertNotNull(lobby);
+        assertEquals(mockLobby, lobby);
+    }
+
+    @Test
+    public void testGetLobby_lobbyNotFound_throwsException() {
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> gameService.getLobby(1L));
+    }
+
+    @Test
     public void testCreateGame_success() {
         Lobby mockLobby = new Lobby();
         User mockUser = new User();
@@ -86,8 +115,67 @@ public class GameServiceTest {
     }
 
     @Test
+    public void testCreateGame_userNotFound_throwsException() {
+        Lobby mockLobby = new Lobby();
+        mockLobby.setLobbyOwner(1L);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> gameService.createGame(1L, 1L, 5, GameMode.BASIC, 60));
+    }
+
+    @Test
+    public void testCreateGame_notLobbyOwner_throwsException() {
+        Lobby mockLobby = new Lobby();
+        User mockUser = new User();
+        mockUser.setUserId(2L);
+        mockLobby.setLobbyOwner(1L);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
+
+        assertThrows(ResponseStatusException.class, () -> gameService.createGame(1L, 2L, 5, GameMode.BASIC, 60));
+    }
+
+    @Test
+    public void testStartGame_success() {
+        Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        mockGame.setTotalRounds(3);
+        mockGame.setCurrentRound(1);
+        mockLobby.setGame(mockGame);
+        User mockUser = new User();
+        mockUser.setUserId(1L);
+        mockLobby.setLobbyOwner(1L);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
+
+        gameService.startGame(1L, 1L);
+
+        assertTrue(mockLobby.getGameActive());
+    }
+
+    @Test
+    public void testStartGame_userNotFound_throwsException() {
+        Lobby mockLobby = new Lobby();
+        mockLobby.setLobbyOwner(1L);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> gameService.startGame(1L, 1L));
+    }
+
+    @Test
     public void testStartGame_notLobbyOwner_throwsException() {
         Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        mockGame.setTotalRounds(3);
+        mockGame.setCurrentRound(1);
+        mockLobby.setGame(mockGame);
         User mockUser = new User();
         mockUser.setUserId(2L);
         mockLobby.setLobbyOwner(1L);
@@ -102,6 +190,10 @@ public class GameServiceTest {
     @Test
     public void testStartGame_notEnoughPlayers_throwsException() {
         Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        mockGame.setTotalRounds(3);
+        mockGame.setCurrentRound(1);
+        mockLobby.setGame(mockGame);
         User mockUser = new User();
         mockUser.setUserId(1L);
         mockLobby.setLobbyOwner(1L);
@@ -112,6 +204,42 @@ public class GameServiceTest {
 
         assertThrows(ResponseStatusException.class, () -> gameService.startGame(1L, 1L));
     }
+
+    //TODO chrigi throws error because of template service(GS)
+    /*@Test
+    public void testStartNextRound_initalizeRoundScore_success() {
+        Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        mockGame.setTotalRounds(3);
+        mockGame.setCurrentRound(1);
+        mockLobby.setGame(mockGame);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        gameService.startNextRound(1L);
+
+        assertNotNull(mockGame.getRound().getRoundScore());
+    }*/
+
+    //TODO chrigi throws error because of template service(GS)
+    /*@Test
+    public void testStartNextRound_initalizeVotes_success() {
+        Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        mockGame.setTotalRounds(3);
+        mockGame.setCurrentRound(1);
+        mockLobby.setGame(mockGame);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        gameService.startNextRound(1L);
+
+        assertNotNull(mockGame.getRound().getVoting().getUserVotes());
+    }*/
 
     //TODO chrigi throws error because of template service(GS)
     /*@Test
@@ -153,6 +281,45 @@ public class GameServiceTest {
 
         when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
         assertFalse(gameService.startNextRound(1L));
+    }
+
+    @Test
+    public void testSetVote_success() {
+        Lobby mockLobby = new Lobby();
+        User mockUser = new User();
+        mockUser.setUserId(1L);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+        Game mockGame = new Game();
+        Round mockRound = new Round();
+        mockLobby.setGame(mockGame);
+        mockGame.setRound(mockRound);
+        Voting mockVoting = new Voting();
+        mockVoting.setUserVote(1L, 0);
+        mockGame.getRound().setVoting(mockVoting);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
+
+        gameService.setVote(1L, 1L);
+        assertEquals(1, mockVoting.getUserVotes().get(1L));
+    }
+
+    @Test
+    public void testSetVote_userNotFound_throwsException() {
+        Lobby mockLobby = new Lobby();
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+        Game mockGame = new Game();
+        Round mockRound = new Round();
+        mockLobby.setGame(mockGame);
+        mockGame.setRound(mockRound);
+        Voting mockVoting = new Voting();
+        mockVoting.setUserVote(1L, 0);
+        mockGame.getRound().setVoting(mockVoting);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> gameService.setVote(1L, 1L));
     }
 
     @Test

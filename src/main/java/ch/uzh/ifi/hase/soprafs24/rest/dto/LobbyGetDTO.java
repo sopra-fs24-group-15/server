@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 import java.util.List;
 
 
-//TODO change to match Lobby entity
 public class LobbyGetDTO {
 
   private Long lobbyId;
