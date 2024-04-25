@@ -1,9 +1,12 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "MEME")
 public class Meme implements Serializable {
@@ -14,22 +17,44 @@ public class Meme implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memeId;
 
+    @JsonProperty("success")
+    private boolean success;
+
+    @JsonProperty("data.url")
     @Column(nullable = false, length = 2048)
     private String memeURL;
 
-    @ElementCollection
-    private List<String> text;
+    @JsonProperty("data.page_url")
+    private String pageUrl;
 
-    @Column(nullable = false)
-    private int votes;
+    private String creator; // username of the user who created the meme
+    private int votes; // the number of votes the meme received
 
+    @Column()
+    private String textTop;
 
+    @Column()
+    private String textBottom;
+
+    private Long userId;
+
+    private Long lobbyId;
+
+    // getters and setters
     public Long getMemeId() {
         return memeId;
     }
 
     public void setMemeId(Long memeId) {
         this.memeId = memeId;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
     public String getMemeURL() {
@@ -40,12 +65,20 @@ public class Meme implements Serializable {
         this.memeURL = memeURL;
     }
 
-    public List<String> getText() {
-        return text;
+    public String getPageUrl() {
+        return pageUrl;
     }
 
-    public void setText(List<String> text) {
-        this.text = text;
+    public void setPageUrl(String pageUrl) {
+        this.pageUrl = pageUrl;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 
     public int getVotes() {
@@ -56,20 +89,16 @@ public class Meme implements Serializable {
         this.votes = votes;
     }
 
-    // Methods as per class diagram
+    public String getTextTop() {return textTop;}
+    public void setTextTop(String textTop) {this.textTop = textTop;}
 
-    public long createMeme(Long templateId, List<String> text) {
+    public String getTextBottom() {return textBottom;}
+    public void setTextBottom(String textBottom) {this.textBottom = textBottom;}
 
-        //TODO how to implemet it. where to store things how to communicate with fromntend (chrigi)
-        // Implementation to create a meme
+    public Long getUserId() {return userId;}
+    public void setUserId(Long userId) {this.userId = userId;}
 
-        return 0L;
-    }
+    public Long getLobbyId() {return lobbyId;}
+    public void setLobbyId(Long lobbyId) {this.lobbyId = lobbyId;}
 
-    public String getMeme(Long memeId) {
-        //TODO (chrigi)
-        // Implementation to retrieve a meme's URL by its ID
-
-        return this.memeURL;
-    }
 }

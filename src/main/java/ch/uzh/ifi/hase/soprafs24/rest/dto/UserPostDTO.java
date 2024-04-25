@@ -14,16 +14,16 @@ public class UserPostDTO {
     this.userId = this.userId;
   }
 
+  public String getUsername() {
+    return username;
+  }
+
   public boolean getLobbyOwner() {
     return lobbyOwner;
   }
 
   public void setLobbyOwner(boolean lobbyOwner) {
     this.lobbyOwner = lobbyOwner;
-  }
-
-  public String getUsername() {
-    return username;
   }
 
   public void setUsername(String username) {

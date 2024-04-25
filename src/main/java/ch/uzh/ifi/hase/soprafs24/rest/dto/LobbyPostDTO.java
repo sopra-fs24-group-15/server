@@ -1,16 +1,27 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 import java.util.List;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
+
 
 //TODO change to match lobby entity
 public class LobbyPostDTO {
 
+
   private long lobbyId;
   private List<Long> players;
   private String lobbyJoinCode;
-  private long lobbyOwner;
   private boolean gameActive;
+
+  private Long lobbyOwner;
+
+  public Long getLobbyOwner() {
+    return lobbyOwner;
+  }
+
+  public void setLobbyOwner(Long lobbyOwner) {
+    this.lobbyOwner = lobbyOwner;
+  }
+
 
   public long getLobbyId() {
     return lobbyId;
@@ -34,14 +45,6 @@ public class LobbyPostDTO {
 
   public void setLobbyJoinCode(String lobbyJoinCode) {
     this.lobbyJoinCode = lobbyJoinCode;
-  }
-
-  public long getLobbyOwner() {
-    return lobbyOwner;
-  }
-
-  public void setLobbyOwner(long lobbyOwner) {
-    this.lobbyOwner = lobbyOwner;
   }
 
   public boolean isGameActive() {

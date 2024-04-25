@@ -4,6 +4,9 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPutDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyDeleteDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
@@ -31,37 +34,66 @@ public class LobbyController {
     this.lobbyService = lobbyService;
   }
 
-  @PostMapping("/lobby")
+  @PostMapping("/lobbys")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
   public LobbyGetDTO createLobby(@RequestBody LobbyPostDTO LobbyPostDTO) {
     //create a lobby object from the input
     Lobby LobbyInput = DTOMapper.INSTANCE.convertLobbyPostDTOtoEntity(LobbyPostDTO);
     //create a lobby by calling user service
-    Lobby createdLobby = lobbyService.createLobby(LobbyInput.getLobbyId());
+    Lobby createdLobby = lobbyService.createLobby(LobbyInput.getLobbyOwner());
     //convert internal representation of lobby back to API
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(createdLobby);
   }
 
-  @GetMapping("/lobby/{lobbyId}")
+  @GetMapping("/lobbys/{lobbyId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public LobbyGetDTO retrieveLobbyToJoin(@RequestBody String lobbyId, Long UserId) {
+  public LobbyGetDTO getLobby(@PathVariable Long lobbyId) {
+    //fetch lobby in the internal representation
+    Lobby lobby = lobbyService.getLobby(lobbyId);
+    //convert internal representation of lobby back to API
+    return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby);
+  }
+
+  @GetMapping("/lobbys")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<LobbyGetDTO> getAllLobbys() {
+    //fetch all lobbys in the internal representation
+    List<Lobby> lobbys = lobbyService.getLobbys();
+    List<LobbyGetDTO> lobbyGetDTOs = new ArrayList<>();
+
+    //convert each lobby to the API representation
+    for (Lobby lobby : lobbys) {
+      lobbyGetDTOs.add(DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(lobby));
+    }
+    return lobbyGetDTOs;
+  }
+
+  @PutMapping("/lobbys/{userId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public LobbyGetDTO retrieveLobbyToJoin(@RequestBody LobbyPutDTO LobbyPutDTO, @PathVariable Long userId){
+    //create a lobby object from the input
+    Lobby LobbyInput = DTOMapper.INSTANCE.convertLobbyPutDTOtoEntity(LobbyPutDTO);
     //retrieves a lobby to join
-    Lobby foundLobby = lobbyService.findLobbyByJoinCode(lobbyId);
+    Lobby LobbyToJoin = lobbyService.findLobbyByJoinCode(LobbyInput.getLobbyJoinCode());
     //join the lobby
-    lobbyService.joinLobby(UserId, foundLobby);
+    lobbyService.joinLobby(userId, LobbyToJoin);
     // convert internal representation of lobby back to API
-    return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(foundLobby);
+    return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(LobbyToJoin);
   }
 
   
-  @DeleteMapping("/lobby/{lobbyId}")
+  @DeleteMapping("/lobbys/{userId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public void deleteLobby(@RequestBody Long lobbyId, Long UserId) {
+  public void deleteLobby(@RequestBody LobbyDeleteDTO lobbyDeleteDTO, @PathVariable Long userId) {
+    //get the lobby id from the input
+    Lobby lobbyToDelete = DTOMapper.INSTANCE.convertLobbyDeleteDTOtoEntity(lobbyDeleteDTO);
     //deletes the lobby
-    lobbyService.deleteLobby(lobbyId, UserId);
+    lobbyService.deleteLobby(lobbyToDelete.getLobbyId(), userId);
   }
 
 }

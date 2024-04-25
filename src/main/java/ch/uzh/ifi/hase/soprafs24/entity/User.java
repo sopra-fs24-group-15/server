@@ -38,7 +38,6 @@ public class User implements Serializable {
   @Column()
   private Long lobbyId;
 
-  //TODO can this be null?
   @Column(nullable = false)
   private Boolean lobbyOwner;
 
@@ -88,14 +87,12 @@ public class User implements Serializable {
       this.lobbyOwner = lobbyOwner;
   }
 
-  public Boolean isUserReady() {return userReady;  }
+  public Boolean getUserReady() {
+        return userReady;
+  }
 
-    public void setUserReady(Boolean userReady) {this.userReady = userReady;}
-
-  //TODO how to handle stuff that isnt possible, is this the way to do it? (chrigi)
-  public User orElse(Object object) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'orElse'");
+  public void setUserReady(Boolean userReady) {
+        this.userReady = userReady;
   }
 
 }

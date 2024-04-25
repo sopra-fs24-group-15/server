@@ -1,9 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs24.entity.Game;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 
 import org.mapstruct.*;
@@ -32,31 +29,61 @@ public interface DTOMapper {
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
   @Mapping(source = "username", target = "username")
-  @Mapping(source = "lobbyOwner", target = "lobbyOwner")
   @Mapping(source = "userId", target = "userId")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
-  @Mapping(source = "lobbyId", target = "lobbyId")
-  @Mapping(source = "players", target = "players")
+  @Mapping(source = "lobbyOwner", target = "lobbyOwner")
   Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
 
-  //TODO: only quickfix, need to check Mapping again
-  @Mapping(source = "lobbyId", target = "lobbyId")
-  @Mapping(source = "players", target = "players")
-  //@Mapping(source = "lobbyJoinCode", target = "lobbyJoinCode")
-  //@Mapping(source = "lobbyOwner", target = "lobbyOwner")
-  //@Mapping(source = "gameActive", target = "gameActive")
-  LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
- 
-  @Mapping(source = "gameId", target = "gameId")
-  @Mapping(source = "lobbyId", target = "lobbyId")
-  Game convertGamePutDTOtoEntity(GamePutDTO gamePutDTO);
+  @Mapping(source = "lobbyJoinCode", target = "lobbyJoinCode")
+  Lobby convertLobbyPutDTOtoEntity(LobbyPutDTO lobbyPutDTO);
 
   @Mapping(source = "lobbyId", target = "lobbyId")
-  @Mapping(source = "gameId", target = "gameId")
+  Lobby convertLobbyDeleteDTOtoEntity(LobbyDeleteDTO lobbyDeleteDTO);
+
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "players", target = "players")
+  @Mapping(source = "lobbyJoinCode", target = "lobbyJoinCode")
+  @Mapping(source = "lobbyOwner", target = "lobbyOwner")
+  @Mapping(source = "gameActive", target = "gameActive")
+  LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+ 
+  @Mapping(source = "totalRounds", target = "totalRounds")
+  //@Mapping(source = "gameMode", target = "gameMode")
+  @Mapping(source = "timer", target = "timer")
+  Game convertGamePutDTOtoEntity(GamePutDTO gamePutDTO);
+
+  @Mapping(source = "totalRounds", target = "totalRounds")
+  //@Mapping(source = "gameMode", target = "gameMode")
+  @Mapping(source = "timer", target = "timer")
   GamePutDTO convertEntityToGamePutDTO(Game game);
 
   //@Mapping(source = "lobbyId", target = "lobbyId")
   @Mapping(source = "roundId", target = "roundId")
+  //@Mapping(source= "gameInEdit", target = "gameInEdit")
   RoundGetDTO convertEntityToRoundGetDTO(Round round);
+
+  @Mapping(source = "roundId", target = "roundId")
+  //@Mapping(source= "gameInEdit", target = "gameInEdit")
+  Round convertRoundGetDTOtoEntity(RoundGetDTO roundGetDTO);
+
+  //@Mapping(source = "roundId", target = "roundId")
+  //@Mapping(source = "gameId", target = "gameId")
+  //@Mapping(source = "lobbyId", target = "lobbyId")
+  //Game convertGamePostDTOtoEntity(GamePostDTO gamePostDTO);
+
+  //@Mapping(source = "roundId", target = "roundId")
+  //GamePostDTO convertEntitytoGamePostDTO(Game game);
+
+  @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "textTop", target = "textTop")
+  @Mapping(source = "textBottom", target = "textBottom")
+  Meme convertMemePutDTOtoEntity(MemePutDTO memePutDTO);
+
+  @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "lobbyId", target = "lobbyId")
+  @Mapping(source = "textTop", target = "textTop")
+  @Mapping(source = "textBottom", target = "textBottom")
+  MemePutDTO convertEntityToMemePutDTO(Meme meme);
 }

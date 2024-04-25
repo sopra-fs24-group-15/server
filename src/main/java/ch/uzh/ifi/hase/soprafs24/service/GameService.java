@@ -1,5 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.Round;
+import ch.uzh.ifi.hase.soprafs24.entity.Template;
+
 import java.util.*;
 
 import org.slf4j.Logger;
@@ -35,6 +40,9 @@ public class GameService {
   private final LobbyRepository lobbyRepository;
 
   private final UserRepository userRepository;
+
+  @Autowired
+  private TemplateService templateService;
 
   @Autowired
   public GameService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository, @Qualifier("userRepository") UserRepository userRepository) {
@@ -96,41 +104,47 @@ public class GameService {
     if(!Objects.equals(lobby.getLobbyOwner(), user.getUserId())){
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the lobby owner can start the game");
     }
-
     if(lobby.getPlayers().size() < 3){
         throw new ResponseStatusException(HttpStatus.FORBIDDEN, "At least 3 players are required to start the game");
     }
     lobby.setGameActive(true);
     game.setCurrentRound(0);
-    nextRound(lobbyId);
   }
 
-  //TODO implement a function to get the current round, han etz mal so gmacht aber kp ob da funktioniert (GS)
-  public Round getCurrentRound(Game game){
-    return game.getRound();
+
+  public Round getUsersStillEditing(Long gameId){
+    Game game = getGame(gameId);
+    Round round = game.getRound();
+    Lobby lobby = lobbyRepository.findById(gameId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
+    if(round.getVoting().getUserVotes().size() != lobby.getPlayers().size()){
+      round.setRoundInEdit(true);
+    }
+    else{
+      round.setRoundInEdit(false);
+    }
+    return round;
   }
 
-  //TODO implement a function to get the number of users still editing, same wie dobe (GS)
-  public Long getUsersStillEditing(Round round){
-    return (long) round.getVoting().getUserVotes().size();
-  }
-
-  public boolean nextRound(long lobbyId){
+  public boolean startNextRound(long lobbyId){
     Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
     if(lobby == null){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
     }
     Game game = getGame(lobbyId);
     if (game.getCurrentRound() < game.getTotalRounds()){
+      if(lobby.getPlayers().size() < 3){
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "At least 3 players are required to play");
+      }
       game.setCurrentRound(game.getCurrentRound() + 1);
       Round round = new Round();
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
-      //TODO implement game play with template and voting
-      setRoundScore(round);
-      for (long userId : lobby.getPlayers()){
-        updateScore(game, userId, round.getScore(userId));
-      }
+      //TODO Which Id do the saved Template get? here just 1L as a placeholder (chrigi)
+      Template template = templateService.getTemplateForUser(1L);
+      round.setTemplate(template);
       return true;
     }
     else{
@@ -139,19 +153,44 @@ public class GameService {
     }
   }
 
+  public void endRound(long lobbyId){
+    Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
+    if(lobby == null){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+    }
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    setRoundScore(round);
+    for (long userId : lobby.getPlayers()){
+      updateScore(game, userId, round.getScore(userId));
+    
+    }
+  }
+
+
+  public void setVote(long userId, long lobbyId){
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    Voting voting = round.getVoting();
+    Integer currentVote = voting.getUserVote(userId);
+    voting.setUserVote(userId, currentVote + 1);
+  }
+
+
+
   //TODO discuss how to handle when votes are the same(GS)
   public void setRoundScore(Round round){
     Voting voting = round.getVoting();
     //get the votes in a hashtable
-    HashMap<Long, Integer> votes = voting.getUserVotes();
+    Map<Long, Integer> votes = voting.getUserVotes();
     //get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
-    Collections.sort(list, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+    Collections.sort(list, (e1, e2) -> e1.getValue().compareTo(e2.getValue()));
     //counter to check for the best 3
     int counter = 0;
     for (Map.Entry<Long, Integer> entry : list){
       //if the player has 3 votes he gets no points
-      if (entry.getValue() == null){
+      if (entry.getValue() == 0){
         round.addScore(entry.getKey(), 0);
       }
       //the first 3 get points
