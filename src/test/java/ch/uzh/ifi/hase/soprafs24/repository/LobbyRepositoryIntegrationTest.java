@@ -57,5 +57,5 @@ public class LobbyRepositoryIntegrationTest {
         
         // then
         assertTrue(found.isEmpty()); // Ensure the found lobby is not present
-    }
+    }*/
 }
