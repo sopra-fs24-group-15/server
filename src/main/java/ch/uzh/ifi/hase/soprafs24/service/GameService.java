@@ -142,8 +142,8 @@ public class GameService {
       Round round = new Round();
       round.setCurrentRound(game.getCurrentRound());
       game.setRound(round);
-      //TODO Which Id do the saved Template get? here just 1L as a placeholder (chrigi)
-      Template template = templateService.getTemplateForUser(1L);
+      //You get a random Template of 100 (chrigi)
+      Template template = templateService.fetchTemplate();
       round.setTemplate(template);
       return true;
     }

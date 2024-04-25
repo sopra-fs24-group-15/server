@@ -86,4 +86,7 @@ public interface DTOMapper {
   @Mapping(source = "textTop", target = "textTop")
   @Mapping(source = "textBottom", target = "textBottom")
   MemePutDTO convertEntityToMemePutDTO(Meme meme);
+
+  @Mapping(source = "url", target = "url")
+  TemplateGetDTO convertEntityToTemplateGetDTO(Template template);
 }
