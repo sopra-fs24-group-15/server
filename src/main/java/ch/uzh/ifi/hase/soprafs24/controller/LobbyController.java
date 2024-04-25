@@ -71,6 +71,21 @@ public class LobbyController {
     return lobbyGetDTOs;
   }
 
+  @GetMapping("/lobbys/{lobbyId}/users")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<UserGetDTO> getAllUsersinLobby(@PathVariable Long lobbyId) {
+    //get all the users in the lobby
+    List<User> users = lobbyService.getUsers(lobbyId);
+    List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+    //convert each user to the API representation
+    for (User user : users) {
+      userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+    }
+    return userGetDTOs;
+  }
+
   @PutMapping("/lobbys/{userId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody

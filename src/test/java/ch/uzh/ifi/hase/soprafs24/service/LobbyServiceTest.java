@@ -10,6 +10,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -311,4 +313,102 @@ public class LobbyServiceTest {
 
         assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobby(nonExistingUser, testLobby.getLobbyId()));
     }
+
+
+    @Test
+    public void testGetUsers_existingLobby_success() {
+        Lobby testLobby = new Lobby();
+        testLobby.setLobbyId(1L);
+
+        User mockUser1 = new User();
+        User mockUser2 = new User();
+        mockUser1.setUserId(1L);
+        mockUser2.setUserId(2L);
+        mockUser1.setUsername("User1");
+        mockUser2.setUsername("User2");
+
+        // Add players to the testLobby
+        testLobby.addPlayer(1L);
+        testLobby.addPlayer(2L);
+        
+    
+        // Configure userRepository mock to return a user for each findById call
+        when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser1));
+        when(userRepository.findById(2L)).thenReturn(Optional.of(mockUser2));
+        when(lobbyRepository.findById(testLobby.getLobbyId())).thenReturn(Optional.of(testLobby));
+        
+
+        List<User> mockUsers = new ArrayList<>();
+        mockUsers.add(mockUser1);
+        mockUsers.add(mockUser2);
+        
+
+        assertEquals(mockUsers, lobbyService.getUsers(testLobby.getLobbyId()));
+
+    }
+
+    @Test
+    public void testGetUsers_nonExistingUser_throwsException() {
+        Lobby testLobby = new Lobby();
+        testLobby.setLobbyId(1L);
+
+        User mockUser1 = new User();
+        User mockUser2 = new User();
+        mockUser1.setUserId(1L);
+        mockUser2.setUserId(2L);
+        mockUser1.setUsername("User1");
+        mockUser2.setUsername("User2");
+
+        // Add players to the testLobby
+        testLobby.addPlayer(1L);
+        testLobby.addPlayer(2L);
+        
+    
+        // Configure userRepository mock to return a user for each findById call
+        when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser1));
+        when(userRepository.findById(2L)).thenReturn(Optional.empty());
+        when(lobbyRepository.findById(testLobby.getLobbyId())).thenReturn(Optional.of(testLobby));
+        
+
+        List<User> mockUsers = new ArrayList<>();
+        mockUsers.add(mockUser1);
+        mockUsers.add(mockUser2);
+        
+
+        assertThrows(ResponseStatusException.class, () -> lobbyService.getUsers(testLobby.getLobbyId()));
+
+    }
+
+    @Test
+    public void testGetUsers_nonExistingLobby_throwsException() {
+        Lobby testLobby = new Lobby();
+        testLobby.setLobbyId(1L);
+
+        User mockUser1 = new User();
+        User mockUser2 = new User();
+        mockUser1.setUserId(1L);
+        mockUser2.setUserId(2L);
+        mockUser1.setUsername("User1");
+        mockUser2.setUsername("User2");
+
+        // Add players to the testLobby
+        testLobby.addPlayer(1L);
+        testLobby.addPlayer(2L);
+        
+    
+        // Configure userRepository mock to return a user for each findById call
+        when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser1));
+        when(userRepository.findById(2L)).thenReturn(Optional.of(mockUser2));
+        when(lobbyRepository.findById(testLobby.getLobbyId())).thenReturn(Optional.empty());
+        
+
+        List<User> mockUsers = new ArrayList<>();
+        mockUsers.add(mockUser1);
+        mockUsers.add(mockUser2);
+        
+
+        assertThrows(ResponseStatusException.class, () -> lobbyService.getUsers(testLobby.getLobbyId()));
+
+    }
+    
 }

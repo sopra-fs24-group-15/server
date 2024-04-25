@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -176,5 +177,22 @@ public class LobbyService {
       }
     //removing the user from the lobby
     lobbyToLeave.removePlayer(userId);
+  }
+
+  public List<User> getUsers(long lobbyId) {
+    //finding the lobby by the id 
+    Lobby lobby = getLobby(lobbyId);
+    List<Long> userids = lobby.getPlayers();
+    List<User> users = new ArrayList<>();
+    for (Long user : userids) {
+      User userEntity = userRepository.findById(user).orElse(null);
+      if(userEntity == null){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+      }
+      else{
+        users.add(userEntity);
+      }
+    }
+    return users;
   }
 }
