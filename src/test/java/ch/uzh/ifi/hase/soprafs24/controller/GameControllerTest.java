@@ -39,30 +39,6 @@ public class GameControllerTest {
     @MockBean
     private GameService gameService;
 
-    /* 
-    @Test
-    public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
-        // given
-        User user = new User();
-        user.setUsername("firstname@lastname");
-
-        List<User> allUsers = Collections.singletonList(user);
-
-        // this mocks the UserService -> we define above what the userService should
-        // return when getUsers() is called
-        given(userService.getUsers()).willReturn(allUsers);
-
-        // when
-        MockHttpServletRequestBuilder getRequest = get("/users").contentType(MediaType.APPLICATION_JSON);
-
-        // then
-        mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].username", is(user.getUsername())));
-    }
-    */
-
-    /*
     @Test
     public void createGame_validInput_createsGame() throws Exception {
         // given
@@ -71,22 +47,22 @@ public class GameControllerTest {
         game.setTotalRounds(5);
 
         GamePutDTO gamePutDTO = new GamePutDTO();
-        gamePutDTO.setLobbyId(1L);
+        gamePutDTO.setTimer(1);
         gamePutDTO.setTotalRounds(5);
 
         given(gameService.createGame(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt(), GameMode.BASIC, Mockito.anyInt())).willReturn(game);
 
         // when/then -> do the request + validate the result
-        MockHttpServletRequestBuilder putRequest = put("/lobbys/1/settings/1")
+        MockHttpServletRequestBuilder postRequest = post("/lobbys/1/settings/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(gamePutDTO));
 
         // then
-        mockMvc.perform(putRequest)
+        mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.gameId", is(game.getGameId())));
     }
-    */
+    
     
 
     /*
