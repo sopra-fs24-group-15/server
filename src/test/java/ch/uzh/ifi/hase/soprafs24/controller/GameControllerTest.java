@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.HashMap;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -44,7 +45,10 @@ public class GameControllerTest {
         // given
         Game game = new Game();
         game.setGameId(1L);
+        game.setScores(new HashMap<>());
         game.setTotalRounds(5);
+        game.setGameMode(GameMode.BASIC);
+        game.setTimer(1);
 
         GamePutDTO gamePutDTO = new GamePutDTO();
         gamePutDTO.setTimer(1);
