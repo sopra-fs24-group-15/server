@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.Collections;
+
 
 
 @Service
@@ -23,21 +26,22 @@ public class TemplateService {
         this.templateRepository = templateRepository;
     }
 
+    public Template fetchTemplate() {
+        List<Template> templates = templateRepository.findAll();
+        if (templates.isEmpty()) {
+            templates = fetchTemplatesFromAPI();
+        }
+        return selectRandomTemplate(templates);
+    }
 
-    
-    public List<Template> fetchTemplate() {
-        String url = "https://api.imgflip.com/get_memes";
+    private List<Template> fetchTemplatesFromAPI() {
+        final String url = "https://api.imgflip.com/get_memes";
+        List<Template> newTemplates = new ArrayList<>();
         try {
             String result = restTemplate.getForObject(url, String.class);
-    
-            // Parse the JSON response
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(result);
+            JsonNode root = new ObjectMapper().readTree(result);
             JsonNode memes = root.path("data").path("memes");
-    
-            // Convert each meme in the response to a Template object and save it in the database
-            // As I understand it we fetch the memes from the API and save them in the database so we can use them later (chrigi)
-            List<Template> templates = new ArrayList<>();
+
             for (JsonNode meme : memes) {
                 Template template = new Template();
                 template.setTemplateId(meme.path("id").asText());
@@ -46,17 +50,23 @@ public class TemplateService {
                 template.setWidth(meme.path("width").asInt());
                 template.setHeight(meme.path("height").asInt());
                 template.setBoxCount(meme.path("box_count").asInt());
-                templates.add(template);
-    
-                templateRepository.save(template);
+                newTemplates.add(template);
             }
-            return templates;
+            templateRepository.saveAll(newTemplates);  // Save all at once for efficiency
         } catch (Exception e) {
-            // Log the exception and return null
-            return null;
+            System.out.println("Error fetching or saving templates: " + e.getMessage());
         }
-
+        return newTemplates;
     }
+
+    private Template selectRandomTemplate(List<Template> templates) {
+        if (!templates.isEmpty()) {
+            int randomIndex = ThreadLocalRandom.current().nextInt(templates.size());
+            return templates.get(randomIndex);
+        }
+        return null;
+    }
+
 
     //return template for user
     // I think we have a list of templates in the database and we want to fix on template for each round (chrigi)

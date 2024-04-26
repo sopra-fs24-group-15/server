@@ -1,87 +1,52 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
-import ch.uzh.ifi.hase.soprafs24.entity.Meme;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.entity.Template;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.MemePutDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.TemplateGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
-import ch.uzh.ifi.hase.soprafs24.service.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import ch.uzh.ifi.hase.soprafs24.service.GameService;
+import ch.uzh.ifi.hase.soprafs24.service.TemplateService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 
 
 @RestController
-@RequestMapping("/lobby/{lobbyId}")
+@RequestMapping
 public class MemeController {
 
-    private final MemeService memeService;
-    private final LobbyService lobbyService;
-    private final UserService userService;
+    private final TemplateService templateService;
 
-    public MemeController(MemeService memeService, LobbyService lobbyService, UserService userService) {
-        this.memeService = memeService;
-        this.lobbyService = lobbyService;
-        this.userService = userService;
+    private final GameService gameService;
+
+    // Autowiring the TemplateService through the constructor
+    public MemeController(TemplateService templateService, GameService gameService) {
+        this.templateService = templateService;
+        this.gameService = gameService;
     }
 
-    @GetMapping("/meme/{userId}")
-    public ResponseEntity<Meme> getMeme(@PathVariable Long lobbyId, @PathVariable Long userId) {
-        // implementation...
-        return null;
-    }
-
-    @GetMapping("/memes/{userId}")
-    public ResponseEntity<Map<Long, Meme>> getMemes(@PathVariable Long lobbyId, @PathVariable Long userId) {
-        return null;
-    }
-
-    @PostMapping("/meme/{userId}")
-    public ResponseEntity<Meme> createMeme(@PathVariable Long lobbyId, @PathVariable Long userId, @RequestBody List<String> texts) {
-        // implementation...
-
-
-        return null;
-    }
-
-    @Autowired
-    private TemplateService templateService;
-
-    @Autowired
-    private GameService gameService;
-
-
-    //TODO save template first in game service to round and then return it from round (GS)
-    @GetMapping("/template")
-    public ResponseEntity<Template> fetchTemplate(@PathVariable Long lobbyId) {
-        Game game = gameService.getGame(lobbyId);
-        Round round = game.getRound();
-        Template template = round.getTemplate();
-        return ResponseEntity.status(HttpStatus.OK).body(template);
-    }
-    @PutMapping("/lobbys/{lobbyId}/meme/{userId}")
+    @GetMapping("/lobby/{lobbyId}/template")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void saveMeme(@RequestBody MemePutDTO memePutDTO, @PathVariable("userId") Long userId, @PathVariable("lobbyId") Long lobbyId, String textTop, String textBottom) {
-        // convert API user to internal representation
-        Meme memeInput = DTOMapper.INSTANCE.convertMemePutDTOtoEntity(memePutDTO);
-        Long userIdInput = memeInput.getUserId();
-        Long lobbyIdInput = memeInput.getMemeId();
-        String TextTop = memePutDTO.getTextTop();
-        String TextBottom = memePutDTO.getTextBottom();
-        List<String> texts = new ArrayList<>();
-        texts.add(textTop);
-        texts.add(textBottom);
-
-        // save Meme in Service (jana)
-        Meme meme = memeService.saveMeme(lobbyIdInput, userIdInput, texts);
-    }
+    public TemplateGetDTO fetchTemplate(@PathVariable Long lobbyId) {
+            Game game = gameService.getGame(lobbyId);
+            Round round = game.getRound();
+            Template template = round.getTemplate();
+            
+            if (template != null) {
+                TemplateGetDTO templateDTO = DTOMapper.INSTANCE.convertEntityToTemplateGetDTO(template);
+                return templateDTO;
+            }
+            else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Template not found");
+            }
+        }
 }

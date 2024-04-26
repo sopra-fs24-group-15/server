@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
@@ -19,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,27 +40,31 @@ public class LobbyControllerTest {
     @MockBean
     private LobbyService lobbyService;
 
-    /*@Test
-    public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
-        // given
-        User user = new User();
-        user.setUsername("firstname@lastname");
+    @MockBean
+    private LobbyRepository lobbyRepository;
 
-        List<User> allUsers = Collections.singletonList(user);
+
+    @Test
+    public void givenLobby_whenGetLobbys_thenReturnJsonArray() throws Exception {
+        // given
+        Lobby lobby = new Lobby();
+        lobby.setLobbyId(1L);
+        lobby.setLobbyOwner(1234L);
+
+        List<Lobby> allLobbys = new ArrayList<>();
+        allLobbys.add(lobby);
 
         // this mocks the UserService -> we define above what the userService should
         // return when getUsers() is called
-        given(userService.getUsers()).willReturn(allUsers);
+        given(lobbyService.getLobbys()).willReturn(allLobbys);
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/users").contentType(MediaType.APPLICATION_JSON);
+        MockHttpServletRequestBuilder getRequest = get("/lobbys").contentType(MediaType.APPLICATION_JSON);
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].username", is(user.getUsername())));
+                .andExpect(jsonPath("$", hasSize(1)));
     }
-*/
     @Test
     public void createLobby_validInput_lobbyCreated() throws Exception {
         // given

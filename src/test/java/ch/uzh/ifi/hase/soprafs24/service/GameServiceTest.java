@@ -80,6 +80,7 @@ public class GameServiceTest {
 
         Game game = gameService.createGame(1L, 1L, 5, GameMode.BASIC, 60);
         assertNotNull(game);
+        assertEquals(1L, mockLobby.getLobbyOwner());
         assertEquals(5, game.getTotalRounds());
         assertEquals(GameMode.BASIC, game.getGameMode());
         assertEquals(60, game.getTimer());
@@ -217,6 +218,14 @@ public class GameServiceTest {
 
     @Test
     public void testGetRanking_regularCase_success() {
+        User user1 = new User();
+        user1.setUserId(1L);
+        User user2 = new User();
+        user2.setUserId(2L);
+        User user3 = new User();
+        user3.setUserId(3L);
+        User user4 = new User();
+        user4.setUserId(4L);
         Lobby mockLobby = new Lobby();
         Game mockGame = new Game();
         mockLobby.setGame(mockGame);
@@ -228,13 +237,23 @@ public class GameServiceTest {
         mockGame.setScores(scores);
 
         when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(userRepository.findById(2L)).thenReturn(Optional.of(user2));
+        when(userRepository.findById(3L)).thenReturn(Optional.of(user3));
+        when(userRepository.findById(4L)).thenReturn(Optional.of(user4));
 
-        List<Long> ranking = gameService.getRanking(1L);
-        assertEquals(Arrays.asList(4L, 2L, 3L, 1L), ranking);
+        List<User> ranking = gameService.getRanking(1L);
+        assertEquals(Arrays.asList(user4, user2, user3, user1), ranking);
     }
 
     @Test
     public void testGetRanking_allZeroScores_success() {
+        User user1 = new User();
+        user1.setUserId(1L);
+        User user2 = new User();
+        user2.setUserId(2L);
+        User user3 = new User();
+        user3.setUserId(3L);
         Lobby mockLobby = new Lobby();
         Game mockGame = new Game();
         mockLobby.setGame(mockGame);
@@ -245,11 +264,14 @@ public class GameServiceTest {
         mockGame.setScores(scores);
 
         when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(userRepository.findById(2L)).thenReturn(Optional.of(user2));
+        when(userRepository.findById(3L)).thenReturn(Optional.of(user3));
 
-        List<Long> ranking = gameService.getRanking(1L);
+        List<User> ranking = gameService.getRanking(1L);
         // The exact order doesn't matter here since all scores are the same
         assertEquals(3, ranking.size());
-        assertTrue(ranking.containsAll(Arrays.asList(1L, 2L, 3L)));
+        assertTrue(ranking.containsAll(Arrays.asList(user3, user2, user1)));
     }
 
     //TODO implement tie logic first(GS)
