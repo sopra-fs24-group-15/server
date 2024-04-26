@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GamePutDTO;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
+import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,9 @@ public class GameControllerTest {
     @MockBean
     private GameService gameService;
 
+    @MockBean
+    private LobbyRepository lobbyRepository;
+
     @Test
     public void createGame_validInput_createsGame() throws Exception {
         // given
@@ -54,7 +58,7 @@ public class GameControllerTest {
         gamePutDTO.setTimer(1);
         gamePutDTO.setTotalRounds(5);
 
-        given(gameService.createGame(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt(), GameMode.BASIC, Mockito.anyInt())).willReturn(game);
+        given(gameService.createGame(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt(), Mockito.any(GameMode.class), Mockito.anyInt())).willReturn(game);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/lobbys/1/settings/1")
@@ -63,8 +67,9 @@ public class GameControllerTest {
 
         // then
         mockMvc.perform(postRequest)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.gameId", is(game.getGameId())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalRounds", is(game.getTotalRounds())))
+                .andExpect(jsonPath("$.timer", is(game.getTimer())));
     }
     
     
