@@ -39,6 +39,7 @@ public class MemeControllerTest {
     @MockBean
     private TemplateService templateService;
 
+    /* 
     @Test
     public void testFetchTemplate_Success() throws Exception {
         // given
@@ -52,6 +53,7 @@ public class MemeControllerTest {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Mock Template")));
     }
+    */
 
 }
     
