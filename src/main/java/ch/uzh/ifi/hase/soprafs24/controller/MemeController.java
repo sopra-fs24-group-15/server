@@ -3,7 +3,11 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 import ch.uzh.ifi.hase.soprafs24.entity.Template;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.TemplateGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
-import ch.uzh.ifi.hase.soprafs24.service.TemplateService;
+
+import ch.uzh.ifi.hase.soprafs24.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +29,7 @@ public class MemeController {
     }
 
     @GetMapping("/template")
+
     public ResponseEntity<TemplateGetDTO> fetchTemplate() {
         try {
             Template template = templateService.fetchTemplate();
