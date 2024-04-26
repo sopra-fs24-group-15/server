@@ -27,6 +27,10 @@ public class LobbyPostDTO {
     return lobbyId;
   }
 
+  public void setLobbyId(long LobbyId) {
+    this.lobbyId = lobbyId;
+  }
+
   public List<Long> getPlayers() {
     return players;
   }
