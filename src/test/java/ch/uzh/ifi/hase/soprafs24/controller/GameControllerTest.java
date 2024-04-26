@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GamePutDTO;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
@@ -70,6 +71,47 @@ public class GameControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalRounds", is(game.getTotalRounds())))
                 .andExpect(jsonPath("$.timer", is(game.getTimer())));
+    }
+
+ 
+    @Test
+    public void createGame_invalidInput_throwsException() throws Exception {
+        // given
+        GamePutDTO gamePutDTO = new GamePutDTO();
+        gamePutDTO.setTimer(1);
+        gamePutDTO.setTotalRounds(5);
+
+        given(gameService.createGame(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt(), Mockito.any(GameMode.class), Mockito.anyInt())).willThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, "The request body could not be created."));
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/lobbys/1/settings/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(gamePutDTO));
+
+        // then
+        mockMvc.perform(postRequest)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void startGame_validInput_startsGame() throws Exception {
+        // given
+        Game game = new Game();
+        game.setGameId(1L);
+        game.setScores(new HashMap<>());
+        game.setTotalRounds(5);
+        game.setGameMode(GameMode.BASIC);
+        game.setTimer(1);
+
+        //given(gameService.startGame(Mockito.anyLong(), Mockito.anyLong())).willReturn();
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder putRequest = put("/lobbys/1/start/1")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        mockMvc.perform(putRequest)
+                .andExpect(status().isOk());
     }
     
     
