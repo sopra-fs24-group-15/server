@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Meme;
 import ch.uzh.ifi.hase.soprafs24.entity.Template;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.MemePutDTO;
 import ch.uzh.ifi.hase.soprafs24.service.TemplateService;
+import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -39,12 +40,24 @@ public class MemeControllerTest {
     @MockBean
     private TemplateService templateService;
 
-    /* 
+    @MockBean
+    private GameService gameService;
+
     @Test
     public void testFetchTemplate_Success() throws Exception {
         // given
         Template template = new Template();
+        template.setId(1L);
         template.setTemplateId("1");
+        template.setName("Mock Template");
+        template.setUrl("https://www.example.com");
+        template.setWidth(100);
+        template.setHeight(100);
+        template.setBoxCount(2);
+        template.setTopic("Mock Topic");
+        template.setTextTop("Top Text");
+        template.setTextBottom("Bottom Text");
+
 
         given(templateService.fetchTemplate()).willReturn(template);
 
@@ -53,7 +66,6 @@ public class MemeControllerTest {
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Mock Template")));
     }
-    */
 
 }
     
