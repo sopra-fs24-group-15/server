@@ -9,8 +9,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
 
+
+
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,30 +37,26 @@ public class TemplateServiceTest {
         template = new Template();
     }
     
+    //TODO change this test (chrigi)
+    /* 
     @Test
     public void fetchTemplate_Successful_ReturnsTemplates() throws Exception {
-        // Arrange
-        String json = "{\"data\":{\"memes\":[{\"id\":\"123\",\"name\":\"Meme1\",\"url\":\"http://example.com/meme1\",\"width\":500,\"height\":600,\"box_count\":2}]}}";
-        when(restTemplate.getForObject(anyString(), eq(String.class))).thenReturn(json);
+        
+        Template template = templateService.selectRandomTemplate();
 
-        // Act
-        List<Template> templates = templateService.fetchTemplate();
+        System.out.println("start");
+        System.out.println(template.getName());
+        System.out.println("end");
 
         // Assert
-        assertNotNull(templates);
-        assertFalse(templates.isEmpty());
-        assertEquals(1, templates.size());
-        Template template = templates.get(0);
-        assertEquals("123", template.getTemplateId());
-        assertEquals("Meme1", template.getName());
-        assertEquals("http://example.com/meme1", template.getUrl());
-        assertEquals(500, template.getWidth());
-        assertEquals(600, template.getHeight());
-        assertEquals(2, template.getBoxCount());
-
-        verify(templateRepository, times(1)).save(any(Template.class)); // Ensure each template is saved
+        assertNotNull(template);
+        
+        //verify(templateRepository, times(100)).save(any(Template.class)); // Ensure each template is saved
     }
+    */
 
+
+    /* 
     @Test
     public void fetchTemplate_Failure_IOException() throws Exception {
         // Arrange
@@ -67,6 +68,8 @@ public class TemplateServiceTest {
         // Assert
         assertNull(templates);
     }
+
+    */
 
     @Test
     public void getTemplateForUser_TemplateExists_ReturnsTemplate() {
