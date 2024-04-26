@@ -10,10 +10,6 @@ public class UserPostDTO {
     return userId;
   }
 
-  public void setUserId(Long userId) {
-    this.userId = this.userId;
-  }
-
   public String getUsername() {
     return username;
   }
