@@ -1,5 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
+import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Meme;
 import ch.uzh.ifi.hase.soprafs24.entity.Template;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.MemePutDTO;
@@ -21,6 +24,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -44,11 +48,16 @@ public class MemeControllerTest {
 
     @MockBean
     private GameService gameService;
-
-    /*
+    
     @Test
     public void testFetchTemplate_Success() throws Exception {
         // given
+        Lobby lobby = new Lobby();
+        lobby.setLobbyId(1L);
+
+        Game game = new Game();
+        game.setGameId(1L);
+
         Template template = new Template();
         template.setId(1L);
         template.setTemplateId("1");
@@ -63,14 +72,14 @@ public class MemeControllerTest {
         
         given(templateService.fetchTemplate()).willReturn(template);
 
-        MockHttpServletRequestBuilder getRequest = get("/template")
+        MockHttpServletRequestBuilder getRequest = get("/lobby/1/template")
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", is(template.getUrl())));
     }
-    */
+    
 
 }
     
