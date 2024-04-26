@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.MemePutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -69,7 +70,6 @@ public class MemeController {
     }
     @PutMapping("/lobbys/{lobbyId}/meme/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
     public void saveMeme(@RequestBody MemePutDTO memePutDTO, @PathVariable("userId") Long userId, @PathVariable("lobbyId") Long lobbyId, String textTop, String textBottom) {
         // convert API user to internal representation
         Meme memeInput = DTOMapper.INSTANCE.convertMemePutDTOtoEntity(memePutDTO);
