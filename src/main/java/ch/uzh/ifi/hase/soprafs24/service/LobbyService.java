@@ -38,8 +38,6 @@ public class LobbyService {
 
   private final UserRepository userRepository;
 
-  Random rnd = new Random();
-
   @Autowired
   public LobbyService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository, @Qualifier("userRepository") UserRepository userRepository) {
     this.lobbyRepository = lobbyRepository;
@@ -49,6 +47,7 @@ public class LobbyService {
   // Method to generate a unique join code
   private void generateUniqueJoinCode(Lobby lobby) {
     String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    Random rnd = new Random();
     boolean uniqueCodeGenerated = false;
 
     // Keep generating until a unique code is found
@@ -128,7 +127,7 @@ public class LobbyService {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
     //check if user is the owner of the lobby
-    if (lobbyToDelete.getLobbyOwner().equals(userId)) {
+    if (lobbyToDelete.getLobbyOwner() != userId) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the owner of the lobby");
     }
     //deleting the lobby
