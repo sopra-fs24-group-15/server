@@ -43,7 +43,7 @@ public class MemeController {
     }
 
     //TODO change path to lobbys and templates(GS)
-    @GetMapping("/lobby/{lobbyId}/template")
+    @GetMapping("/lobbys/{lobbyId}/templates")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public TemplateGetDTO fetchTemplate(@PathVariable Long lobbyId) {
