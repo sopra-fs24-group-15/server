@@ -90,4 +90,7 @@ public interface DTOMapper {
   @Mapping(source = "userId", target = "userId")
   MemeGetDTO convertEntityToMemeGetDTO(Meme meme);
 
+  @Mapping(source = "username", target = "username")
+  @Mapping(source = "userId", target = "userId")
+  ScoreGetDTO convertEntityToScoreGetDTO(User user); 
 }

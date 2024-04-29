@@ -210,7 +210,7 @@ public class GameService {
     //counter to check for the best 3
     int counter = 0;
     for (Map.Entry<Long, Integer> entry : list){
-      //if the player has 3 votes he gets no points
+      //if the player has 0 votes he gets no points
       if (entry.getValue() == 0){
         round.addScore(entry.getKey(), 0);
       }
@@ -231,6 +231,16 @@ public class GameService {
   public void updateScore(Game game, long userId, int score){
     int tempscore = game.getScore(userId);
     game.setScore(userId, tempscore + score);
+  }
+
+  public List<User> getPlayers(long lobbyId){
+    Lobby lobby = getLobby(lobbyId);
+    List<User> players = new ArrayList<User>();
+    for (long userId : lobby.getPlayers()){
+      User tempUser = getUser(userId);
+      players.add(tempUser);
+    }
+    return players;
   }
 
 
