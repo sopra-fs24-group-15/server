@@ -48,8 +48,7 @@ public class MemeControllerTest {
 
     @MockBean
     private GameService gameService;
-    
-    /*
+
     @Test
     public void testFetchTemplate_Success() throws Exception {
         // given
@@ -77,10 +76,10 @@ public class MemeControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(getRequest)
-                .andExpect(status().isNotFound())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.url", is(template.getUrl())));
     }
-    */
+
     
 
 }

@@ -32,6 +32,14 @@ public interface DTOMapper {
   @Mapping(source = "userId", target = "userId")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
+  @Mapping(source = "username", target = "username")
+  @Mapping(source = "userId", target = "userId")
+  UserDeleteDTO convertEntityToUserDeleteDTO(User user);
+
+  @Mapping(source = "username", target = "username")
+  @Mapping(source = "userId", target = "userId")
+  User convertUserDeleteDTOtoEntity(UserDeleteDTO userDeleteDTO);
+
   @Mapping(source = "lobbyOwner", target = "lobbyOwner")
   Lobby convertLobbyPostDTOtoEntity(LobbyPostDTO lobbyPostDTO);
 

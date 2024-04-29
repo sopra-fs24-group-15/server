@@ -84,7 +84,6 @@ public class LobbyController {
     // convert internal representation of lobby back to API
     return DTOMapper.INSTANCE.convertEntityToLobbyGetDTO(LobbyToJoin);
   }
-
   
   @DeleteMapping("/lobbys/{userId}")
   @ResponseStatus(HttpStatus.OK)
@@ -95,5 +94,4 @@ public class LobbyController {
     //deletes the lobby
     lobbyService.deleteLobby(lobbyToDelete.getLobbyId(), userId);
   }
-
 }
