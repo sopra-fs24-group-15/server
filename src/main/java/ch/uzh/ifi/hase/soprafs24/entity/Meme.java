@@ -17,28 +17,13 @@ public class Meme implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memeId;
 
-    @JsonProperty("success")
-    private boolean success;
-
     @JsonProperty("data.url")
     @Column(nullable = false, length = 2048)
     private String memeURL;
 
-    @JsonProperty("data.page_url")
-    private String pageUrl;
-
-    private String creator; // username of the user who created the meme
-    private int votes; // the number of votes the meme received
-
-    @Column()
-    private String textTop;
-
-    @Column()
-    private String textBottom;
-
+    @Column(nullable = false)
     private Long userId;
 
-    private Long lobbyId;
 
     // getters and setters
     public Long getMemeId() {
@@ -49,14 +34,6 @@ public class Meme implements Serializable {
         this.memeId = memeId;
     }
 
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
     public String getMemeURL() {
         return memeURL;
     }
@@ -65,40 +42,11 @@ public class Meme implements Serializable {
         this.memeURL = memeURL;
     }
 
-    public String getPageUrl() {
-        return pageUrl;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setPageUrl(String pageUrl) {
-        this.pageUrl = pageUrl;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public int getVotes() {
-        return votes;
-    }
-
-    public void setVotes(int votes) {
-        this.votes = votes;
-    }
-
-    public String getTextTop() {return textTop;}
-    public void setTextTop(String textTop) {this.textTop = textTop;}
-
-    public String getTextBottom() {return textBottom;}
-    public void setTextBottom(String textBottom) {this.textBottom = textBottom;}
-
-    public Long getUserId() {return userId;}
-    public void setUserId(Long userId) {this.userId = userId;}
-
-    public Long getLobbyId() {return lobbyId;}
-    public void setLobbyId(Long lobbyId) {this.lobbyId = lobbyId;}
-
 }

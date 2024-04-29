@@ -75,18 +75,11 @@ public interface DTOMapper {
   //@Mapping(source = "roundId", target = "roundId")
   //GamePostDTO convertEntitytoGamePostDTO(Game game);
 
-  @Mapping(source = "userId", target = "userId")
-  @Mapping(source = "lobbyId", target = "lobbyId")
-  @Mapping(source = "textTop", target = "textTop")
-  @Mapping(source = "textBottom", target = "textBottom")
-  Meme convertMemePutDTOtoEntity(MemePutDTO memePutDTO);
-
-  @Mapping(source = "userId", target = "userId")
-  @Mapping(source = "lobbyId", target = "lobbyId")
-  @Mapping(source = "textTop", target = "textTop")
-  @Mapping(source = "textBottom", target = "textBottom")
-  MemePutDTO convertEntityToMemePutDTO(Meme meme);
-
   @Mapping(source = "url", target = "url")
   TemplateGetDTO convertEntityToTemplateGetDTO(Template template);
+
+  @Mapping(source = "memeURL", target = "memeURL")
+  @Mapping(source = "userId", target = "userId")
+  MemeGetDTO convertEntityToMemeGetDTO(Meme meme);
+
 }

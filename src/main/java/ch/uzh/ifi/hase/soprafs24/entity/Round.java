@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -18,6 +20,8 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 
 @Entity
@@ -44,11 +48,17 @@ public class Round implements Serializable {
     @Column(name = "score")
     private Map<Long, Integer> roundScore = new HashMap<>();
 
+    @ManyToMany
+    @JoinTable(
+        name = "round_memes",
+        joinColumns = @JoinColumn(name = "round_id"),
+        inverseJoinColumns = @JoinColumn(name = "meme_id")
+    )
+    private List<Meme> memes = new ArrayList<>();
+
     @Column()
     private int currentRound;
 
-    //@Column()
-    //private Long gameId;
 
     @Column()
     private Boolean roundInEdit;
@@ -101,11 +111,19 @@ public class Round implements Serializable {
     public Integer getScore(Long userId) {
         return this.roundScore.get(userId);
     }
-    /*
-    public Long getGameId() {return gameId;}
 
-    public void setGameId(Long gameId) {this.gameId = gameId;}*/
+    public List<Meme> getMemes() {
+        return memes;
+    }
 
+    public void setMemes(List<Meme> memes) {
+        this.memes = memes;
+    }
+
+    public void addMeme(Meme meme) {
+        this.memes.add(meme);
+    }
+    
     public Boolean getRoundInEdit() {return roundInEdit; }
 
     public void setRoundInEdit(Boolean roundInEdit) {this.roundInEdit = roundInEdit;}
