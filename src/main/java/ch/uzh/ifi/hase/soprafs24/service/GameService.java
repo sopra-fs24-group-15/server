@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.Meme;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.entity.Template;
 
@@ -176,6 +177,26 @@ public class GameService {
     Integer currentVote = voting.getUserVote(userId);
     voting.setUserVote(userId, currentVote + 1);
   }
+
+  public void setMeme(long lobbyId, long userId, String memeURL){
+    Round round = getGame(lobbyId).getRound();
+    Meme meme = new Meme();
+    meme.setMemeURL(memeURL);
+    meme.setUserId(userId);
+    round.addMeme(meme);
+  }
+
+  public List<Meme> getMemes(long lobbyId, long userId){
+    Round round = getGame(lobbyId).getRound();
+    List<Meme> allMemes=  round.getMemes();
+    for (Meme meme : allMemes){
+      if (meme.getUserId() == userId){
+        allMemes.remove(meme);
+      }
+    }
+    return allMemes;
+  }
+  
 
 
 

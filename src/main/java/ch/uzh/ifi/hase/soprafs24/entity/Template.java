@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.service.MemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;

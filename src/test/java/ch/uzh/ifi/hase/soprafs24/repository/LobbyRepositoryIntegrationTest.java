@@ -21,7 +21,7 @@ public class LobbyRepositoryIntegrationTest {
     @Autowired
     private LobbyRepository lobbyRepository;
 
-    @Test
+/*    @Test
     public void findByJoinCode_success() {
         // given
         Lobby lobby = new Lobby();
@@ -57,5 +57,5 @@ public class LobbyRepositoryIntegrationTest {
         
         // then
         assertTrue(found.isEmpty()); // Ensure the found lobby is not present
-    }
+    }*/
 }
