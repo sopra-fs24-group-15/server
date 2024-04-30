@@ -292,6 +292,32 @@ public class GameServiceTest {
     } */
 
     @Test
+    public void testSetVote_sucess() {
+        Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        Round mockRound = new Round();
+        Voting mockVoting = new Voting();
+        mockRound.setVoting(mockVoting);
+        mockGame.setCurrentRound(1);
+        mockGame.setRound(mockRound);
+        mockLobby.setGame(mockGame);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+          for (long userId : mockLobby.getPlayers()){
+            mockVoting.setUserVote(userId, 0);
+          }
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        gameService.setVote(1L, 1L);
+        gameService.setVote(1L, 1L);
+        gameService.setVote(1L, 1L);
+        gameService.setVote(1L, 2L);
+        gameService.setVote(1L, 2L);
+        assertEquals(3, mockVoting.getUserVotes().get(1L));
+        assertEquals(2, mockVoting.getUserVotes().get(2L));
+    }
+
+    @Test
     public void testEndGame_gameEnds_success() {
         Lobby mockLobby = new Lobby();
         Game mockGame = new Game();
