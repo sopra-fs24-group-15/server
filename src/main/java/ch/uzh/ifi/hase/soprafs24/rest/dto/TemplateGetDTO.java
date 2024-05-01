@@ -9,6 +9,18 @@ public class TemplateGetDTO {
     private String templateId;
     private int boxCount;
 
+    //private String theme; //TODO remove for the themed gamemode
+
+    /*// Getter method for theme
+    public String getTheme() {
+        return theme;
+    }
+
+    // Setter method for theme
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }*///TODO remove for themed mode
+
     // Getter method for URL
     public String getUrl() {
         return url;

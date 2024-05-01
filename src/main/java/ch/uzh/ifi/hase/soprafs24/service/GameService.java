@@ -206,11 +206,11 @@ public class GameService {
     Map<Long, Integer> votes = voting.getUserVotes();
     //get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
-    Collections.sort(list, (e1, e2) -> e1.getValue().compareTo(e2.getValue()));
+    Collections.sort(list, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
     //counter to check for the best 3
     int counter = 0;
     for (Map.Entry<Long, Integer> entry : list){
-      //if the player has 3 votes he gets no points
+      //if the player has 0 votes he gets no points
       if (entry.getValue() == 0){
         round.addScore(entry.getKey(), 0);
       }
@@ -231,6 +231,16 @@ public class GameService {
   public void updateScore(Game game, long userId, int score){
     int tempscore = game.getScore(userId);
     game.setScore(userId, tempscore + score);
+  }
+
+  public List<User> getPlayers(long lobbyId){
+    Lobby lobby = getLobby(lobbyId);
+    List<User> players = new ArrayList<User>();
+    for (long userId : lobby.getPlayers()){
+      User tempUser = getUser(userId);
+      players.add(tempUser);
+    }
+    return players;
   }
 
 

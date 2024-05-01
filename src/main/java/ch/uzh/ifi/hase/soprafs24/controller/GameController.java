@@ -16,6 +16,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -45,6 +48,12 @@ public class GameController {
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToGamePutDTO(startGame);
     }
+
+    @GetMapping("/settings")
+    public GameGetDTO getSettings(@PathVariable("lobbyId") Long lobbyId){
+        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameService.getGame(lobbyId));
+    }
+    
   
     //working postman tested(GS)
     //works without nextroundstart in startgame
@@ -54,6 +63,13 @@ public class GameController {
         // start Game
         gameService.startGame(lobbyId, userId);
     }
+
+    @GetMapping("/rounds")
+    public Integer getcurrentRound(@PathVariable("lobbyId") Long lobbyId) {
+        Game game = gameService.getGame(lobbyId);
+        return game.getRound().getCurrentRound();
+    }
+    
 
 
     //working postman tested(GS)
@@ -87,18 +103,35 @@ public class GameController {
     @GetMapping("/ranks")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserGetDTO> getRanking(@PathVariable("lobbyId") Long lobbyId) {
+    public List<ScoreGetDTO> getRanking(@PathVariable("lobbyId") Long lobbyId) {
+        Game game = gameService.getGame(lobbyId);
         //returns a sorted list with ranks at position 0 is the first place
         List<User> users = gameService.getRanking(lobbyId);
-        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+        List<ScoreGetDTO> scoreGetDTOs = new ArrayList<>();
 
         for (User user : users) {
-            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+            ScoreGetDTO scoreGetDTO = DTOMapper.INSTANCE.convertEntityToScoreGetDTO(user);
+            scoreGetDTO.setScore(game.getScore(user.getUserId()));
+            scoreGetDTOs.add(scoreGetDTO);
         }
-        return userGetDTOs;
+
+        return scoreGetDTOs;
     }
 
-    //TODO make get mapping for the scores of the players(GS)
+    @GetMapping("/scores")
+    public List<ScoreGetDTO> getScores(@PathVariable("lobbyId") Long lobbyId) {
+        Game game = gameService.getGame(lobbyId);
+        List<User> users = gameService.getPlayers(lobbyId);
+        List<ScoreGetDTO> scoreGetDTOs = new ArrayList<>();
+
+        for (User user : users) {
+            ScoreGetDTO scoreGetDTO = DTOMapper.INSTANCE.convertEntityToScoreGetDTO(user);
+            scoreGetDTO.setScore(game.getScore(user.getUserId()));
+            scoreGetDTOs.add(scoreGetDTO);
+        }
+        return scoreGetDTOs;
+    }
+    
 
     @GetMapping("/users/edits")
     @ResponseStatus(HttpStatus.OK)

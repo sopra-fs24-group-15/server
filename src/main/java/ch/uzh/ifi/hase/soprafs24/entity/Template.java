@@ -39,6 +39,9 @@ public class Template implements Serializable {
     private int boxCount;
 
 
+    /*@Column()
+    private String theme;*/ //TODO remove for themed mode
+
     // getters and setters
 
     public Long getId() {

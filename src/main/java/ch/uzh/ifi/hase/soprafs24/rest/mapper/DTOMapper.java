@@ -55,6 +55,11 @@ public interface DTOMapper {
   @Mapping(source = "lobbyOwner", target = "lobbyOwner")
   @Mapping(source = "gameActive", target = "gameActive")
   LobbyGetDTO convertEntityToLobbyGetDTO(Lobby lobby);
+
+  @Mapping(source = "totalRounds", target = "totalRounds")
+  @Mapping(source = "gameMode", target = "gameMode")
+  @Mapping(source = "timer", target = "timer")
+  GameGetDTO convertEntityToGameGetDTO(Game game);
  
   @Mapping(source = "totalRounds", target = "totalRounds")
   //@Mapping(source = "gameMode", target = "gameMode")
@@ -83,6 +88,7 @@ public interface DTOMapper {
   //@Mapping(source = "roundId", target = "roundId")
   //GamePostDTO convertEntitytoGamePostDTO(Game game);
 
+  //@Mapping(source = "theme", target = "theme") //TODO remove for themed mode
   @Mapping(source = "url", target = "url")
   @Mapping(source = "templateId", target = "templateId")
   @Mapping(source = "boxCount", target = "boxCount")
@@ -92,4 +98,7 @@ public interface DTOMapper {
   @Mapping(source = "userId", target = "userId")
   MemeGetDTO convertEntityToMemeGetDTO(Meme meme);
 
+  @Mapping(source = "username", target = "username")
+  @Mapping(source = "userId", target = "userId")
+  ScoreGetDTO convertEntityToScoreGetDTO(User user); 
 }
