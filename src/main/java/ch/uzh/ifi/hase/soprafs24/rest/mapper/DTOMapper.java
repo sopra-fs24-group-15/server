@@ -83,6 +83,7 @@ public interface DTOMapper {
   //@Mapping(source = "roundId", target = "roundId")
   //GamePostDTO convertEntitytoGamePostDTO(Game game);
 
+  //@Mapping(source = "theme", target = "theme") //TODO remove for themed mode
   @Mapping(source = "url", target = "url")
   TemplateGetDTO convertEntityToTemplateGetDTO(Template template);
 
