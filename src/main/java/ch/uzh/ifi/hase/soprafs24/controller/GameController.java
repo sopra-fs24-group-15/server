@@ -48,6 +48,12 @@ public class GameController {
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToGamePutDTO(startGame);
     }
+
+    @GetMapping("/settings")
+    public GameGetDTO getSettings(@PathVariable("lobbyId") Long lobbyId){
+        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(gameService.getGame(lobbyId));
+    }
+    
   
     //working postman tested(GS)
     //works without nextroundstart in startgame
@@ -57,6 +63,13 @@ public class GameController {
         // start Game
         gameService.startGame(lobbyId, userId);
     }
+
+    @GetMapping("/rounds")
+    public Integer getcurrentRound(@PathVariable("lobbyId") Long lobbyId) {
+        Game game = gameService.getGame(lobbyId);
+        return game.getRound().getCurrentRound();
+    }
+    
 
 
     //working postman tested(GS)
