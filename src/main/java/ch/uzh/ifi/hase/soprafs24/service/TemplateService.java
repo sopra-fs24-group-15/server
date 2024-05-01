@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.Collections;
 
@@ -73,5 +74,28 @@ public class TemplateService {
     public Template getTemplateForUser(Long id) {
         //TODO implement
         return templateRepository.findById(id).orElse(null);
+    }
+
+    private final String[] themes = {
+        "Adventure", "Romance", "Mystery", "Horror", "Science Fiction", "Fantasy", "Historical",
+        "Comedy", "Drama", "Action", "Thriller", "Western", "Documentary", "Biography",
+        "Musical", "War", "Sports", "Political", "Crime", "Family", "Supernatural", "Espionage",
+        "Teen", "Medical", "Legal", "Sitcom", "Classic", "Reality", "Game Show", "Travel",
+        "Cooking", "Nature", "Science", "History", "Technology", "Mythology", "Animation",
+        "Children", "Educational", "News", "Art", "Lifestyle", "Magic", "Military", "Philosophical",
+        "Psychological", "Surreal", "Post-Apocalyptic", "Dystopian", "Cyberpunk", "Steampunk",
+        "Space Opera", "High Fantasy", "Epic", "Urban Fantasy", "Hard Science Fiction", "Literary",
+        "Detective", "Noir", "Zombie", "Vampire", "Gothic", "Time Travel", "Superhero", "Martial Arts",
+        "Parody", "Satire", "Folklore", "Fairy Tale", "Love Story", "Elderly", "Youth", "Coming of Age",
+        "Patriotic", "Religious", "Spiritual", "Tragicomedy", "Slice of Life", "Anthology", "Puppetry",
+        "Fan Fiction", "Magical Realism", "Alternate History", "Prehistoric", "Colonial", "Victorian",
+        "Regency", "Elizabethan", "Renaissance", "Futuristic", "Alien Invasion", "Survival", "Wilderness",
+        "Oceanic", "Desert", "Urban", "Rural", "Virtual Reality", "Augmented Reality", "MMORPG", "Interactive"
+    };
+
+    public String getTheme(){
+        Random random = new Random();
+        int index = random.nextInt(themes.length);
+        return themes[index];
     }
 }

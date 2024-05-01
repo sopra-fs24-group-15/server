@@ -47,6 +47,9 @@ public class Template implements Serializable {
     @Column()
     private String textBottom;
 
+    /*@Column()
+    private String theme;*/ //TODO remove for themed mode
+
     // getters and setters
 
     public Long getId() {
@@ -129,5 +132,12 @@ public class Template implements Serializable {
         this.textBottom = textBottom;
     }
 
+    /*public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }*/ //TODO remove for themed mode
     
 }
