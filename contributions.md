@@ -35,7 +35,7 @@ Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/79, https://g
 ## Week 4(24.04-01.05)
 Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/227, https://github.com/sopra-fs24-group-15/server/issues/232
 
-Christoph Steiner: https://github.com/sopra-fs24-group-15/server/issues/207, https://github.com/sopra-fs24-group-15/server/issues/208, https://github.com/sopra-fs24-group-15/server/issues/210
+Christoph Steiner: https://github.com/sopra-fs24-group-15/server/issues/207, https://github.com/sopra-fs24-group-15/server/issues/208, https://github.com/sopra-fs24-group-15/server/issues/210, https://github.com/sopra-fs24-group-15/server/issues/219
 
 Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/48, https://github.com/sopra-fs24-group-15/client/issues/47, https://github.com/sopra-fs24-group-15/client/issues/16, https://github.com/sopra-fs24-group-15/client/issues/51, https://github.com/sopra-fs24-group-15/client/issues/50
 
