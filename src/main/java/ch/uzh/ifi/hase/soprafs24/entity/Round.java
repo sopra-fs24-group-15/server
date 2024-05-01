@@ -48,7 +48,7 @@ public class Round implements Serializable {
     @Column(name = "score")
     private Map<Long, Integer> roundScore = new HashMap<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL) 
     @JoinTable(
         name = "round_memes",
         joinColumns = @JoinColumn(name = "round_id"),
