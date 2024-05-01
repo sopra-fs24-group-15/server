@@ -90,6 +90,8 @@ public interface DTOMapper {
 
   //@Mapping(source = "theme", target = "theme") //TODO remove for themed mode
   @Mapping(source = "url", target = "url")
+  @Mapping(source = "templateId", target = "templateId")
+  @Mapping(source = "boxCount", target = "boxCount")
   TemplateGetDTO convertEntityToTemplateGetDTO(Template template);
 
   @Mapping(source = "memeURL", target = "memeURL")

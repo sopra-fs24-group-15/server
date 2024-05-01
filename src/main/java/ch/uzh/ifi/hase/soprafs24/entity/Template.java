@@ -38,14 +38,6 @@ public class Template implements Serializable {
     @Column()
     private int boxCount;
 
-    @Column()
-    private String topic;
-
-    @Column()
-    private String textTop;
-
-    @Column()
-    private String textBottom;
 
     /*@Column()
     private String theme;*/ //TODO remove for themed mode
@@ -108,36 +100,5 @@ public class Template implements Serializable {
         this.boxCount = boxCount;
     }
 
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public String getTextTop() {
-        return textTop;
-    }
-
-    public void setTextTop(String textTop) {
-        this.textTop = textTop;
-    }
-
-    public String getTextBottom() {
-        return textBottom;
-    }
-
-    public void setTextBottom(String textBottom) {
-        this.textBottom = textBottom;
-    }
-
-    /*public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }*/ //TODO remove for themed mode
     
 }

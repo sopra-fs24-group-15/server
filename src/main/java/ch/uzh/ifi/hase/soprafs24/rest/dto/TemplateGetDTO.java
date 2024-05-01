@@ -5,7 +5,9 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
  */
 public class TemplateGetDTO {
 
-    private String url;  // Only URL field to be included in the DTO
+    private String url;  
+    private String templateId;
+    private int boxCount;
 
     //private String theme; //TODO remove for the themed gamemode
 
@@ -28,4 +30,27 @@ public class TemplateGetDTO {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    // Getter method for templateId
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    // Setter method for templateId
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    // Getter method for boxCount
+    public int getBoxCount() {
+        return boxCount;
+    }
+
+    // Setter method for boxCount
+    public void setBoxCount(int boxCount) {
+        this.boxCount = boxCount;
+    }
+
+
+
 }
