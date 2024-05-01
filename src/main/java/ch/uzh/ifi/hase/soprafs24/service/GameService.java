@@ -206,7 +206,7 @@ public class GameService {
     Map<Long, Integer> votes = voting.getUserVotes();
     //get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
-    Collections.sort(list, (e1, e2) -> e1.getValue().compareTo(e2.getValue()));
+    Collections.sort(list, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
     //counter to check for the best 3
     int counter = 0;
     for (Map.Entry<Long, Integer> entry : list){

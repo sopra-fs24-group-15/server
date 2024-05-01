@@ -171,10 +171,10 @@ public class GameServiceTest {
 
         gameService.setRoundScore(round);
 
-        assertEquals(3, round.getScore(1L));
-        assertEquals(2, round.getScore(2L));
-        assertEquals(1, round.getScore(3L));
-        assertEquals(0, round.getScore(4L));
+        assertEquals(3, round.getScore(4L));
+        assertEquals(2, round.getScore(3L));
+        assertEquals(1, round.getScore(2L));
+        assertEquals(0, round.getScore(1L));
     }
 
     @Test
