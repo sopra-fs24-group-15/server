@@ -84,6 +84,8 @@ public interface DTOMapper {
   //GamePostDTO convertEntitytoGamePostDTO(Game game);
 
   @Mapping(source = "url", target = "url")
+  @Mapping(source = "templateId", target = "templateId")
+  @Mapping(source = "boxCount", target = "boxCount")
   TemplateGetDTO convertEntityToTemplateGetDTO(Template template);
 
   @Mapping(source = "memeURL", target = "memeURL")

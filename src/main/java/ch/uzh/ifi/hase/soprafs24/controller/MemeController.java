@@ -47,9 +47,9 @@ public class MemeController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public TemplateGetDTO fetchTemplate(@PathVariable Long lobbyId) {
-            //Game game = gameService.getGame(lobbyId);
-            //Round round = gameService.getGame(lobbyId);
-            Template template = templateService.fetchTemplate();
+            Game game = gameService.getGame(lobbyId);
+            Round round = game.getRound();
+            Template template = round.getTemplate();
             
             if (template != null) {
                 TemplateGetDTO templateDTO = DTOMapper.INSTANCE.convertEntityToTemplateGetDTO(template);

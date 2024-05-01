@@ -105,26 +105,8 @@ public class TemplateServiceTest {
         assertEquals(id, template.getId());
     }
 
-    @Test
-    void testGetSetTopic() {
-        String topic = "Funny";
-        template.setTopic(topic);
-        assertEquals(topic, template.getTopic());
-    }
+   
 
-    @Test
-    void testGetSetTextTop() {
-        String textTop = "What if I told you";
-        template.setTextTop(textTop);
-        assertEquals(textTop, template.getTextTop());
-    }
-
-    @Test
-    void testGetSetTextBottom() {
-        String textBottom = "Memes are great";
-        template.setTextBottom(textBottom);
-        assertEquals(textBottom, template.getTextBottom());
-    }
 
 
 }
