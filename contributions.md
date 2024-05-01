@@ -22,7 +22,7 @@ Marc Amsler: https://github.com/sopra-fs24-group-15/server/issues/184, https://g
 Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/179, https://github.com/sopra-fs24-group-15/server/issues/180, https://github.com/sopra-fs24-group-15/server/issues/181, https://github.com/sopra-fs24-group-15/server/issues/122
 
 ## Week 3(17.04-24.04)
-Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/170, https://github.com/sopra-fs24-group-15/server/issues/173, https://github.com/sopra-fs24-group-15/server/issues/90
+Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/170, https://github.com/sopra-fs24-group-15/server/issues/173, https://github.com/sopra-fs24-group-15/server/issues/90, https://github.com/sopra-fs24-group-15/server/issues/212, https://github.com/sopra-fs24-group-15/server/issues/211
 
 Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/164, https://github.com/sopra-fs24-group-15/server/issues/165, https://github.com/sopra-fs24-group-15/server/issues/183
 
@@ -33,7 +33,7 @@ Marc Amsler: https://github.com/sopra-fs24-group-15/server/issues/189, https://g
 Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/79, https://github.com/sopra-fs24-group-15/server/issues/186
 
 ## Week 4(24.04-01.05)
-Jana Muheim:
+Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/227, https://github.com/sopra-fs24-group-15/server/issues/232
 
 Christoph Steiner:
 
@@ -44,7 +44,7 @@ Marc Amsler:
 Gian Seifert:https://github.com/sopra-fs24-group-15/server/issues/108, https://github.com/sopra-fs24-group-15/server/issues/109
 
 ## Week 5(01.05-07.05)
-Jana Muheim:
+Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/228, https://github.com/sopra-fs24-group-15/server/issues/229
 
 Christoph Steiner:
 
