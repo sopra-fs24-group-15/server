@@ -25,6 +25,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 
 
@@ -35,6 +39,10 @@ public class MemeController {
     private final TemplateService templateService;
 
     private final GameService gameService;
+
+    private final Logger log = LoggerFactory.getLogger(MemeController.class);
+
+    
 
     // Autowiring the TemplateService through the constructor
     public MemeController(TemplateService templateService, GameService gameService) {
@@ -75,8 +83,13 @@ public class MemeController {
 
         List<MemeGetDTO> memeDTOs = new ArrayList<>();
 
-        for (Meme meme : memes) {
-            memeDTOs.add(DTOMapper.INSTANCE.convertEntityToMemeGetDTO(meme));
+        if (memes != null) {
+            for (Meme meme : memes) {
+                memeDTOs.add(DTOMapper.INSTANCE.convertEntityToMemeGetDTO(meme));
+            }
+        } else {
+            // Handle the case where memes is null, perhaps log a message or return an empty list
+            log.warn("No memes found for lobbyId {} and userId {}", lobbyId, userId);
         }
 
         return memeDTOs;

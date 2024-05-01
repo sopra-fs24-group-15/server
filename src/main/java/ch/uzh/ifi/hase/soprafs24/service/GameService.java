@@ -188,12 +188,8 @@ public class GameService {
 
   public List<Meme> getMemes(long lobbyId, long userId){
     Round round = getGame(lobbyId).getRound();
-    List<Meme> allMemes=  round.getMemes();
-    for (Meme meme : allMemes){
-      if (meme.getUserId() == userId){
-        allMemes.remove(meme);
-      }
-    }
+    List<Meme> allMemes = new ArrayList<>(round.getMemes()); // create a copy of the list
+    allMemes.removeIf(meme -> meme.getUserId() == userId);
     return allMemes;
   }
   
