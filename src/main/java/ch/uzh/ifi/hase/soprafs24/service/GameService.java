@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Template;
 
 import java.util.*;
 
+import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
-import ch.uzh.ifi.hase.soprafs24.entity.Game;
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.Voting;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
@@ -42,6 +40,8 @@ public class GameService {
 
   private final UserRepository userRepository;
 
+  private GameRepository gameRepository;
+
   @Autowired
   private TemplateService templateService;
 
@@ -49,6 +49,7 @@ public class GameService {
   public GameService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository, @Qualifier("userRepository") UserRepository userRepository) {
     this.lobbyRepository = lobbyRepository;
     this.userRepository = userRepository;
+    this.gameRepository = gameRepository;
   }
 
  //helper function to get game from lobbyId
@@ -83,6 +84,13 @@ public class GameService {
     return user;
   }
 
+  public Round getRound(long lobbyId){
+      Round round = gameRepository.findByLobbyId(lobbyId).orElse(null);
+      if(round == null){
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Round not found");
+      }
+      return round;
+  }
   
   public Game createGame(long lobbyId, long userId, int totalRounds, GameMode gameMode, int timer){
     Lobby lobby = getLobby(lobbyId);
@@ -150,6 +158,7 @@ public class GameService {
       //You get a random Template of 100 (chrigi)
       Template template = templateService.fetchTemplate();
       round.setTemplate(template);
+      round.setSubmittedVotes(0);
       return true;
     }
     else{
@@ -176,6 +185,19 @@ public class GameService {
     Voting voting = round.getVoting();
     Integer currentVote = voting.getUserVote(userId);
     voting.setUserVote(userId, currentVote + 1);
+    round.setSubmittedVotes(round.getSubmittedVotes() + 1);
+  }
+
+  public int getSubmittedVotes(long lobbyId){
+      Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
+      if(lobby == null){
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+      }
+      Game game = getGame(lobbyId);
+      Round round = game.getRound();
+      int currentRound = game.getRound().getCurrentRound();
+
+      return round.getSubmittedVotes();
   }
 
   public void setMeme(long lobbyId, long userId, String memeURL){

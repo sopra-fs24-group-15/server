@@ -42,6 +42,10 @@ public class Round implements Serializable {
     @JoinColumn(name = "voting_id", referencedColumnName = "voteId")
     private Voting voting;
 
+    @Column()
+    private int submittedVotes;
+
+
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "round_scores", joinColumns = @JoinColumn(name = "round_id"))
     @MapKeyColumn(name = "user_id")
@@ -127,4 +131,12 @@ public class Round implements Serializable {
     public Boolean getRoundInEdit() {return roundInEdit; }
 
     public void setRoundInEdit(Boolean roundInEdit) {this.roundInEdit = roundInEdit;}
+
+    public int getSubmittedVotes() {
+        return submittedVotes;
+    }
+
+    public void setSubmittedVotes(int submittedVotes) {
+        this.submittedVotes = submittedVotes;
+    }
 }

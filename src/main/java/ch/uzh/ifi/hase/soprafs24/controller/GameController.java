@@ -2,24 +2,17 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs24.entity.Round;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
-import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 
 
 @RestController
@@ -96,6 +89,14 @@ public class GameController {
     public void vote(@PathVariable("lobbyId") Long lobbyId, @RequestBody Long userId) {
         // vote
         gameService.setVote(lobbyId, userId);
+    }
+
+    // how many votes have been submitted (jana)
+    @GetMapping("/votes")
+    public Integer getSubmittedVotes(@PathVariable("lobbyId") Long lobbyId) {
+        Game game = gameService.getGame(lobbyId);
+        int submittedVotes = gameService.getSubmittedVotes(lobbyId);
+        return submittedVotes;
     }
     
     //working postman tested(GS)
