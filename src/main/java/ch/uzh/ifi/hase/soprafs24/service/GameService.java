@@ -8,7 +8,6 @@ import ch.uzh.ifi.hase.soprafs24.entity.Template;
 
 import java.util.*;
 
-import ch.uzh.ifi.hase.soprafs24.repository.GameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +39,6 @@ public class GameService {
 
   private final UserRepository userRepository;
 
-  private GameRepository gameRepository;
-
   @Autowired
   private TemplateService templateService;
 
@@ -49,7 +46,6 @@ public class GameService {
   public GameService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository, @Qualifier("userRepository") UserRepository userRepository) {
     this.lobbyRepository = lobbyRepository;
     this.userRepository = userRepository;
-    this.gameRepository = gameRepository;
   }
 
  //helper function to get game from lobbyId
@@ -82,14 +78,6 @@ public class GameService {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
     return user;
-  }
-
-  public Round getRound(long lobbyId){
-      Round round = gameRepository.findByLobbyId(lobbyId).orElse(null);
-      if(round == null){
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Round not found");
-      }
-      return round;
   }
   
   public Game createGame(long lobbyId, long userId, int totalRounds, GameMode gameMode, int timer){
