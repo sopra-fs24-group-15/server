@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import java.io.Serializable;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CascadeType;
@@ -16,12 +13,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
-import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "GAME")

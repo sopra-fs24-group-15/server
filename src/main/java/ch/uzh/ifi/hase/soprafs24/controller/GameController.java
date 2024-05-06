@@ -94,7 +94,6 @@ public class GameController {
     // how many votes have been submitted (jana)
     @GetMapping("/votes")
     public Integer getSubmittedVotes(@PathVariable("lobbyId") Long lobbyId) {
-        Game game = gameService.getGame(lobbyId);
         int submittedVotes = gameService.getSubmittedVotes(lobbyId);
         return submittedVotes;
     }

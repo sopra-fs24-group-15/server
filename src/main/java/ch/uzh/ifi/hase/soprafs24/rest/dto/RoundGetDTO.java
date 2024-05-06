@@ -1,8 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-import java.util.List;
-import ch.uzh.ifi.hase.soprafs24.entity.Round;
-
 public class RoundGetDTO {
     
     private Long LobbyId;

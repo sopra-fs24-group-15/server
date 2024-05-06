@@ -167,14 +167,8 @@ public class GameService {
   }
 
   public int getSubmittedVotes(long lobbyId){
-      Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
-      if(lobby == null){
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
-      }
       Game game = getGame(lobbyId);
       Round round = game.getRound();
-      int currentRound = game.getRound().getCurrentRound();
-
       return round.getSubmittedVotes();
   }
 

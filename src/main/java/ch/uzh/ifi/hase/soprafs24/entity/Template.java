@@ -1,14 +1,13 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Column;
 import javax.persistence.Table;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "TEMPLATE")

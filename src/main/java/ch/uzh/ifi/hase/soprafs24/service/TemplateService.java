@@ -1,17 +1,19 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import ch.uzh.ifi.hase.soprafs24.entity.Template;
-import ch.uzh.ifi.hase.soprafs24.repository.TemplateRepository;
-import org.springframework.web.client.RestTemplate;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.Collections;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ch.uzh.ifi.hase.soprafs24.entity.Template;
+import ch.uzh.ifi.hase.soprafs24.repository.TemplateRepository;
 
 
 

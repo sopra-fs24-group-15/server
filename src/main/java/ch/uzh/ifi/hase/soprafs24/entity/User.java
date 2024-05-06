@@ -1,9 +1,13 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 
-import javax.persistence.*;
-import java.io.Serial;
 import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Internal User Representation
@@ -16,7 +20,6 @@ import java.io.Serializable;
  * the primary key
  */
 
-//TODO change according to class diagram
 @Entity
 @Table(name = "USER")
 public class User implements Serializable {
