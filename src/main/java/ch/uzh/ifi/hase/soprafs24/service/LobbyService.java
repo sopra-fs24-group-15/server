@@ -80,7 +80,7 @@ public class LobbyService {
   public Lobby getLobby(Long id){
     Lobby foundLobby = this.lobbyRepository.findById(id).orElse(null);
     if(foundLobby==null){
-      throw new ResponseStatusException((HttpStatus.NOT_FOUND), "The lobby you searched for doesn't exist");
+      throw new ResponseStatusException((HttpStatus.NOT_FOUND), id + " not found");
     }
     return foundLobby;
   }
@@ -142,6 +142,7 @@ public class LobbyService {
       if (lobbyToJoin.getPlayers().size() < 8) {
         //adding the user to the lobby
           lobbyToJoin.addPlayer(userId);
+          user.setLobbyId(lobbyToJoin.getLobbyId());
         }
       else {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby is full");
       }

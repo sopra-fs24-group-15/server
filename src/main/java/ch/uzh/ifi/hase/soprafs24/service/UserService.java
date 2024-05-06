@@ -13,6 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+
+
+
+
+
 
 
 /**
@@ -30,11 +36,14 @@ public class UserService {
   private final Logger log = LoggerFactory.getLogger(UserService.class);
   private final UserRepository userRepository;
   private final LobbyRepository lobbyRepository;
+  private final LobbyService lobbyService;
+
 
   @Autowired
-  public UserService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository, @Qualifier("userRepository") UserRepository userRepository) {
+  public UserService(@Qualifier("lobbyRepository") LobbyRepository lobbyRepository, @Qualifier("userRepository") UserRepository userRepository, LobbyService lobbyService) {
     this.userRepository = userRepository;
     this.lobbyRepository = lobbyRepository;
+    this.lobbyService = lobbyService;
   }
 
   public List<User> getUsers() {
@@ -79,6 +88,9 @@ public class UserService {
   public void deleteUser(Long userId) {
       User user = userRepository.findById(userId).orElseThrow(() ->
               new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+      
+      // Delete the user from the lobby
+      lobbyService.leaveLobby(userId, user.getLobbyId());
       userRepository.delete(user);
   }
 
