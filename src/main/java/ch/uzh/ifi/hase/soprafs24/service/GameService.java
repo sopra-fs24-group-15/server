@@ -114,16 +114,6 @@ public class GameService {
     game.setCurrentRound(0);
   }
 
-  //TODO implement correct
-  public boolean getUsersStillEditing(Long lobbyId){
-    Lobby lobby = getLobby(lobbyId);
-    Game game = getGame(lobbyId);
-    Round round = game.getRound();
-
-    //implement
-    return true;
-  }
-
   public boolean startNextRound(long lobbyId){
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);

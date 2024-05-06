@@ -132,11 +132,4 @@ public class GameController {
         }
         return scoreGetDTOs;
     }
-    
-
-    @GetMapping("/users/edits")
-    @ResponseStatus(HttpStatus.OK)
-    public boolean getUsersEditing(@PathVariable("lobbyId") Long lobbyId) {
-        return gameService.getUsersStillEditing(lobbyId);
-    }
 }
