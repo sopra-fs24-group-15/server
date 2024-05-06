@@ -80,7 +80,7 @@ public class LobbyService {
   public Lobby getLobby(Long id){
     Lobby foundLobby = this.lobbyRepository.findById(id).orElse(null);
     if(foundLobby==null){
-      throw new ResponseStatusException((HttpStatus.NOT_FOUND), "The lobby you searched for doesn't exist");
+      throw new ResponseStatusException((HttpStatus.NOT_FOUND), id + " not found");
     }
     return foundLobby;
   }
@@ -95,16 +95,36 @@ public class LobbyService {
 
   
   public Lobby createLobby(Long userId) {
+    // Initialize a new lobby
     Lobby newLobby = new Lobby();
+    
+    // Generate a unique join code for the lobby
     generateUniqueJoinCode(newLobby);
+    
+    // Add the user to the new lobby and set them as the owner
     newLobby.addPlayer(userId);
     newLobby.setLobbyOwner(userId);
     newLobby.setGameActive(false);
-    //Saves the lobby in the repository(needs flushing)
+
+    // Update the user's information to reflect the lobby ownership
+    User user = userRepository.findById(userId).orElse(null);
+    if (user != null) {
+        user.setLobbyId(null); // The lobby's new ID will be assigned after saving
+        user.setLobbyOwner(true);
+    }
+
+    // Save the lobby in the repository and flush changes to persist
     newLobby = lobbyRepository.save(newLobby);
     lobbyRepository.flush();
+
+    // Update the user's lobby ID to the newly created lobby's ID
+    if (user != null) {
+        user.setLobbyId(newLobby.getLobbyId());
+        userRepository.saveAndFlush(user);
+    }
+
     return newLobby;
-  }
+}
 
   public void updateLobbyOwner(Long userId, Long lobbyId) {
     //finding the lobby by the id 
@@ -142,6 +162,7 @@ public class LobbyService {
       if (lobbyToJoin.getPlayers().size() < 8) {
         //adding the user to the lobby
           lobbyToJoin.addPlayer(userId);
+          user.setLobbyId(lobbyToJoin.getLobbyId());
         }
       else {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby is full");
       }
@@ -159,17 +180,5 @@ public class LobbyService {
       }
     }
     return true;
-  }
-
-  public void leaveLobby(Long userId, Long lobbyId) {
-    //finding the lobby by the id 
-    Lobby lobbyToLeave = getLobby(lobbyId);
-    //checking if the user even exists
-    User user = userRepository.findById(userId).orElse(null);
-      if(user == null){
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-      }
-    //removing the user from the lobby
-    lobbyToLeave.removePlayer(userId);
   }
 }

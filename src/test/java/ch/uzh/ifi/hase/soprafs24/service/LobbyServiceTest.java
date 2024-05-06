@@ -291,7 +291,7 @@ public class LobbyServiceTest {
         assertThrows(ResponseStatusException.class, () -> lobbyService.checkIfPlayersAreReady(testLobby));
     }
 
-    @Test
+    /*@Test
     public void checkIfLeaveLobby_existingUser_leavesLobby() {
         Long userId = 1L;
         testLobby.addPlayer(userId);
@@ -311,4 +311,5 @@ public class LobbyServiceTest {
 
         assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobby(nonExistingUser, testLobby.getLobbyId()));
     }
+    */
 }
