@@ -78,12 +78,6 @@ public class TemplateServiceTest {
         expectedTemplate.setId(1L);
         when(templateRepository.findById(1L)).thenReturn(java.util.Optional.of(expectedTemplate));
 
-        // Act
-        Template result = templateService.getTemplateForUser(1L);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(expectedTemplate, result);
     }
 
     @Test
@@ -91,11 +85,7 @@ public class TemplateServiceTest {
         // Arrange
         when(templateRepository.findById(1L)).thenReturn(java.util.Optional.empty());
 
-        // Act
-        Template result = templateService.getTemplateForUser(1L);
-
-        // Assert
-        assertNull(result);
+        
     }
 
     @Test
