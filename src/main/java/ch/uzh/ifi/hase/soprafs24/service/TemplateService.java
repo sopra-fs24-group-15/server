@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.uzh.ifi.hase.soprafs24.entity.Template;
 import ch.uzh.ifi.hase.soprafs24.repository.TemplateRepository;
 
+import java.util.Collections;
+
 
 
 @Service
