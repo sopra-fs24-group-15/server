@@ -47,7 +47,7 @@ public class UserService {
   }
 
 
-  public User createUser(String username, boolean lobbyOwner) {
+  public User createUser(String username, boolean lobbyOwner, String profilePicture) {
         // Check if username is already taken
       Optional<User> found = userRepository.findByUsername(username);
       if (found.isPresent()) {
@@ -59,6 +59,7 @@ public class UserService {
       newUser.setUserReady (false);
       newUser.setLobbyOwner(lobbyOwner);
       newUser.setUsername(username);
+      newUser.setProfilePicture(profilePicture);
       newUser = userRepository.saveAndFlush(newUser);
       log.debug("Created Information for User: {}", newUser);
       return newUser;

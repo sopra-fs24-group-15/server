@@ -26,10 +26,12 @@ public interface DTOMapper {
 
   @Mapping(source = "username", target = "username")
   @Mapping(source = "lobbyOwner", target = "lobbyOwner")
+  @Mapping(source = "profilePicture", target = "profilePicture")
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
   @Mapping(source = "username", target = "username")
   @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "profilePicture", target = "profilePicture")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
   @Mapping(source = "username", target = "username")
@@ -100,5 +102,6 @@ public interface DTOMapper {
 
   @Mapping(source = "username", target = "username")
   @Mapping(source = "userId", target = "userId")
+  @Mapping(source = "profilePicture", target = "profilePicture")
   ScoreGetDTO convertEntityToScoreGetDTO(User user); 
 }
