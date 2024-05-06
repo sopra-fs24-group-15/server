@@ -48,7 +48,7 @@ Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/228, https://g
 
 Christof Steiner:
 
-Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/50, https://github.com/sopra-fs24-group-15/client/issues/57, https://github.com/sopra-fs24-group-15/client/issues/21
+Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/50, https://github.com/sopra-fs24-group-15/client/issues/57, https://github.com/sopra-fs24-group-15/client/issues/21, https://github.com/sopra-fs24-group-15/client/issues/9, https://github.com/sopra-fs24-group-15/client/issues/7
 
 Marc Amsler:
 
