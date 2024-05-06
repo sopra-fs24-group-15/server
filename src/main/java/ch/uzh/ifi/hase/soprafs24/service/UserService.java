@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 
 
@@ -86,13 +88,50 @@ public class UserService {
   }
 
   public void deleteUser(Long userId) {
-      User user = userRepository.findById(userId).orElseThrow(() ->
-              new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
-      
-      // Delete the user from the lobby
-      lobbyService.leaveLobby(userId, user.getLobbyId());
-      userRepository.delete(user);
-  }
+    // Find the user by their ID
+    User user = userRepository.findById(userId).orElseThrow(() ->
+            new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+
+    // Check if the user is in a lobby
+    Long lobbyId = user.getLobbyId();
+    if (lobbyId != null) {
+        // Retrieve the lobby by its ID
+        Lobby lobby = lobbyRepository.findById(lobbyId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found."));
+
+        // Remove the user from the lobby's list of players
+        lobby.removePlayer(userId);
+
+        // If the user was the lobby owner, assign the lobby to another player
+        if (user.getLobbyOwner()) {
+            List<Long> players = lobby.getPlayers();
+            if (!players.isEmpty()) {
+                // Assign a new owner if players remain
+                Long newOwnerId = players.get(0);
+                lobby.setLobbyOwner(newOwnerId);
+
+                // Update the new owner's User entity to mark them as the lobby owner
+                User newOwner = userRepository.findById(newOwnerId).orElse(null);
+                if (newOwner != null) {
+                    newOwner.setLobbyOwner(true);
+                    userRepository.save(newOwner);
+                }
+            } else {
+                // No players left, so delete the lobby
+                lobbyRepository.delete(lobby);
+                lobbyId = null; // Prevent further processing if the lobby is deleted
+            }
+        }
+
+        // Persist changes to the lobby if it wasn't deleted
+        if (lobbyId != null) {
+            lobbyRepository.saveAndFlush(lobby);
+        }
+    }
+
+    // Delete the user and persist the changes
+    userRepository.delete(user);
+}
 
   public void setUserReady(Long userId){
       User user = userRepository.findById(userId).orElseThrow(() ->

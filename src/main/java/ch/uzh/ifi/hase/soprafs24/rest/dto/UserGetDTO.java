@@ -6,6 +6,7 @@ public class UserGetDTO {
   private String username;
   private Long userId;
   private String profilePicture;
+  private boolean lobbyOwner;
 
 
   public String getUsername() {
@@ -31,4 +32,13 @@ public class UserGetDTO {
   public void setProfilePicture(String profilePicture) {
     this.profilePicture = profilePicture;
   }
+
+  public boolean getLobbyOwner() {
+    return lobbyOwner;
+  }
+
+  public void setLobbyOwner(boolean lobbyOwner) {
+    this.lobbyOwner = lobbyOwner;
+  }
+
 }
