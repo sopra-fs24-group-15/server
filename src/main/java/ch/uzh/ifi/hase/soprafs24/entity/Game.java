@@ -54,13 +54,6 @@ public class Game implements Serializable {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "round_id", referencedColumnName = "roundId")
     private Round round;
-    
-    //TODO why is here the lobbyid and roundid? (GS)
-    //@Column(nullable = false, unique = true)
-    //private Long lobbyId;
-
-    //@Column()
-    //private Long roundId;
 
     public Long getGameId() {
         return gameId;

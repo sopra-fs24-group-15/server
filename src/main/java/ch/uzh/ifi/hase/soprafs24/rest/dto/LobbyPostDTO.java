@@ -2,8 +2,6 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 import java.util.List;
 
-
-//TODO change to match lobby entity
 public class LobbyPostDTO {
 
 

@@ -18,7 +18,6 @@ import org.mapstruct.factory.Mappers;
  * creating information (POST).
  */
 
-//TODO change post and get for lobby to match entity and needs
 @Mapper
 public interface DTOMapper {
 

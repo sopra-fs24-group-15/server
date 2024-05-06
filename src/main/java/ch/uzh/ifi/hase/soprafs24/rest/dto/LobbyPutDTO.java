@@ -1,8 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 
-
-//TODO change to match Lobby entity
 public class LobbyPutDTO {
 
     private String lobbyJoinCode;

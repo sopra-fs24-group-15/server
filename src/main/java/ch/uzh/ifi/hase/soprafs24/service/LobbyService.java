@@ -135,8 +135,6 @@ public class LobbyService {
 
   }
 
-  //TODO check if every List was updated to use long and not User (GS)
-  //TODO use this in controller with findbyjoincode to let users join via join code (GS)
   public void joinLobby(Long userId, Lobby lobbyToJoin) {
     //checking if the user even exists
     User user = userRepository.findById(userId).orElse(null);

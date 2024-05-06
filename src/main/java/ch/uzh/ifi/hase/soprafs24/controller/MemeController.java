@@ -50,7 +50,7 @@ public class MemeController {
         this.gameService = gameService;
     }
 
-    //TODO change path to lobbys and templates(GS)
+
     @GetMapping("/lobbys/{lobbyId}/templates")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
