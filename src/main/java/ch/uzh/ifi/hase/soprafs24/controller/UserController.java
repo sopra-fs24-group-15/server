@@ -59,7 +59,7 @@ public class UserController {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         // create user
-        User createdUser = userService.createUser(userInput.getUsername(),userInput.getLobbyOwner());
+        User createdUser = userService.createUser(userInput.getUsername(),userInput.getLobbyOwner(), userInput.getProfilePicture());
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }

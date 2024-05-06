@@ -6,6 +6,7 @@ public class ScoreGetDTO {
   private String username;
   private Long userId;
   private int score;
+  private String profilePicture;
 
 
   public String getUsername() {
@@ -30,5 +31,13 @@ public class ScoreGetDTO {
 
   public void setScore(int score) {
     this.score = score;
+  }
+
+  public String getProfilePicture() {
+    return profilePicture;
+  }
+
+  public void setProfilePicture(String profilePicture) {
+    this.profilePicture = profilePicture;
   }
 }

@@ -5,6 +5,7 @@ public class UserGetDTO {
 
   private String username;
   private Long userId;
+  private String profilePicture;
 
 
   public String getUsername() {
@@ -21,5 +22,13 @@ public class UserGetDTO {
 
   public void setUserId(Long userId) {
     this.userId = userId;
+  }
+
+  public String getProfilePicture() {
+    return profilePicture;
+  }
+
+  public void setProfilePicture(String profilePicture) {
+    this.profilePicture = profilePicture;
   }
 }

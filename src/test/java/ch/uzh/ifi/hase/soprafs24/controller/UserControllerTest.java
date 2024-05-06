@@ -75,8 +75,9 @@ public class UserControllerTest {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("testUsername");
         userPostDTO.setLobbyOwner(true);
+        userPostDTO.setProfilePicture("testProfilePicture");
 
-        given(userService.createUser(Mockito.anyString(), Mockito.anyBoolean())).willReturn(user);
+        given(userService.createUser(Mockito.anyString(), Mockito.anyBoolean(), Mockito.anyString())).willReturn(user);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users")

@@ -21,6 +21,10 @@ public class Template implements Serializable {
 
     @Column(unique = true)
     private String templateId;
+    
+    // New field to store topics as a comma-separated string
+    @Column
+    private String topics;
 
     @Column()
     private String name;
@@ -38,8 +42,6 @@ public class Template implements Serializable {
     private int boxCount;
 
 
-    /*@Column()
-    private String theme;*/ //TODO remove for themed mode
 
     // getters and setters
 
@@ -97,6 +99,14 @@ public class Template implements Serializable {
     
     public void setBoxCount(int boxCount) {
         this.boxCount = boxCount;
+    }
+
+    public String getTopics() {
+        return topics;
+    }
+
+    public void setTopics(String topics) {
+        this.topics = topics;
     }
 
     
