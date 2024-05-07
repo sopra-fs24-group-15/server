@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -66,6 +67,53 @@ public class GameServiceTest {
     }
 
     @Test
+    public void testGetGame_gameNotFound_throwsException() {
+        Lobby mockLobby = new Lobby();
+        mockLobby.setGame(null);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        assertThrows(ResponseStatusException.class, () -> gameService.getGame(1L));
+    }
+
+    @Test
+    public void testGetLobby_lobbyFound_success() {
+        Lobby mockLobby = new Lobby();
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        Lobby lobby = gameService.getLobby(1L);
+        assertNotNull(lobby);
+        assertEquals(mockLobby, lobby);
+    }
+
+    @Test
+    public void testGetLobby_lobbyNotFound_throwsException() {
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> gameService.getLobby(1L));
+    }
+
+    @Test
+    public void testGetUser_userFound_success() {
+        User mockUser = new User();
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
+
+        User user = gameService.getUser(1L);
+        assertNotNull(user);
+        assertEquals(mockUser, user);
+    }
+
+    @Test
+    public void testGetUser_userNotFound_throwsException() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ResponseStatusException.class, () -> gameService.getUser(1L));
+    }
+
+
+    @Test
     public void testCreateGame_success() {
         Lobby mockLobby = new Lobby();
         User mockUser = new User();
@@ -82,6 +130,37 @@ public class GameServiceTest {
         assertEquals(5, game.getTotalRounds());
         assertEquals(GameMode.BASIC, game.getGameMode());
         assertEquals(60, game.getTimer());
+    }
+
+    @Test
+    public void testCreateGame_notLobbyOwner_throwsException() {
+        Lobby mockLobby = new Lobby();
+        User mockUser = new User();
+        mockUser.setUserId(2L);
+        mockLobby.setLobbyOwner(1L);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
+
+        assertThrows(ResponseStatusException.class, () -> gameService.createGame(1L, 2L, 5, GameMode.BASIC, 60));
+    }
+
+    @Test
+    public void testStartGame_success() {
+        Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        User mockUser = new User();
+        mockUser.setUserId(1L);
+        mockLobby.setLobbyOwner(1L);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+        mockLobby.setGame(mockGame);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(mockUser));
+
+        gameService.startGame(1L, 1L);
+        assertTrue(mockLobby.getGameActive());
     }
 
     @Test
@@ -155,6 +234,75 @@ public class GameServiceTest {
     }
 
     @Test
+    public void testEndRound_success() {
+        Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        Round mockRound = new Round();
+        Voting mockVoting = new Voting();
+        mockRound.setVoting(mockVoting);
+        mockRound.setRoundInEdit(true);
+        mockGame.setRound(mockRound);
+        mockGame.setCurrentRound(1);
+        mockLobby.setGame(mockGame);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        gameService.endRound(1L);
+        assertEquals(1, mockGame.getCurrentRound());
+    }
+
+    @Test
+    public void testGetSubmittedVotes_success() {
+        Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        Round mockRound = new Round();
+        mockLobby.setGame(mockGame);
+        mockGame.setRound(mockRound);
+        mockRound.setSubmittedVotes(3);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        assertEquals(3, gameService.getSubmittedVotes(1L));
+    }
+
+    @Test
+    public void testSetMeme_success() {
+        Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        Round mockRound = new Round();
+        mockRound.setRoundInEdit(true);
+        mockGame.setCurrentRound(1);
+        mockGame.setRound(mockRound);
+        mockLobby.setGame(mockGame);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        gameService.setMeme(1L, 1L, "memeURL");
+        assertEquals(1, mockRound.getMemes().size());
+    }
+
+    @Test
+    public void testGetMeme_success() {
+        Lobby mockLobby = new Lobby();
+        Game mockGame = new Game();
+        Round mockRound = new Round();
+        mockRound.setRoundInEdit(true);
+        mockGame.setCurrentRound(1);
+        mockGame.setRound(mockRound);
+        mockLobby.setGame(mockGame);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+
+        gameService.setMeme(1L, 1L, "memeURL1");
+        gameService.setMeme(1L, 2L, "memeURL2");
+        assertEquals("memeURL2", gameService.getMemes(1L, 1L).get(0).getMemeURL());
+    }
+
+
+
+    @Test
     public void testSetRoundScore_standardVotes_success() {
         Voting voting = new Voting();
         HashMap<Long, Integer> votes = new HashMap<>();
@@ -215,6 +363,45 @@ public class GameServiceTest {
         assertEquals(1, round.getScore(3L));
         assertEquals(0, round.getScore(4L));
     } 
+
+    @Test
+    public void testUpdateScore_success() {
+        long lobbyId = 1L;
+        long userId = 1L;
+        int scoreToAdd = 10;
+
+        Game game = new Game();
+        game.setScores(new HashMap<>());
+        game.setScore(userId, 20);
+
+        Lobby lobby = new Lobby();
+        lobby.setGame(game);
+        when(lobbyRepository.findById(lobbyId)).thenReturn(Optional.of(lobby));
+
+        gameService.updateScore(game, userId, scoreToAdd);
+        assertEquals(30, game.getScore(userId));
+    }
+
+    @Test
+    public void testGetPlayers_success() {
+        Lobby mockLobby = new Lobby();
+        User mockUser1 = new User();
+        mockUser1.setUserId(1L);
+        User mockUser2 = new User();
+        mockUser2.setUserId(2L);
+        User mockUser3 = new User();
+        mockUser3.setUserId(3L);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
+        List<User> users = Arrays.asList(mockUser1, mockUser2, mockUser3);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(mockUser1));
+        when(userRepository.findById(2L)).thenReturn(Optional.of(mockUser2));
+        when(userRepository.findById(3L)).thenReturn(Optional.of(mockUser3));
+
+        List<User> players = gameService.getPlayers(1L);
+        assertEquals(users, players);
+    }
 
     @Test
     public void testGetRanking_regularCase_success() {
