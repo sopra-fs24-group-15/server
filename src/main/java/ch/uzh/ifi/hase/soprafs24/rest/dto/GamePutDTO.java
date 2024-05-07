@@ -6,7 +6,7 @@ public class GamePutDTO {
 
     private Integer totalRounds;
 
-    //private GameMode gameMode;
+    private GameMode gameMode;
 
     private Integer timer;
 
@@ -18,14 +18,14 @@ public class GamePutDTO {
         this.totalRounds = totalRounds;
     }
 
-    /* 
+    
     public GameMode getGameMode() {
         return gameMode;
     }
 
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
-    }*/
+    }
 
     public Integer getTimer() {
         return timer;

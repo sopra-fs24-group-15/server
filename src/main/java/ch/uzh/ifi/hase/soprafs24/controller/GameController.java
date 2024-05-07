@@ -37,7 +37,7 @@ public class GameController {
         System.out.println("GamePutDTO: " + gamePutDTO);
 
         // create game
-        Game startGame = gameService.createGame(lobbyId, userId, gameInput.getTotalRounds(), GameMode.BASIC, gameInput.getTimer());
+        Game startGame = gameService.createGame(lobbyId, userId, gameInput.getTotalRounds(), gameInput.getGameMode(), gameInput.getTimer());
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToGamePutDTO(startGame);
     }

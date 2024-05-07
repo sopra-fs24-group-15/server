@@ -115,12 +115,4 @@ public class Game implements Serializable {
     public void setRound(Round round) {
         this.round = round;
     }
-
-    //public Long getLobbyId() {return lobbyId;}
-
-    //public void setLobbyId(Long lobbyId) {this.lobbyId = lobbyId;}
-
-    //public Long getRoundId() {return roundId;}
-
-    //public void setRoundId(Long roundId) {this.roundId = roundId;}
 }

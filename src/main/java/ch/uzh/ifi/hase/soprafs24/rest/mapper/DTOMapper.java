@@ -63,12 +63,12 @@ public interface DTOMapper {
   GameGetDTO convertEntityToGameGetDTO(Game game);
  
   @Mapping(source = "totalRounds", target = "totalRounds")
-  //@Mapping(source = "gameMode", target = "gameMode")
+  @Mapping(source = "gameMode", target = "gameMode")
   @Mapping(source = "timer", target = "timer")
   Game convertGamePutDTOtoEntity(GamePutDTO gamePutDTO);
 
   @Mapping(source = "totalRounds", target = "totalRounds")
-  //@Mapping(source = "gameMode", target = "gameMode")
+  @Mapping(source = "gameMode", target = "gameMode")
   @Mapping(source = "timer", target = "timer")
   GamePutDTO convertEntityToGamePutDTO(Game game);
 
