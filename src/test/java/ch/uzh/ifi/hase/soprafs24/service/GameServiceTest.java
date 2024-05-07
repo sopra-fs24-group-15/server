@@ -201,7 +201,8 @@ public class GameServiceTest {
         HashMap<Long, Integer> votes = new HashMap<>();
         votes.put(1L, 30);
         votes.put(2L, 30);
-        votes.put(3L, 30);
+        votes.put(3L, 20);
+        votes.put(4L, 20);
         voting.setUserVotes(votes);
 
         Round round = new Round();
@@ -210,8 +211,9 @@ public class GameServiceTest {
         gameService.setRoundScore(round);
 
         assertEquals(3, round.getScore(1L));
-        assertEquals(2, round.getScore(2L));
-        assertEquals(1, round.getScore(3L)); 
+        assertEquals(3, round.getScore(2L));
+        assertEquals(1, round.getScore(3L));
+        assertEquals(0, round.getScore(4L));
     } 
 
     @Test
