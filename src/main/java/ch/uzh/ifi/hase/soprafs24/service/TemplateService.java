@@ -1,23 +1,18 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ch.uzh.ifi.hase.soprafs24.entity.Template;
+import ch.uzh.ifi.hase.soprafs24.repository.TemplateRepository;
+import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ch.uzh.ifi.hase.soprafs24.entity.Template;
-import ch.uzh.ifi.hase.soprafs24.repository.TemplateRepository;
-
 import java.util.Collections;
-
 
 
 @Service
@@ -40,6 +35,12 @@ public class TemplateService {
         return selectRandomTemplate(templates);
     }
 
+    private List<String> getRandomTopicsList(int count) {
+        List<String> topicsList = new ArrayList<>(List.of(topics));
+        Collections.shuffle(topicsList);
+        return topicsList.subList(0, count);
+    }
+
     private List<Template> fetchTemplatesFromAPI() {
         final String url = "https://api.imgflip.com/get_memes";
         List<Template> newTemplates = new ArrayList<>();
@@ -57,7 +58,7 @@ public class TemplateService {
                 template.setHeight(meme.path("height").asInt());
                 template.setBoxCount(meme.path("box_count").asInt());
 
-                template.setTopics(getRandomTopicsString(3));
+                template.setTopics(getRandomTopicsList(3));
                 newTemplates.add(template);
             }
             templateRepository.saveAll(newTemplates);  // Save all at once for efficiency
@@ -71,19 +72,17 @@ public class TemplateService {
         if (!templates.isEmpty()) {
             int randomIndex = ThreadLocalRandom.current().nextInt(templates.size());
             Template boxCount2;
-
-            // just return a Template with boxcount of 2 but still a random one
+            
             do {
                 boxCount2 = templates.get(randomIndex);
                 randomIndex = ThreadLocalRandom.current().nextInt(templates.size());
-            } while (boxCount2.getBoxCount() != 2);
+            } while (boxCount2.getBoxCount() > 4);
 
             return boxCount2;
             
         }
         return null;
     }
-
 
 
     private final String[] topics = {
@@ -102,10 +101,4 @@ public class TemplateService {
         "Regency", "Elizabethan", "Renaissance", "Futuristic", "Alien Invasion", "Survival", "Wilderness",
         "Oceanic", "Desert", "Urban", "Rural", "Virtual Reality", "Augmented Reality", "MMORPG", "Interactive"
     };
-
-    private String getRandomTopicsString(int count) {
-        List<String> topicsList = new ArrayList<>(List.of(topics));
-        Collections.shuffle(topicsList);
-        return String.join(", ", topicsList.subList(0, count));
-    }
 }

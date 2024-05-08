@@ -94,6 +94,7 @@ public interface DTOMapper {
   @Mapping(source = "templateId", target = "templateId")
   @Mapping(source = "boxCount", target = "boxCount")
   @Mapping(source = "topics", target = "topics")
+  @Mapping(source = "topic", target = "topic")
   TemplateGetDTO convertEntityToTemplateGetDTO(Template template);
 
   @Mapping(source = "memeURL", target = "memeURL")

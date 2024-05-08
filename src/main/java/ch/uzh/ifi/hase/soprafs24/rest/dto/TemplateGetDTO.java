@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
+import java.util.List;
+
 /**
  * Data Transfer Object for exposing only the URL of a Template entity.
  */
@@ -8,19 +10,8 @@ public class TemplateGetDTO {
     private String url;  
     private String templateId;
     private int boxCount;
-    private String topics;
-
-    //private String theme; //TODO remove for the themed gamemode
-
-    /*// Getter method for theme
-    public String getTheme() {
-        return theme;
-    }
-
-    // Setter method for theme
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }*///TODO remove for themed mode
+    private List<String> topics;
+    private String topic;
 
     // Getter method for URL
     public String getUrl() {
@@ -53,15 +44,25 @@ public class TemplateGetDTO {
     }
 
     // Getter method for topics
-    public String getTopics() {
+    public List<String> getTopics() {
         return topics;
     }
 
     // Setter method for topics
-    public void setTopics(String topics) {
+    public void setTopics(List<String> topics) {
         this.topics = topics;
     }
 
+    // Getter method for topic
+    public String getTopic() {
+        return topic;
+    }
+
+    // Setter method for topic
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
 
 
 }
+
