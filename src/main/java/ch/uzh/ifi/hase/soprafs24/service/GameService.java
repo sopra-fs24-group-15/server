@@ -114,6 +114,16 @@ public class GameService {
     game.setCurrentRound(0);
   }
 
+  //TODO implement correct
+  public boolean getUsersStillEditing(Long lobbyId){
+    Lobby lobby = getLobby(lobbyId);
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+
+    //implement
+    return true;
+  }
+
   public boolean startNextRound(long lobbyId){
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
@@ -156,7 +166,6 @@ public class GameService {
     }
   }
 
-
   public void setVote(long lobbyId, long userId){
     Game game = getGame(lobbyId);
     Round round = game.getRound();
@@ -167,8 +176,14 @@ public class GameService {
   }
 
   public int getSubmittedVotes(long lobbyId){
+      Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
+      if(lobby == null){
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+      }
       Game game = getGame(lobbyId);
       Round round = game.getRound();
+      int currentRound = game.getRound().getCurrentRound();
+
       return round.getSubmittedVotes();
   }
 
@@ -189,46 +204,31 @@ public class GameService {
   
 
 
-  public void setRoundScore(Round round) {
+  public void setRoundScore(Round round){
     Voting voting = round.getVoting();
-    // Get the votes in a hashtable
+    //get the votes in a hashtable
     Map<Long, Integer> votes = voting.getUserVotes();
-    // Get the votes in a list and sort them
+    //get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
-    list.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
-
-    int currentScore = 3;  // Start score for the top scorer
-    int usersAwarded = 0;  // Counter for how many users have been awarded a score
-
-    for (int i = 0; i < list.size(); i++) {
-        Map.Entry<Long, Integer> entry = list.get(i);
-        // 0 votes => 0 points
-        if (entry.getValue() == 0) {
-            round.addScore(entry.getKey(), 0);
-        } else {
-            // Award the current score if this is the first entry or if it matches the previous entry's votes
-            if (i == 0 || list.get(i).getValue().equals(list.get(i - 1).getValue())) {
-                if (usersAwarded < 3) {
-                    round.addScore(entry.getKey(), currentScore);
-                    usersAwarded++;
-                } else {
-                    round.addScore(entry.getKey(), 0);  // No points beyond the top 3 scores
-                }
-            } else {
-                // If current entry's votes do not match the previous one, decrement the score
-                if (usersAwarded < 3) {
-                    currentScore = 3 - usersAwarded;
-                    round.addScore(entry.getKey(), currentScore);
-                    usersAwarded++;
-                } else {
-                    round.addScore(entry.getKey(), 0);  // Outside of top 3 => 0 points
-                }
-            }
-        }
+    Collections.sort(list, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+    //counter to check for the best 3
+    int counter = 0;
+    for (Map.Entry<Long, Integer> entry : list){
+      //if the player has 0 votes he gets no points
+      if (entry.getValue() == 0){
+        round.addScore(entry.getKey(), 0);
+      }
+      //the first 3 get points
+      else if (counter < 3){
+        round.addScore(entry.getKey(), 3-counter);
+      }
+      //the rest gets 0 points
+      else{
+        round.addScore(entry.getKey(), 0);
+      }
+      counter++;
     }
-}
-
-
+  }
 
   //could also be implemented directly in entity
   public void updateScore(Game game, long userId, int score){
@@ -246,7 +246,6 @@ public class GameService {
     return players;
   }
 
-
   //gives back a sorted list with the ranking of the players first at position 0 and so on
   public List<User> getRanking(long lobbyId){
     Game game = getGame(lobbyId);
@@ -260,9 +259,46 @@ public class GameService {
     return ranking;
   }
 
-
   public void endGame(Long lobbyId, Game game){
     Lobby lobby = getLobby(lobbyId);
     lobby.setGameActive(false);
+  }
+
+  public void setTopic(long lobbyId, String topic) {
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    Template template = round.getTemplate();
+    List<String> singleTopicList = Collections.singletonList(topic);
+    template.setTopics(singleTopicList);
+  }
+
+  public boolean isUserWithLowestScore(long lobbyId, long userId) {
+    Game game = getGame(lobbyId);
+
+    // Fetch all player scores and find the lowest score value
+    Map<Long, Integer> scores = game.getScores();
+    int minScore = Collections.min(scores.values());
+
+    // Collect all user IDs with the lowest score
+    List<Long> lowestScoringUsers = new ArrayList<>();
+    for (Map.Entry<Long, Integer> entry : scores.entrySet()) {
+        if (entry.getValue() == minScore) {
+            lowestScoringUsers.add(entry.getKey());
+        }
+    }
+
+    // If there's only one user with the lowest score, return directly
+    if (lowestScoringUsers.isEmpty()) {
+        return false;
+    } else if (lowestScoringUsers.size() == 1) {
+        return lowestScoringUsers.get(0).equals(userId);
+    }
+
+    // Select a random user ID from those with the lowest score
+    Random random = new Random();
+    Long randomlySelectedUserId = lowestScoringUsers.get(random.nextInt(lowestScoringUsers.size()));
+
+    // Check if the randomly selected user is the same as the given userId
+    return randomlySelectedUserId.equals(userId);
   }
 }
