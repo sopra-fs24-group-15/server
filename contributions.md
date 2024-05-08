@@ -13,7 +13,7 @@ Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/76, https://g
 ## Week 2(10.04-17.04)
 Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/160, https://github.com/sopra-fs24-group-15/server/issues/74, https://github.com/sopra-fs24-group-15/server/issues/84
 
-Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/162, https://github.com/sopra-fs24-group-15/server/issues/163, https://github.com/sopra-fs24-group-15/server/issues/166, https://github.com/sopra-fs24-group-15/server/issues/87
+Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/162, https://github.com/sopra-fs24-group-15/server/issues/163, https://github.com/sopra-fs24-group-15/server/issues/166, https://github.com/sopra-fs24-group-15/server/issues/87, https://github.com/sopra-fs24-group-15/server/issues/86
 
 Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/14, https://github.com/sopra-fs24-group-15/client/issues/17
 
@@ -22,7 +22,7 @@ Marc Amsler: https://github.com/sopra-fs24-group-15/server/issues/184, https://g
 Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/179, https://github.com/sopra-fs24-group-15/server/issues/180, https://github.com/sopra-fs24-group-15/server/issues/181, https://github.com/sopra-fs24-group-15/server/issues/122
 
 ## Week 3(17.04-24.04)
-Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/170, https://github.com/sopra-fs24-group-15/server/issues/173, https://github.com/sopra-fs24-group-15/server/issues/90
+Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/170, https://github.com/sopra-fs24-group-15/server/issues/173, https://github.com/sopra-fs24-group-15/server/issues/90, https://github.com/sopra-fs24-group-15/server/issues/212, https://github.com/sopra-fs24-group-15/server/issues/211
 
 Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/164, https://github.com/sopra-fs24-group-15/server/issues/165, https://github.com/sopra-fs24-group-15/server/issues/183
 
@@ -33,12 +33,23 @@ Marc Amsler: https://github.com/sopra-fs24-group-15/server/issues/189, https://g
 Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/79, https://github.com/sopra-fs24-group-15/server/issues/186
 
 ## Week 4(24.04-01.05)
-Jana Muheim:
+Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/227, https://github.com/sopra-fs24-group-15/server/issues/232
 
-Christoph Steiner:
+Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/207, https://github.com/sopra-fs24-group-15/server/issues/208, https://github.com/sopra-fs24-group-15/server/issues/210, https://github.com/sopra-fs24-group-15/server/issues/219
 
-Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/48, https://github.com/sopra-fs24-group-15/client/issues/47, https://github.com/sopra-fs24-group-15/client/issues/16, https://github.com/sopra-fs24-group-15/client/issues/50, https://github.com/sopra-fs24-group-15/client/issues/51
+Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/48, https://github.com/sopra-fs24-group-15/client/issues/47, https://github.com/sopra-fs24-group-15/client/issues/16, https://github.com/sopra-fs24-group-15/client/issues/51
 
-Marc Amsler:
+Marc Amsler: https://github.com/sopra-fs24-group-15/server/issues/207, https://github.com/sopra-fs24-group-15/server/issues/208, https://github.com/sopra-fs24-group-15/client/issues/52
 
 Gian Seifert:https://github.com/sopra-fs24-group-15/server/issues/108, https://github.com/sopra-fs24-group-15/server/issues/109
+
+## Week 5(01.05-08.05)
+Jana Muheim: https://github.com/sopra-fs24-group-15/server/issues/228, https://github.com/sopra-fs24-group-15/server/issues/229
+
+Christof Steiner: https://github.com/sopra-fs24-group-15/server/issues/241, https://github.com/sopra-fs24-group-15/server/issues/111
+
+Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/50, https://github.com/sopra-fs24-group-15/client/issues/57, https://github.com/sopra-fs24-group-15/client/issues/21, https://github.com/sopra-fs24-group-15/client/issues/9, https://github.com/sopra-fs24-group-15/client/issues/7
+
+Marc Amsler: https://github.com/sopra-fs24-group-15/client/issues/60, https://github.com/sopra-fs24-group-15/client/issues/59
+
+Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/239, https://github.com/sopra-fs24-group-15/server/issues/240, https://github.com/sopra-fs24-group-15/server/issues/80
