@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class Template implements Serializable {
     
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "topic")
-    private List<String> topics;
+    private List<String> topics = new ArrayList<>();
 
     @Column()
     private String name;
@@ -44,6 +45,9 @@ public class Template implements Serializable {
 
     @Column()
     private int boxCount;
+
+    @Column()
+    private String topic;
 
 
     // getters and setters
@@ -107,9 +111,17 @@ public class Template implements Serializable {
     public List<String> getTopics() {
         return topics;
     }
-
+    
     public void setTopics(List<String> topics) {
         this.topics = topics;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     

@@ -11,6 +11,7 @@ public class TemplateGetDTO {
     private String templateId;
     private int boxCount;
     private List<String> topics;
+    private String topic;
 
     // Getter method for URL
     public String getUrl() {
@@ -50,6 +51,16 @@ public class TemplateGetDTO {
     // Setter method for topics
     public void setTopics(List<String> topics) {
         this.topics = topics;
+    }
+
+    // Getter method for topic
+    public String getTopic() {
+        return topic;
+    }
+
+    // Setter method for topic
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
 

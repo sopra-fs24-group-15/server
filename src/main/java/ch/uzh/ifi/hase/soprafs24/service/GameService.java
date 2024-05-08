@@ -265,12 +265,13 @@ public class GameService {
   }
 
   public void setTopic(long lobbyId, String topic) {
+    // Retrieve the game and associated round
     Game game = getGame(lobbyId);
     Round round = game.getRound();
     Template template = round.getTemplate();
-    List<String> singleTopicList = Collections.singletonList(topic);
-    template.setTopics(singleTopicList);
-  }
+
+    template.setTopic(topic);
+}
 
   public boolean isUserWithLowestScore(long lobbyId, long userId) {
     Game game = getGame(lobbyId);
