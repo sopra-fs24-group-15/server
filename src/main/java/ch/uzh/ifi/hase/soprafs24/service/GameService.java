@@ -163,7 +163,7 @@ public class GameService {
     for (long userId : lobby.getPlayers()){
       updateScore(game, userId, round.getScore(userId));
       User user = getUser(userId);
-      if(user.getBestScore() < round.getScore(userId) || user.getBestScore() == null){
+      if(user.getBestScore() == null || user.getBestScore() < round.getScore(userId)){
         user.setBestScore(round.getScore(userId));
         List<Meme> roundMemes = round.getMemes();
         for (Meme meme : roundMemes){
