@@ -176,10 +176,6 @@ public class GameService {
   }
 
   public int getSubmittedVotes(long lobbyId){
-      Lobby lobby = lobbyRepository.findById(lobbyId).orElse(null);
-      if(lobby == null){
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
-      }
       Game game = getGame(lobbyId);
       Round round = game.getRound();
       int currentRound = game.getRound().getCurrentRound();
@@ -203,30 +199,42 @@ public class GameService {
   }
   
 
-
   public void setRoundScore(Round round){
     Voting voting = round.getVoting();
-    //get the votes in a hashtable
+    // Get the votes in a hashtable
     Map<Long, Integer> votes = voting.getUserVotes();
-    //get the votes in a list and sort them
+    // Get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
-    Collections.sort(list, (e1, e2) -> e2.getValue().compareTo(e1.getValue()));
-    //counter to check for the best 3
-    int counter = 0;
-    for (Map.Entry<Long, Integer> entry : list){
-      //if the player has 0 votes he gets no points
+    list.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+
+    int currentScore = 3;  // Start score for the top scorer
+    int usersAwarded = 0;  // Counter for how many users have been awarded a score
+
+    for (int i = 0; i < list.size(); i++) {
+        Map.Entry<Long, Integer> entry = list.get(i);
+        // 0 votes => 0 points
       if (entry.getValue() == 0){
         round.addScore(entry.getKey(), 0);
+        } else {
+            // Award the current score if this is the first entry or if it matches the previous entry's votes
+            if (i == 0 || list.get(i).getValue().equals(list.get(i - 1).getValue())) {
+                if (usersAwarded < 3) {
+                    round.addScore(entry.getKey(), currentScore);
+                    usersAwarded++;
+                } else {
+                    round.addScore(entry.getKey(), 0);  // No points beyond the top 3 scores
+                }
+            } else {
+                // If current entry's votes do not match the previous one, decrement the score
+                if (usersAwarded < 3) {
+                    currentScore = 3 - usersAwarded;
+                    round.addScore(entry.getKey(), currentScore);
+                    usersAwarded++;
+                } else {
+                    round.addScore(entry.getKey(), 0);  // Outside of top 3 => 0 points
+          }
+        }
       }
-      //the first 3 get points
-      else if (counter < 3){
-        round.addScore(entry.getKey(), 3-counter);
-      }
-      //the rest gets 0 points
-      else{
-        round.addScore(entry.getKey(), 0);
-      }
-      counter++;
     }
   }
 

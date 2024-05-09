@@ -342,9 +342,6 @@ public class GameServiceTest {
         assertEquals(0, round.getScore(3L));
     }
 
-    /* 
-
-    //TODO implement tie logic first
     @Test
     public void testSetRoundScore_tieVotes_success() {
         Voting voting = new Voting();
@@ -365,7 +362,7 @@ public class GameServiceTest {
         assertEquals(1, round.getScore(3L));
         assertEquals(0, round.getScore(4L));
     } 
-    */
+    
 
     @Test
     public void testUpdateScore_success() {
@@ -463,23 +460,36 @@ public class GameServiceTest {
         assertEquals(3, ranking.size());
         assertTrue(ranking.containsAll(Arrays.asList(user3, user2, user1)));
     }
-
-    //TODO implement tie logic first(GS)
-    /*@Test
+    
+    @Test
     public void testGetRanking_tieScores_success() {
+        User user1 = new User();
+        user1.setUserId(1L);
+        User user2 = new User();
+        user2.setUserId(2L);
+        User user3 = new User();
+        user3.setUserId(3L);
+        User user4 = new User();
+        user4.setUserId(4L);
+        Lobby mockLobby = new Lobby();
         Game mockGame = new Game();
+        mockLobby.setGame(mockGame);
         HashMap<Long, Integer> scores = new HashMap<>();
-        scores.put(1L, 20);
+        scores.put(1L, 10);
         scores.put(2L, 20);
-        scores.put(3L, 40);
+        scores.put(3L, 20);
+        scores.put(4L, 40);
         mockGame.setScores(scores);
 
-        when(gameService.getGame(anyLong())).thenReturn(mockGame);
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
+        when(userRepository.findById(2L)).thenReturn(Optional.of(user2));
+        when(userRepository.findById(3L)).thenReturn(Optional.of(user3));
+        when(userRepository.findById(4L)).thenReturn(Optional.of(user4));
 
-        List<Long> ranking = gameService.getRanking(1L);
-        assertTrue(ranking.indexOf(3L) < ranking.indexOf(1L) && ranking.indexOf(1L) < ranking.indexOf(2L) ||
-                   ranking.indexOf(3L) < ranking.indexOf(2L) && ranking.indexOf(2L) < ranking.indexOf(1L));
-    } */
+        List<User> ranking = gameService.getRanking(1L);
+        assertEquals(Arrays.asList(user4, user2, user3, user1), ranking);
+    }
 
     @Test
     public void testSetVote_sucess() {
