@@ -65,7 +65,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.saveAndFlush(Mockito.any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        User createdUser = userService.createUser("newUsername", false, "testProfilePicture");
+        User createdUser = userService.createUser("newUsername", false);
 
         // Assert
         Mockito.verify(userRepository, Mockito.times(1)).saveAndFlush(Mockito.any(User.class)); // Checks if saveAndFlush was called
@@ -81,7 +81,7 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(testUser));
 
         // then -> attempt to create second user with same username -> check that an error is thrown
-        assertThrows(ResponseStatusException.class, () -> userService.createUser("testUsername", false, "testProfilePicture"));
+        assertThrows(ResponseStatusException.class, () -> userService.createUser("testUsername", false));
     }
 
     @Test

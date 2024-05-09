@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -59,7 +60,7 @@ public class UserController {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         // create user
-        User createdUser = userService.createUser(userInput.getUsername(),userInput.getLobbyOwner(), userInput.getProfilePicture());
+        User createdUser = userService.createUser(userInput.getUsername(),userInput.getLobbyOwner());
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
@@ -88,5 +89,11 @@ public class UserController {
     public String getBestMeme(@PathVariable("id") Long id) {
         User user = userService.getUser(id);
         return user.getBestMeme();
+    }
+
+    @PutMapping("/users/{id}/profilepictures")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateProfilePicture(@PathVariable("id") Long id, @RequestBody Long profilePicture) {
+        userService.updateProfilePicture(id, profilePicture);
     }
 }

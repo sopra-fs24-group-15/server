@@ -58,7 +58,7 @@ public class UserService {
   }
 
 
-  public User createUser(String username, boolean lobbyOwner, String profilePicture) {
+  public User createUser(String username, boolean lobbyOwner) {
         // Check if username is already taken
       Optional<User> found = userRepository.findByUsername(username);
       if (found.isPresent()) {
@@ -70,7 +70,8 @@ public class UserService {
       newUser.setUserReady (false);
       newUser.setLobbyOwner(lobbyOwner);
       newUser.setUsername(username);
-      newUser.setProfilePicture(profilePicture);
+      Long randomProfilePicture = new Random().nextLong(1, 15);
+      newUser.setProfilePicture(randomProfilePicture);
       newUser = userRepository.saveAndFlush(newUser);
       log.debug("Created Information for User: {}", newUser);
       return newUser;
@@ -80,7 +81,7 @@ public class UserService {
     //TODO update class diagram updateProfile() (chrigi)
 
   // TODO Implement updateProfilePicture method (chrigi) we could save some limited pictures in the backend
-  public void updateProfilePicture(Long userId, String profilePicture) {
+  public void updateProfilePicture(Long userId, Long profilePicture) {
       User user = getUser(userId);
       user.setProfilePicture(profilePicture);
       userRepository.save(user);

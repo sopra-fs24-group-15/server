@@ -5,7 +5,6 @@ public class UserPostDTO {
   private Long userId;
   private boolean lobbyOwner;
   private String username;
-  private String profilePicture;
 
   public Long getUserId() {
     return userId;
@@ -29,13 +28,5 @@ public class UserPostDTO {
 
   public void setUsername(String username) {
     this.username = username;
-  }
-
-  public String getProfilePicture() {
-    return profilePicture;
-  }
-
-  public void setProfilePicture(String profilePicture) {
-    this.profilePicture = profilePicture;
   }
 }

@@ -35,8 +35,8 @@ public class User implements Serializable {
   private String username;
 
   //TODO define how and from where to get the profile picture. (chrigi)
-  @Column
-  private String profilePicture;
+  @Column()
+  private Long profilePicture;
 
   @Column()
   private Long lobbyId;
@@ -72,11 +72,11 @@ public class User implements Serializable {
   }
 
   //TODO How to get this and display it? (chrigi)
-  public String getProfilePicture() {
+  public Long getProfilePicture() {
       return profilePicture;
   }
 
-  public void setProfilePicture(String profilePicture) {
+  public void setProfilePicture(Long profilePicture) {
       this.profilePicture = profilePicture;
   }
 
