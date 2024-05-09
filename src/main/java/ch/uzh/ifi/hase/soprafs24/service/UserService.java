@@ -81,9 +81,13 @@ public class UserService {
     //TODO update class diagram updateProfile() (chrigi)
 
   // TODO Implement updateProfilePicture method (chrigi) we could save some limited pictures in the backend
-  public void updateProfilePicture(Long userId, Long profilePicture) {
+  public void updateProfilePicture(Long userId) {
       User user = getUser(userId);
-      user.setProfilePicture(profilePicture);
+      Long newProfilePicture;
+      do {
+          newProfilePicture = new Random().nextLong(1, 15);
+      } while (newProfilePicture.equals(user.getProfilePicture()));
+      user.setProfilePicture(newProfilePicture);
       userRepository.save(user);
   }
 

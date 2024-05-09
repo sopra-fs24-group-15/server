@@ -93,7 +93,7 @@ public class UserController {
 
     @PutMapping("/users/{id}/profilepictures")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateProfilePicture(@PathVariable("id") Long id, @RequestBody Long profilePicture) {
-        userService.updateProfilePicture(id, profilePicture);
+    public void updateProfilePicture(@PathVariable("id") Long id) {
+        userService.updateProfilePicture(id);
     }
 }
