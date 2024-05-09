@@ -78,9 +78,8 @@ public class UserController {
     //TODO: implement userService.deleteUser(); fallses Problem demit git, bide Jana melde
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable("id") String id) {
-        Long idlong = convertStringtoLong(id);
-        userService.deleteUser(idlong);
+    public void deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
     }
 
     @GetMapping("/users/{id}/memes")
