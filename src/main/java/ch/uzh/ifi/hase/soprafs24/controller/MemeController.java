@@ -1,21 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Meme;
 import ch.uzh.ifi.hase.soprafs24.entity.Round;
@@ -25,7 +9,24 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.TemplateGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.service.TemplateService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 
@@ -48,7 +49,7 @@ public class MemeController {
         this.gameService = gameService;
     }
 
-
+    //TODO change path to lobbys and templates(GS)
     @GetMapping("/lobbys/{lobbyId}/templates")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -70,6 +71,18 @@ public class MemeController {
     @ResponseStatus(HttpStatus.OK)
     public void setMeme(@PathVariable Long lobbyId, @PathVariable Long userId, @RequestBody String memeURL) {
         gameService.setMeme(lobbyId, userId, memeURL);
+    }
+
+    @PostMapping("/lobbys/{lobbyId}/topics/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void setTopic(@PathVariable Long lobbyId, @PathVariable Long userId, @RequestBody String topic) {
+        gameService.setTopic(lobbyId, topic);
+    }
+
+    @GetMapping("/lobbys/{lobbyId}/users/{userId}/lowest-score")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean isUserWithLowestScore(@PathVariable Long lobbyId, @PathVariable Long userId) {
+        return gameService.isUserWithLowestScore(lobbyId, userId);
     }
 
     @GetMapping("/lobbys/{lobbyId}/memes/{userId}")

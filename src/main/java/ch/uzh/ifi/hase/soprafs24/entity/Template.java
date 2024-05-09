@@ -1,13 +1,18 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import java.io.Serializable;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "TEMPLATE")
@@ -22,9 +27,9 @@ public class Template implements Serializable {
     @Column(unique = true)
     private String templateId;
     
-    // New field to store topics as a comma-separated string
-    @Column
-    private String topics;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "topic")
+    private List<String> topics = new ArrayList<>();
 
     @Column()
     private String name;
@@ -41,6 +46,8 @@ public class Template implements Serializable {
     @Column()
     private int boxCount;
 
+    @Column()
+    private String topic;
 
 
     // getters and setters
@@ -101,12 +108,20 @@ public class Template implements Serializable {
         this.boxCount = boxCount;
     }
 
-    public String getTopics() {
+    public List<String> getTopics() {
         return topics;
     }
-
-    public void setTopics(String topics) {
+    
+    public void setTopics(List<String> topics) {
         this.topics = topics;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     
