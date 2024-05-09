@@ -162,7 +162,16 @@ public class GameService {
     setRoundScore(round);
     for (long userId : lobby.getPlayers()){
       updateScore(game, userId, round.getScore(userId));
-    
+      User user = getUser(userId);
+      if(user.getBestScore() < round.getScore(userId) || user.getBestScore() == null){
+        user.setBestScore(round.getScore(userId));
+        List<Meme> roundMemes = round.getMemes();
+        for (Meme meme : roundMemes){
+          if(meme.getUserId() == userId){
+            user.setBestMeme(meme.getMemeURL());
+          }
+        }
+      }
     }
   }
 
@@ -267,7 +276,12 @@ public class GameService {
     return ranking;
   }
 
+  //TODO add setbestscore to testing
   public void endGame(Long lobbyId, Game game){
+    for (long userId : getLobby(lobbyId).getPlayers()){
+      User user = getUser(userId);
+      user.setBestScore(0);
+    }
     Lobby lobby = getLobby(lobbyId);
     lobby.setGameActive(false);
   }

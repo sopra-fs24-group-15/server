@@ -83,5 +83,11 @@ public class UserController {
         userService.deleteUser(idlong);
     }
 
-
+    @GetMapping("/users/{id}/memes")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String getBestMeme(@PathVariable("id") Long id) {
+        User user = userService.getUser(id);
+        return user.getBestMeme();
+    }
 }

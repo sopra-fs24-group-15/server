@@ -47,6 +47,12 @@ public class User implements Serializable {
   @Column(nullable = false)
   private Boolean userReady;
 
+  @Column()
+  private String bestMeme;
+
+  @Column()
+  private Integer bestScore;
+
 
   //getter, setter and update functions
   public Long getUserId() {
@@ -98,4 +104,19 @@ public class User implements Serializable {
         this.userReady = userReady;
   }
 
+    public String getBestMeme() {
+        return bestMeme;
+    }
+
+    public void setBestMeme(String bestMeme) {
+        this.bestMeme = bestMeme;
+    }
+
+    public Integer getBestScore() {
+        return bestScore;
+    }
+
+    public void setBestScore(Integer bestScore) {
+        this.bestScore = bestScore;
+    }
 }
