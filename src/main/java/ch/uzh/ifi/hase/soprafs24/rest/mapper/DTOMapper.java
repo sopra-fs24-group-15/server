@@ -25,7 +25,6 @@ public interface DTOMapper {
 
   @Mapping(source = "username", target = "username")
   @Mapping(source = "lobbyOwner", target = "lobbyOwner")
-  @Mapping(source = "profilePicture", target = "profilePicture")
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
   @Mapping(source = "username", target = "username")

@@ -35,8 +35,8 @@ public class User implements Serializable {
   private String username;
 
   //TODO define how and from where to get the profile picture. (chrigi)
-  @Column
-  private String profilePicture;
+  @Column()
+  private Long profilePicture;
 
   @Column()
   private Long lobbyId;
@@ -46,6 +46,12 @@ public class User implements Serializable {
 
   @Column(nullable = false)
   private Boolean userReady;
+
+  @Column()
+  private String bestMeme;
+
+  @Column()
+  private Integer bestScore;
 
 
   //getter, setter and update functions
@@ -66,11 +72,11 @@ public class User implements Serializable {
   }
 
   //TODO How to get this and display it? (chrigi)
-  public String getProfilePicture() {
+  public Long getProfilePicture() {
       return profilePicture;
   }
 
-  public void setProfilePicture(String profilePicture) {
+  public void setProfilePicture(Long profilePicture) {
       this.profilePicture = profilePicture;
   }
 
@@ -98,4 +104,19 @@ public class User implements Serializable {
         this.userReady = userReady;
   }
 
+    public String getBestMeme() {
+        return bestMeme;
+    }
+
+    public void setBestMeme(String bestMeme) {
+        this.bestMeme = bestMeme;
+    }
+
+    public Integer getBestScore() {
+        return bestScore;
+    }
+
+    public void setBestScore(Integer bestScore) {
+        this.bestScore = bestScore;
+    }
 }
