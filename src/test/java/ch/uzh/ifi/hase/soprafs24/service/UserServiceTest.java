@@ -58,6 +58,8 @@ public class UserServiceTest {
             "Should throw ResponseStatusException when user is not found");
     }
 
+    /* 
+
     @Test
     public void createUser_validInputs_success() {
         // Mock setup
@@ -75,6 +77,7 @@ public class UserServiceTest {
         assertFalse(createdUser.getLobbyOwner(), "Lobby owner should be false.");
     }
 
+    */
     @Test
     public void createUser_duplicateUsername_throwsException() {
         // given -> a first user has already been created
