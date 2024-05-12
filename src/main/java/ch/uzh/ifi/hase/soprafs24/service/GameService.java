@@ -159,12 +159,13 @@ public class GameService {
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
     Round round = game.getRound();
+    Voting voting = round.getVoting();
     setRoundScore(round);
     for (long userId : lobby.getPlayers()){
       updateScore(game, userId, round.getScore(userId));
       User user = getUser(userId);
-      if(user.getBestScore() == null || user.getBestScore() < round.getScore(userId)){
-        user.setBestScore(round.getScore(userId));
+      if(user.getBestScore() == null || user.getBestScore() <= voting.getUserVote(userId)){
+        user.setBestScore(voting.getUserVote(userId));
         List<Meme> roundMemes = round.getMemes();
         for (Meme meme : roundMemes){
           if(meme.getUserId() == userId){
@@ -187,8 +188,6 @@ public class GameService {
   public int getSubmittedVotes(long lobbyId){
       Game game = getGame(lobbyId);
       Round round = game.getRound();
-      int currentRound = game.getRound().getCurrentRound();
-
       return round.getSubmittedVotes();
   }
 
