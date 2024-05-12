@@ -159,12 +159,13 @@ public class GameService {
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
     Round round = game.getRound();
+    Voting voting = round.getVoting();
     setRoundScore(round);
     for (long userId : lobby.getPlayers()){
       updateScore(game, userId, round.getScore(userId));
       User user = getUser(userId);
-      if(user.getBestScore() == null || user.getBestScore() < round.getScore(userId)){
-        user.setBestScore(round.getScore(userId));
+      if(user.getBestScore() == null || user.getBestScore() <= voting.getUserVote(userId)){
+        user.setBestScore(voting.getUserVote(userId));
         List<Meme> roundMemes = round.getMemes();
         for (Meme meme : roundMemes){
           if(meme.getUserId() == userId){
@@ -187,8 +188,6 @@ public class GameService {
   public int getSubmittedVotes(long lobbyId){
       Game game = getGame(lobbyId);
       Round round = game.getRound();
-      int currentRound = game.getRound().getCurrentRound();
-
       return round.getSubmittedVotes();
   }
 
@@ -295,33 +294,38 @@ public class GameService {
     template.setTopic(topic);
 }
 
-  public boolean isUserWithLowestScore(long lobbyId, long userId) {
-    Game game = getGame(lobbyId);
+public boolean isUserWithLowestScore(long lobbyId, long userId) {
+  Game game = getGame(lobbyId);
+  Round round = game.getRound();
 
-    // Fetch all player scores and find the lowest score value
-    Map<Long, Integer> scores = game.getScores();
-    int minScore = Collections.min(scores.values());
+  // Check if the lowest scorer is already determined for this round
+  Long existingLowestScorer = round.getLowestScorerUserId();
+  if (existingLowestScorer != null) {
+      return existingLowestScorer.equals(userId);
+  }
 
-    // Collect all user IDs with the lowest score
-    List<Long> lowestScoringUsers = new ArrayList<>();
-    for (Map.Entry<Long, Integer> entry : scores.entrySet()) {
-        if (entry.getValue() == minScore) {
-            lowestScoringUsers.add(entry.getKey());
-        }
-    }
+  // Fetch all player scores and find the lowest score value
+  Map<Long, Integer> scores = game.getScores();
+  int minScore = Collections.min(scores.values());
 
-    // If there's only one user with the lowest score, return directly
-    if (lowestScoringUsers.isEmpty()) {
-        return false;
-    } else if (lowestScoringUsers.size() == 1) {
-        return lowestScoringUsers.get(0).equals(userId);
-    }
+  // Collect all user IDs with the lowest score
+  List<Long> lowestScoringUsers = new ArrayList<>();
+  for (Map.Entry<Long, Integer> entry : scores.entrySet()) {
+      if (entry.getValue() == minScore) {
+          lowestScoringUsers.add(entry.getKey());
+      }
+  }
 
-    // Select a random user ID from those with the lowest score
-    Random random = new Random();
-    Long randomlySelectedUserId = lowestScoringUsers.get(random.nextInt(lowestScoringUsers.size()));
+  if (lowestScoringUsers.isEmpty()) {
+      return false;
+  }
 
-    // Check if the randomly selected user is the same as the given userId
-    return randomlySelectedUserId.equals(userId);
+   // Select a random user ID from those with the lowest score
+   Random random = new Random();
+   Long randomlySelectedUserId = lowestScoringUsers.get(random.nextInt(lowestScoringUsers.size()));
+   round.setLowestScorerUserId(randomlySelectedUserId);
+
+   // Return true if the randomly selected user ID matches the given user ID
+   return randomlySelectedUserId.equals(userId);
   }
 }
