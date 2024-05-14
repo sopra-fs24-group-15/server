@@ -61,6 +61,6 @@ Christof Steiner:
 
 Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/63, https://github.com/sopra-fs24-group-15/client/issues/62, https://github.com/sopra-fs24-group-15/client/issues/61, https://github.com/sopra-fs24-group-15/client/issues/73, https://github.com/sopra-fs24-group-15/client/issues/38
 
-Marc Amsler: https://github.com/sopra-fs24-group-15/client/issues/31, https://github.com/sopra-fs24-group-15/client/issues/71
+Marc Amsler: https://github.com/sopra-fs24-group-15/client/issues/31, https://github.com/sopra-fs24-group-15/client/issues/71, https://github.com/sopra-fs24-group-15/client/issues/74, https://github.com/sopra-fs24-group-15/client/issues/76
 
 Gian Seifert: https://github.com/sopra-fs24-group-15/server/issues/129, https://github.com/sopra-fs24-group-15/server/issues/255
