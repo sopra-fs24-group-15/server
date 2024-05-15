@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
@@ -99,4 +100,6 @@ public class MemeControllerTest {
                 .andExpect(jsonPath("$[0].memeURL").value(meme1.getMemeURL()))
                 .andExpect(jsonPath("$[1].memeURL").value(meme2.getMemeURL()));
     }
+
+
 }

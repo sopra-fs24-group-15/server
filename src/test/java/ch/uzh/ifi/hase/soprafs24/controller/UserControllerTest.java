@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -29,6 +30,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserDeleteDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 
@@ -124,4 +126,20 @@ public class UserControllerTest {
                     String.format("The request body could not be created.%s", e.toString()));
         }
     }
+
+    
+    @Test
+    public void UserDeleteDTOtestGettersAndSetters() {
+        UserDeleteDTO userDeleteDTO = new UserDeleteDTO();
+        
+        Long userId = 1L;
+        String username = "testUser";
+
+        userDeleteDTO.setUserId(userId);
+        userDeleteDTO.setUsername(username);
+
+        assertEquals(userId, userDeleteDTO.getUserId());
+        assertEquals(username, userDeleteDTO.getUsername());
+    }
+
 }
