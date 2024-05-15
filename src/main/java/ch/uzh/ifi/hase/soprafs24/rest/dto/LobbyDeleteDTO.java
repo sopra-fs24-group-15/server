@@ -11,4 +11,8 @@ public class LobbyDeleteDTO {
     public void getLobbyId(Long lobbyId) {
         this.lobbyId = lobbyId;
     }
+
+    public void setLobbyId(Long lobbyId) {
+        this.lobbyId = lobbyId;
+    }
 }
