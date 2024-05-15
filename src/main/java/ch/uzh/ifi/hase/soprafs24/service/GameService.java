@@ -160,7 +160,7 @@ public class GameService {
     Game game = getGame(lobbyId);
     Round round = game.getRound();
     Voting voting = round.getVoting();
-    setRoundScore(round);
+    setRoundScore(round, lobby);
     for (long userId : lobby.getPlayers()){
       updateScore(game, userId, round.getScore(userId));
       User user = getUser(userId);
@@ -207,10 +207,47 @@ public class GameService {
   }
   
 
-  public void setRoundScore(Round round){
+  public void setRoundScore(Round round, Lobby lobby){
     Voting voting = round.getVoting();
     // Get the votes in a hashtable
     Map<Long, Integer> votes = voting.getUserVotes();
+
+
+    //check if player has left and if remove from scoring and voting
+    List<Long> players = lobby.getPlayers();
+    List<Long> removevotes = new ArrayList<Long>();
+
+    for(Long userId: votes.keySet()){
+      if(players.contains(userId)){
+        continue;
+      }
+      else{
+        removevotes.add(userId);
+      }
+    }
+
+    for(Long userId: removevotes){
+      votes.remove(userId);
+    }
+
+
+    Map<Long, Integer> scores = round.getRoundScore();
+    List<Long> removescores = new ArrayList<Long>();
+
+    for(Long userId: scores.keySet()){
+      if(players.contains(userId)){
+        continue;
+      }
+      else{
+        removescores.add(userId);
+      }
+    }
+
+    for(Long userId: removescores){
+      scores.remove(userId);
+    }
+    round.setRoundScore(scores);
+    
     // Get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
     list.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
