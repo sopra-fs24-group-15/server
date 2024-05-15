@@ -99,4 +99,5 @@ public class LobbyController {
     //deletes the lobby
     lobbyService.deleteLobby(lobbyToDelete.getLobbyId(), userId);
   }
+  
 }

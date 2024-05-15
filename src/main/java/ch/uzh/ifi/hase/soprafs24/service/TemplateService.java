@@ -68,7 +68,7 @@ public class TemplateService {
         return newTemplates;
     }
 
-    private Template selectRandomTemplate(List<Template> templates) {
+    public Template selectRandomTemplate(List<Template> templates) {
         if (!templates.isEmpty()) {
             int randomIndex = ThreadLocalRandom.current().nextInt(templates.size());
             Template boxCount2;
