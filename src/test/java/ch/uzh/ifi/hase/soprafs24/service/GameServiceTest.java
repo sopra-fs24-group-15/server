@@ -307,6 +307,8 @@ public class GameServiceTest {
 
     @Test
     public void testSetRoundScore_standardVotes_success() {
+        Lobby mockLobby = new Lobby();
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L, 4L));
         Voting voting = new Voting();
         HashMap<Long, Integer> votes = new HashMap<>();
         votes.put(1L, 10);
@@ -318,7 +320,7 @@ public class GameServiceTest {
         Round round = new Round();
         round.setVoting(voting);
 
-        gameService.setRoundScore(round);
+        gameService.setRoundScore(round, mockLobby);
 
         assertEquals(3, round.getScore(4L));
         assertEquals(2, round.getScore(3L));
@@ -328,6 +330,8 @@ public class GameServiceTest {
 
     @Test
     public void testSetRoundScore_nullVotes_success() {
+        Lobby mockLobby = new Lobby();
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L, 4L));
         Voting voting = new Voting();
         HashMap<Long, Integer> votes = new HashMap<>();
         votes.put(1L, 0);
@@ -338,7 +342,7 @@ public class GameServiceTest {
         Round round = new Round();
         round.setVoting(voting);
 
-        gameService.setRoundScore(round);
+        gameService.setRoundScore(round, mockLobby);
 
         assertEquals(0, round.getScore(1L));
         assertEquals(0, round.getScore(2L));
@@ -347,6 +351,8 @@ public class GameServiceTest {
 
     @Test
     public void testSetRoundScore_tieVotes_success() {
+        Lobby mockLobby = new Lobby();
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L, 4L));
         Voting voting = new Voting();
         HashMap<Long, Integer> votes = new HashMap<>();
         votes.put(1L, 30);
@@ -358,7 +364,7 @@ public class GameServiceTest {
         Round round = new Round();
         round.setVoting(voting);
 
-        gameService.setRoundScore(round);
+        gameService.setRoundScore(round, mockLobby);
 
         assertEquals(3, round.getScore(1L));
         assertEquals(3, round.getScore(2L));
