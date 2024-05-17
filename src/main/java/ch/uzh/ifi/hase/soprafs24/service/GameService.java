@@ -97,6 +97,7 @@ public class GameService {
     game.setGameMode(gameMode);
     game.setTimer(timer);
     lobby.setGame(game);
+    lobbyRepository.flush();
     return game;
   }
 
