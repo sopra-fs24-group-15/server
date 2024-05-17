@@ -70,7 +70,7 @@ Jana Muheim:
 
 Christof Steiner:
 
-Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/73
+Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/73, https://github.com/sopra-fs24-group-15/client/issues/79
 
 Marc Amsler:
 
