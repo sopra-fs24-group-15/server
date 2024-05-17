@@ -87,8 +87,9 @@ public class GameService {
     Voting voting = round.getVoting();
 
     //check if player has left and if remove from scoring and voting
-
     List<Long> players = lobby.getPlayers();
+
+    if(voting != null){
     //update voting
     Map<Long, Integer> votes = voting.getUserVotes();
     List<Long> removevotes = new ArrayList<Long>();
@@ -105,7 +106,9 @@ public class GameService {
     for(Long userId: removevotes){
       votes.remove(userId);
     }
+    }
     //update RoundScore
+    if (round != null){
     Map<Long, Integer> roundscores = round.getRoundScore();
     List<Long> removeroundscores = new ArrayList<Long>();
     for(Long userId: roundscores.keySet()){
@@ -120,21 +123,6 @@ public class GameService {
       roundscores.remove(userId);
     }
     round.setRoundScore(roundscores);
-    //update game score
-    Map<Long, Integer> scores = game.getScores();
-    List<Long> removescores = new ArrayList<Long>();
-    for(Long userId: scores.keySet()){
-      if(players.contains(userId)){
-        continue;
-      }
-      else{
-        removescores.add(userId);
-      }
-    }
-    for(Long userId: removescores){
-      scores.remove(userId);
-    }
-    game.setScores(scores);
     //update meme
     List<Meme> memes = round.getMemes();
     List<Meme> removememes = new ArrayList<Meme>();
@@ -150,6 +138,24 @@ public class GameService {
       memes.remove(meme);
     }
     round.setMemes(memes);
+    }
+    //update game score
+    if(game != null){
+    Map<Long, Integer> scores = game.getScores();
+    List<Long> removescores = new ArrayList<Long>();
+    for(Long userId: scores.keySet()){
+      if(players.contains(userId)){
+        continue;
+      }
+      else{
+        removescores.add(userId);
+      }
+    }
+    for(Long userId: removescores){
+      scores.remove(userId);
+    }
+    game.setScores(scores);
+    }
   }
   
   public Game createGame(long lobbyId, long userId, int totalRounds, GameMode gameMode, int timer){

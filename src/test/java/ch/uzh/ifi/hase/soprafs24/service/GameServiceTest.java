@@ -198,6 +198,7 @@ public class GameServiceTest {
     @Test
     public void testEndRound_success() {
         Lobby mockLobby = new Lobby();
+        mockLobby.setLobbyId(1L);
         Game mockGame = new Game();
         Round mockRound = new Round();
         Voting mockVoting = new Voting();
@@ -217,6 +218,7 @@ public class GameServiceTest {
     @Test
     public void testGetSubmittedVotes_success() {
         Lobby mockLobby = new Lobby();
+        mockLobby.setLobbyId(1L);
         Game mockGame = new Game();
         Round mockRound = new Round();
         mockLobby.setGame(mockGame);
@@ -266,7 +268,12 @@ public class GameServiceTest {
     @Test
     public void testSetRoundScore_standardVotes_success() {
         Lobby mockLobby = new Lobby();
+        mockLobby.setLobbyId(1L);
         mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L, 4L));
+        Game mockGame = new Game();
+        mockLobby.setGame(mockGame);
+        Round round = new Round();
+        mockGame.setRound(round);
         Voting voting = new Voting();
         HashMap<Long, Integer> votes = new HashMap<>();
         votes.put(1L, 10);
@@ -275,8 +282,9 @@ public class GameServiceTest {
         votes.put(4L, 40);
         voting.setUserVotes(votes);
 
-        Round round = new Round();
         round.setVoting(voting);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
 
         gameService.setRoundScore(round, mockLobby);
 
@@ -289,7 +297,12 @@ public class GameServiceTest {
     @Test
     public void testSetRoundScore_nullVotes_success() {
         Lobby mockLobby = new Lobby();
+        mockLobby.setLobbyId(1L);
         mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L, 4L));
+        Game mockGame = new Game();
+        mockLobby.setGame(mockGame);
+        Round round = new Round();
+        mockGame.setRound(round);
         Voting voting = new Voting();
         HashMap<Long, Integer> votes = new HashMap<>();
         votes.put(1L, 0);
@@ -297,8 +310,9 @@ public class GameServiceTest {
         votes.put(3L, 0);
         voting.setUserVotes(votes);
 
-        Round round = new Round();
         round.setVoting(voting);
+
+        when(lobbyRepository.findById(anyLong())).thenReturn(Optional.of(mockLobby));
 
         gameService.setRoundScore(round, mockLobby);
 
@@ -465,6 +479,9 @@ public class GameServiceTest {
     public void testEndGame_gameEnds_success() {
         Lobby mockLobby = new Lobby();
         Game mockGame = new Game();
+        mockLobby.setGame(mockGame);
+        Round mockRound = new Round();
+        mockGame.setRound(mockRound);
         User mockUser = new User();
         mockUser.setUserId(1L);
         mockUser.setBestScore(0);
