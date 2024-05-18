@@ -259,7 +259,12 @@ public class GameService {
 
 
   public void setVote(long lobbyId, long userId){
+    Lobby lobby = getLobby(lobbyId);
+    List<Long> players = lobby.getPlayers();
     updateIfUsersLeave(lobbyId);
+    if(!players.contains(userId)){
+      return;
+    }
     Game game = getGame(lobbyId);
     Round round = game.getRound();
     Voting voting = round.getVoting();
