@@ -284,6 +284,7 @@ public class GameService {
   }
 
   public List<Meme> getMemes(long lobbyId, long userId){
+    updateIfUsersLeave(lobbyId);
     Round round = getGame(lobbyId).getRound();
     List<Meme> allMemes = new ArrayList<>(round.getMemes()); // create a copy of the list
     allMemes.removeIf(meme -> meme.getUserId() == userId);
