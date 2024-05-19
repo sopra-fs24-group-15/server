@@ -388,6 +388,7 @@ public class GameService {
 }
 
 public boolean isUserWithLowestScore(long lobbyId, long userId) {
+  updateIfUsersLeave(lobbyId);
   Game game = getGame(lobbyId);
   Round round = game.getRound();
 

@@ -514,8 +514,11 @@ public class GameServiceTest {
     @Test
     public void testIsUserWithLowestScore_success() {
         Lobby mockLobby = new Lobby();
+        mockLobby.setLobbyId(1L);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
         Game mockGame = new Game();
         Round mockRound = new Round();
+        mockLobby.setGame(mockGame);
         mockGame.setRound(mockRound);
         mockGame.setScores(Map.of(1L, 10, 2L, 20, 3L, 30));
         mockLobby.setGame(mockGame);
@@ -530,8 +533,11 @@ public class GameServiceTest {
     @Test
     public void testIsUserWithLowestScore_existingLowestScorer_success() {
         Lobby mockLobby = new Lobby();
+        mockLobby.setLobbyId(1L);
+        mockLobby.setPlayers(Arrays.asList(1L, 2L, 3L));
         Game mockGame = new Game();
         Round mockRound = new Round();
+        mockLobby.setGame(mockGame);
         mockRound.setLowestScorerUserId(1L);
         mockGame.setRound(mockRound);
         mockGame.setScores(Map.of(1L, 10, 2L, 20, 3L, 30));
