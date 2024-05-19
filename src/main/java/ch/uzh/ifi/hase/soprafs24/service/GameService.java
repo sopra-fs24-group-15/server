@@ -195,6 +195,7 @@ public class GameService {
 
   //TODO implement correct
   public boolean getUsersStillEditing(Long lobbyId){
+    updateIfUsersLeave(lobbyId);
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
     Round round = game.getRound();
