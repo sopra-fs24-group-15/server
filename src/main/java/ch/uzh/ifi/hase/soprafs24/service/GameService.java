@@ -237,6 +237,7 @@ public class GameService {
   }
 
   public void endRound(long lobbyId){
+    System.out.println("End Round called");
     updateIfUsersLeave(lobbyId);
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
@@ -299,6 +300,7 @@ public class GameService {
   
 
   public void setRoundScore(Round round, Lobby lobby){
+    System.out.println("Setting round score called");
     updateIfUsersLeave(lobby.getLobbyId());
     Voting voting = round.getVoting();
     // Get the votes in a hashtable
@@ -307,41 +309,6 @@ public class GameService {
     for(long userId: votes.keySet()){
       round.addScore(userId, votes.get(userId));
     }
-    
-    /*// Get the votes in a list and sort them
-    List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
-    list.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
-
-    int currentScore = 3;  // Start score for the top scorer
-    int usersAwarded = 0;  // Counter for how many users have been awarded a score
-
-    for (int i = 0; i < list.size(); i++) {
-        Map.Entry<Long, Integer> entry = list.get(i);
-        // 0 votes => 0 points
-      if (entry.getValue() == 0){
-        round.addScore(entry.getKey(), 0);
-        } 
-      else {
-            // Award the current score if this is the first entry or if it matches the previous entry's votes
-            if (i == 0 || list.get(i).getValue().equals(list.get(i - 1).getValue())) {
-                if (usersAwarded < 3) {
-                    round.addScore(entry.getKey(), currentScore);
-                    usersAwarded++;
-                } else {
-                    round.addScore(entry.getKey(), 0);  // No points beyond the top 3 scores
-                }
-            } else {
-                // If current entry's votes do not match the previous one, decrement the score
-                if (usersAwarded < 3) {
-                    currentScore = 3 - usersAwarded;
-                    round.addScore(entry.getKey(), currentScore);
-                    usersAwarded++;
-                } else {
-                    round.addScore(entry.getKey(), 0);  // Outside of top 3 => 0 points
-          }
-        }
-      }
-    }*/
   }
 
   //could also be implemented directly in entity
