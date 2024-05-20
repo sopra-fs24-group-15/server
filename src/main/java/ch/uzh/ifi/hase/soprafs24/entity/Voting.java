@@ -62,22 +62,8 @@ public class Voting implements Serializable {
     public void setMemesDict(Map<Long, Long> memesDict) {
         this.memesDict = memesDict;
     }
-
-
-
-    public void displayMemes(Hashtable<Long, Long> memesDict) {
-        //TODO Implementation to display memes chrigi
-        //put it in a service
-    }
-
-    public void voteMeme(Long memeId, Long userId, Long voteId) {
-        //TODO Implementation for a user to vote on a meme chrigi
-        // service
-    }
-
+    
     public int getVotes(Long userId, Long voteId) {
-        //TODO Implementation to get the number of votes from a user chrigi
-        // service
         return userVotes.getOrDefault(userId, 0);
     }
 }

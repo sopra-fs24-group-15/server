@@ -153,19 +153,23 @@ public class LobbyService {
   }
 
   public void joinLobby(Long userId, Lobby lobbyToJoin) {
-    //checking if the user even exists
     User user = userRepository.findById(userId).orElse(null);
-    if(user == null){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    if (user == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
-    //check that user is not lobbyowner and Lobby is not full yet (Jana)
-      if (lobbyToJoin.getPlayers().size() < 8) {
-        //adding the user to the lobby
-          lobbyToJoin.addPlayer(userId);
-          user.setLobbyId(lobbyToJoin.getLobbyId());
-        }
-      else {throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby is full");
-      }
+
+    if (lobbyToJoin.getGameActive()) {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot join. The game is already active.");
+    }
+
+    if (lobbyToJoin.getPlayers().size() < 8) {
+        lobbyToJoin.addPlayer(userId);
+        user.setLobbyId(lobbyToJoin.getLobbyId());
+    } 
+    
+    else {
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The lobby is full");
+    }
   }
 
   public boolean checkIfPlayersAreReady(Lobby lobby) {

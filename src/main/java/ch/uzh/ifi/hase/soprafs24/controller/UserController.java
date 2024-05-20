@@ -65,15 +65,7 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
-    private long convertStringtoLong(String userId) {
-        Long idLong;
-        try { idLong = Long.parseLong(userId);
-        }
-        catch (NumberFormatException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        return idLong;
-    }
+
 
 
     //TODO: implement userService.deleteUser(); fallses Problem demit git, bide Jana melde

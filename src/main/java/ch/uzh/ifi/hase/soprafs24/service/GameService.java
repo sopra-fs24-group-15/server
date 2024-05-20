@@ -79,6 +79,78 @@ public class GameService {
     }
     return user;
   }
+
+  public void updateIfUsersLeave(long lobbyId){
+    Lobby lobby = getLobby(lobbyId);
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    Voting voting = round.getVoting();
+
+    //check if player has left and if remove from scoring and voting
+
+    List<Long> players = lobby.getPlayers();
+    //update voting
+    Map<Long, Integer> votes = voting.getUserVotes();
+    List<Long> removevotes = new ArrayList<Long>();
+
+    for(Long userId: votes.keySet()){
+      if(players.contains(userId)){
+        continue;
+      }
+      else{
+        removevotes.add(userId);
+      }
+    }
+
+    for(Long userId: removevotes){
+      votes.remove(userId);
+    }
+    //update RoundScore
+    Map<Long, Integer> roundscores = round.getRoundScore();
+    List<Long> removeroundscores = new ArrayList<Long>();
+    for(Long userId: roundscores.keySet()){
+      if(players.contains(userId)){
+        continue;
+      }
+      else{
+        removeroundscores.add(userId);
+      }
+    }
+    for(Long userId: removeroundscores){
+      roundscores.remove(userId);
+    }
+    round.setRoundScore(roundscores);
+    //update game score
+    Map<Long, Integer> scores = game.getScores();
+    List<Long> removescores = new ArrayList<Long>();
+    for(Long userId: scores.keySet()){
+      if(players.contains(userId)){
+        continue;
+      }
+      else{
+        removescores.add(userId);
+      }
+    }
+    for(Long userId: removescores){
+      scores.remove(userId);
+    }
+    game.setScores(scores);
+    //update meme
+    List<Meme> memes = round.getMemes();
+    List<Meme> removememes = new ArrayList<Meme>();
+    for(Meme meme: memes){
+      if(players.contains(meme.getUserId())){
+        continue;
+      }
+      else{
+        removememes.add(meme);
+      }
+    }
+    for(Meme meme: removememes){
+      memes.remove(meme);
+    }
+    round.setMemes(memes);
+  }
   
   public Game createGame(long lobbyId, long userId, int totalRounds, GameMode gameMode, int timer){
     Lobby lobby = getLobby(lobbyId);
@@ -97,6 +169,7 @@ public class GameService {
     game.setGameMode(gameMode);
     game.setTimer(timer);
     lobby.setGame(game);
+    lobbyRepository.flush();
     return game;
   }
 
@@ -143,6 +216,7 @@ public class GameService {
         voting.setUserVote(userId, 0);
       }
       round.setVoting(voting);
+      //    updateIfUsersLeave(lobbyId);
       //You get a random Template of 100 (chrigi)
       Template template = templateService.fetchTemplate();
       round.setTemplate(template);
@@ -156,11 +230,12 @@ public class GameService {
   }
 
   public void endRound(long lobbyId){
+    updateIfUsersLeave(lobbyId);
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
     Round round = game.getRound();
     Voting voting = round.getVoting();
-    setRoundScore(round);
+    setRoundScore(round, lobby);
     for (long userId : lobby.getPlayers()){
       updateScore(game, userId, round.getScore(userId));
       User user = getUser(userId);
@@ -176,7 +251,9 @@ public class GameService {
     }
   }
 
+
   public void setVote(long lobbyId, long userId){
+    updateIfUsersLeave(lobbyId);
     Game game = getGame(lobbyId);
     Round round = game.getRound();
     Voting voting = round.getVoting();
@@ -186,6 +263,7 @@ public class GameService {
   }
 
   public int getSubmittedVotes(long lobbyId){
+    updateIfUsersLeave(lobbyId);
       Game game = getGame(lobbyId);
       Round round = game.getRound();
       return round.getSubmittedVotes();
@@ -207,10 +285,12 @@ public class GameService {
   }
   
 
-  public void setRoundScore(Round round){
+  public void setRoundScore(Round round, Lobby lobby){
+    updateIfUsersLeave(lobby.getLobbyId());
     Voting voting = round.getVoting();
     // Get the votes in a hashtable
     Map<Long, Integer> votes = voting.getUserVotes();
+    
     // Get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
     list.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
@@ -277,6 +357,7 @@ public class GameService {
 
   //TODO add setbestscore to testing
   public void endGame(Long lobbyId, Game game){
+    updateIfUsersLeave(lobbyId);
     for (long userId : getLobby(lobbyId).getPlayers()){
       User user = getUser(userId);
       user.setBestScore(0);
