@@ -276,10 +276,10 @@ public class GameServiceTest {
         mockGame.setRound(round);
         Voting voting = new Voting();
         HashMap<Long, Integer> votes = new HashMap<>();
-        votes.put(1L, 10);
-        votes.put(2L, 20);
-        votes.put(3L, 30);
-        votes.put(4L, 40);
+        votes.put(1L, 1);
+        votes.put(2L, 2);
+        votes.put(3L, 3);
+        votes.put(4L, 4);
         voting.setUserVotes(votes);
 
         round.setVoting(voting);
@@ -288,10 +288,10 @@ public class GameServiceTest {
 
         gameService.setRoundScore(round, mockLobby);
 
-        assertEquals(3, round.getScore(4L));
-        assertEquals(2, round.getScore(3L));
-        assertEquals(1, round.getScore(2L));
-        assertEquals(0, round.getScore(1L));
+        assertEquals(4, round.getScore(4L));
+        assertEquals(3, round.getScore(3L));
+        assertEquals(2, round.getScore(2L));
+        assertEquals(1, round.getScore(1L));
     }
 
     @Test

@@ -303,8 +303,12 @@ public class GameService {
     Voting voting = round.getVoting();
     // Get the votes in a hashtable
     Map<Long, Integer> votes = voting.getUserVotes();
+
+    for(long userId: votes.keySet()){
+      round.addScore(userId, votes.get(userId));
+    }
     
-    // Get the votes in a list and sort them
+    /*// Get the votes in a list and sort them
     List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
     list.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
 
@@ -316,7 +320,8 @@ public class GameService {
         // 0 votes => 0 points
       if (entry.getValue() == 0){
         round.addScore(entry.getKey(), 0);
-        } else {
+        } 
+      else {
             // Award the current score if this is the first entry or if it matches the previous entry's votes
             if (i == 0 || list.get(i).getValue().equals(list.get(i - 1).getValue())) {
                 if (usersAwarded < 3) {
@@ -336,7 +341,7 @@ public class GameService {
           }
         }
       }
-    }
+    }*/
   }
 
   //could also be implemented directly in entity
