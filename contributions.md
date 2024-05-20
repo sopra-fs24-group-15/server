@@ -74,4 +74,4 @@ Marc Huber: https://github.com/sopra-fs24-group-15/client/issues/73, https://git
 
 Marc Amsler:
 
-Gian Seifert:
+Gian Seifert:#267, #265
