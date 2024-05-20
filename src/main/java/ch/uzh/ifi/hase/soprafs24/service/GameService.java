@@ -238,7 +238,6 @@ public class GameService {
   }
 
   public void endRound(long lobbyId){
-    System.out.println("End Round called");
     updateIfUsersLeave(lobbyId);
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
@@ -304,7 +303,6 @@ public class GameService {
   
 
   public void setRoundScore(Round round, Lobby lobby){
-    System.out.println("Setting round score called");
     updateIfUsersLeave(lobby.getLobbyId());
     Voting voting = round.getVoting();
     // Get the votes in a hashtable

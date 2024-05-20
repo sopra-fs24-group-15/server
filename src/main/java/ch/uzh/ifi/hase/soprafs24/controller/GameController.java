@@ -79,7 +79,6 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     public void endRound(@PathVariable("lobbyId") Long lobbyId) {
         // end Round
-        System.out.println("End Round controller called");
         gameService.endRound(lobbyId);
     }
 
