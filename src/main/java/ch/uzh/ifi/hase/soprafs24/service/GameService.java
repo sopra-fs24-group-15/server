@@ -213,6 +213,7 @@ public class GameService {
       }
       game.setCurrentRound(game.getCurrentRound() + 1);
       Round round = new Round();
+      round.setRoundInEdit(true);
       round.setCurrentRound(game.getCurrentRound());
       for (long userId : lobby.getPlayers()){
         round.addScore(userId, 0);
