@@ -242,6 +242,8 @@ public class GameService {
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
     Round round = game.getRound();
+    if(round.getRoundInEdit() == false)
+    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Round already ended");
     Voting voting = round.getVoting();
     setRoundScore(round, lobby);
     for (long userId : lobby.getPlayers()){
@@ -257,6 +259,7 @@ public class GameService {
         }
       }
     }
+    round.setRoundInEdit(false);
   }
 
 
