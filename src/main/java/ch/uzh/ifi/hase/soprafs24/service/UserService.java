@@ -85,7 +85,7 @@ public class UserService {
       User user = getUser(userId);
       Long newProfilePicture;
       do {
-          newProfilePicture = new Random().nextLong(1, 15);
+          newProfilePicture = new Random().nextLong(1, 20);
       } while (newProfilePicture.equals(user.getProfilePicture()));
       user.setProfilePicture(newProfilePicture);
       userRepository.save(user);
