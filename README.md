@@ -1,9 +1,9 @@
 # MemeBattle
-
-## Introduction
+![img_1.png](img_1.png)
 Create the best Meme and win the game!
+## Introduction
 
-We were motivated to create MemeBattle to build a community-centric, interactive, creative and entertaining online game.
+We were motivated to create MemeBattle to build a community-centric, interactive, creative and entertaining online game. With MemeBattle you can 
 
 ### Technologies used
 
@@ -108,7 +108,6 @@ Authors: Jana Muheim, Marc Huber, Marc Amsler, Christof Steiner, Gian Seifert
 Acknowledgment: We want to thank the UZH and Prof. Fritz for offering the SoPra module. Without this module MemeBattle most likely would'nt exist. Furthermore, we want to say a big thanks to our tutor Miro Vannini. With his important and well-thought inputs MemeBattle wouldn't be what it is today. 
 
 ### License
-
-GNU GPLv3 (?)
+GNU GPLv3
 
 
