@@ -23,18 +23,27 @@ If you consider to use IntelliJ as your IDE of choice, you can make use of your 
 
 
 ### Launch & Deployment
-Start by cloning the Repository:
+
+Make sure you have the required Software installed:
+for our project this includes Java 17 (for Windows, also make sure that your **JAVA_HOME** environment variable is set to the correct version of Java).
+
+Then start by cloning the Repository:
 
 ```bash
 git clone ....
 ```
 
-Install the required Software:
-for our project this includes Node.js, Java, Docker
+To build the application you can use the local Gradle Wrapper:
 
-Install Project Dependencies:
+
+Install Project Dependencies once before first starting the Application:
 ```bash
 npm install
+```
+
+Next, you can start the app with:
+```bash
+npm run dev
 ```
 
 
