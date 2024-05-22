@@ -16,14 +16,31 @@ For the MemeBattle Webapplication we used the following technologies:
 - CI/CD: GitHub Actions
 
 ### High-level Components
-If you consider to use IntelliJ as your IDE of choice, you can make use of your free educational license [here](https://www.jetbrains.com/community/education/#students).
-1. Lobby: //TODO
-2. User: //TODO
-3. Meme: //TODO
+1. #### Lobby: 
+    ###### Role
+    The Lobby component serves as the central hub where users can gather, interact, and play a game. It manages the overall flow of the user experience and allows the LobbyOwner to change the GameSettings. It also allows every User to change his profilepicture and create memes.
+    ##### Correlation
+    The Lobby links all other components together. It ensures seamless transition and interaction between them.
+    ##### Reference
+    The main file for the Lobby component can be found at 'src/main/java/ch.uzh.ifi.hase.soprafs24/entity/Lobby' 
+2. #### User:
+    ##### Role
+    The User components handles the creation of a UserProfile and all related aspects to it. This includes user authentication, so that there cannot be username duplicates. Additionally, it also handles profilepictures and saves them for later display in the ranking screen.
+    ##### Correlation
+    The User Component communicates with the Lobby to display User informations and with the Meme Component to save the votes a User has earned for their created meme.  
+    ##### Reference
+    The main class for the User component is located in 'src/main/java/ch.uzh.ifi.hase.soprafs24/entity/User'
+    
+3. #### Meme: 
+    ##### Role
+    The Meme component is responsible for the creation and displaying of memes within the application. It handles all the meme-related functionalities such as creating a meme.
+    ##### Correlation
+    The Meme component interacts directly with the Lobby and the User component. It provides memes that users can interact with in the Lobby. It also tracks the votes from each user through the User component.
+    ##### Reference
+    the main functions for the Meme component are defined in 'src/main/java/ch.uzh.ifi.hase.soprafs24/controller/MemeController'
 
 
 ### Launch & Deployment
-
 Make sure you have the required Software installed:
 for our project this includes Java 17 (for Windows, also make sure that your **JAVA_HOME** environment variable is set to the correct version of Java).
 
