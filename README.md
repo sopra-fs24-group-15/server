@@ -1,9 +1,17 @@
 # MemeBattle
 ![img_1.png](img_1.png)
+
 Create the best Meme and win the game!
 ## Introduction
 
-We were motivated to create MemeBattle to build a community-centric, interactive, creative and entertaining online game. With MemeBattle you can 
+We were motivated to create MemeBattle to build a community-centric, 
+interactive, creative and entertaining online game. 
+With MemeBattle you can create hilarious memes, share them 
+with your friends and competitors, and engage in friendly competition. 
+By voting for your favorite meme of the round, all the users determine 
+the ultimate winner. Whether you are an advanced meme-maker or just looking 
+to enjoy a good laugh, MemeBattle offers you a space to express 
+your creativity, to connect with others, and to celebrate the joy of memes. 
 
 ### Technologies used
 
@@ -99,8 +107,12 @@ If you want to avoid running all tests with every change, use the following comm
 ./gradlew build --continuous -xtest
 ```
 ### Roadmap
-MemeBattle currently consists of two GameModes. There are many more possible GameModes to implement. This could for example be a  Gamemode where Users can choose Pictures from their own gallery as the Template or where users could write a Topic themselves.
-Furthermore, ....
+MemeBattle currently consists of two GameModes. There are many more possible GameModes to implement. 
+This could, for example, be a  GameMode where users can choose pictures from their own gallery as the template, 
+allowing a more personalized and diverse MemeBattle experience. Another exciting option could be a 
+GameMode where users could write a Topic themselves, prompting others to create memes based on those topics, 
+fostering creativity and also a more personalized experience.
+
 
 ### Authors and acknowledgment
 Authors: Jana Muheim, Marc Huber, Marc Amsler, Christof Steiner, Gian Seifert
