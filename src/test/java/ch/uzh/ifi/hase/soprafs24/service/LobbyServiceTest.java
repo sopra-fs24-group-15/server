@@ -23,6 +23,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
+
 public class LobbyServiceTest {
 
     @Mock
@@ -35,6 +36,7 @@ public class LobbyServiceTest {
     private LobbyService lobbyService;
 
     private Lobby testLobby;
+    private User user;
 
     @BeforeEach
     public void setup() {
@@ -45,6 +47,11 @@ public class LobbyServiceTest {
         testLobby.setLobbyId(1L);
         testLobby.setLobbyOwner(1L); 
         testLobby.setLobbyJoinCode("123456");
+
+        user = new User();
+        user.setUserId(1L);
+        user.setUsername("testUser");
+        
 
         when(lobbyRepository.save(any(Lobby.class))).thenReturn(testLobby);
         when(userRepository.existsById(any(Long.class))).thenReturn(true);
@@ -69,7 +76,6 @@ public class LobbyServiceTest {
         // when
         assertThrows(ResponseStatusException.class, () -> lobbyService.deleteLobby(1L, 1L));
     }
-
 
     @Test
     public void findLobbyByJoinCode_existingCode_success() {
@@ -100,7 +106,6 @@ public class LobbyServiceTest {
         assertEquals(testLobby.getLobbyOwner(), createdLobby.getLobbyOwner());
         verify(lobbyRepository, times(1)).save(any(Lobby.class));
     }
-
 
     @Test
     public void updateLobbyOwner_existingLobbyAndUser_updatesOwner() {
@@ -135,8 +140,7 @@ public class LobbyServiceTest {
         Long nonOwner = 2L;
         when(lobbyRepository.findById(testLobby.getLobbyId())).thenReturn(Optional.of(testLobby));
 
-        assertThrows(ResponseStatusException.class, () -> lobbyService.deleteLobby(testLobby.getLobbyId(), nonOwner
-        ));
+        assertThrows(ResponseStatusException.class, () -> lobbyService.deleteLobby(testLobby.getLobbyId(), nonOwner));
     }
 
     @Test
@@ -148,30 +152,14 @@ public class LobbyServiceTest {
         assertThrows(ResponseStatusException.class, () -> lobbyService.deleteLobby(testLobby.getLobbyId(), nonExistingUser));
     }
 
-    //TODO check joinlobby is implemented correctly so it only throws error when lobby is really full(GS)
-    /*
-    @Test
-    public void joinLobby_existingLobbyAndUser_success() {
-        Long userId = 2L;
-        when(lobbyRepository.findByLobbyJoinCode(testLobby.getLobbyJoinCode())).thenReturn(Optional.of(testLobby));
-        when(userRepository.findById(2L)).thenReturn(Optional.of(new User()));
-
-        lobbyService.joinLobby(userId, testLobby);
-
-        assertEquals(testLobby.getPlayers().contains(userId), true);
-    }*/
+    
 
     @Test
     public void joinLobby_fullLobby_throwsException() {
         Long userId = 2L;
-        testLobby.addPlayer(2L);
-        testLobby.addPlayer(3L);
-        testLobby.addPlayer(4L);
-        testLobby.addPlayer(5L);
-        testLobby.addPlayer(6L);
-        testLobby.addPlayer(7L);
-        testLobby.addPlayer(8L);
-        testLobby.addPlayer(9L);
+        for (int i = 1; i <= 8; i++) {
+            testLobby.addPlayer((long) i);
+        }
         when(lobbyRepository.findByLobbyJoinCode(testLobby.getLobbyJoinCode())).thenReturn(Optional.of(testLobby));
 
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobby(userId, testLobby));
@@ -180,136 +168,68 @@ public class LobbyServiceTest {
     @Test
     public void joinLobby_nonExistingUser_throwsException() {
         Long nonExistingUser = 200L;
-        when(lobbyRepository.findByLobbyJoinCode(testLobby.getLobbyJoinCode())).thenReturn(Optional.of(testLobby));
-        when(userRepository.existsById(nonExistingUser)).thenReturn(false);
+        when(userRepository.findById(nonExistingUser)).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobby(nonExistingUser, testLobby));
     }
 
     @Test
-    public void joinLobby_nonExistingLobby_throwsException() {
+    public void joinLobby_gameAlreadyActive_throwsException() {
         Long userId = 2L;
-        when(lobbyRepository.findByLobbyJoinCode(testLobby.getLobbyJoinCode())).thenReturn(Optional.empty());
+        testLobby.setGameActive(true);
+        when(userRepository.findById(userId)).thenReturn(Optional.of(new User()));
 
         assertThrows(ResponseStatusException.class, () -> lobbyService.joinLobby(userId, testLobby));
     }
 
-    //TODO check if the userready really was updated to true (GS)
     @Test
     public void checkIfPlayersAreReady_allPlayersReady_returnsTrue() {
-        // Create a user object with userReady set to true
         User readyUser = new User();
         readyUser.setUserReady(true);
-    
-        // Add players to the testLobby
-        testLobby.addPlayer(1L);
-        testLobby.addPlayer(2L);
-        testLobby.addPlayer(3L);
-        testLobby.addPlayer(4L);
-        testLobby.addPlayer(5L);
-        testLobby.addPlayer(6L);
-        testLobby.addPlayer(7L);
-        testLobby.addPlayer(8L);
-    
-        // Configure userRepository mock to return a readyUser for each findById call
-        when(userRepository.findById(1L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(2L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(3L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(4L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(5L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(6L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(7L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(8L)).thenReturn(Optional.of(readyUser));
-    
-        // Call the method under test
+
+        for (long i = 1; i <= 8; i++) {
+            testLobby.addPlayer(i);
+            when(userRepository.findById(i)).thenReturn(Optional.of(readyUser));
+        }
+
         boolean result = lobbyService.checkIfPlayersAreReady(testLobby);
-    
-        // Assert that the result is true (all players are ready)
+
         assertTrue(result);
     }
 
     @Test
     public void checkIfPlayersAreReady_notAllPlayersReady_returnsFalse() {
-        // Create a user object with userReady set to true
         User readyUser = new User();
         readyUser.setUserReady(true);
-    
-        // Create a user object with userReady set to false
+
         User notReadyUser = new User();
         notReadyUser.setUserReady(false);
-    
-        // Add players to the testLobby
-        testLobby.addPlayer(1L);
-        testLobby.addPlayer(2L);
-        testLobby.addPlayer(3L);
-        testLobby.addPlayer(4L);
-        testLobby.addPlayer(5L);
-        testLobby.addPlayer(6L);
-        testLobby.addPlayer(7L);
+
+        for (long i = 1; i <= 7; i++) {
+            testLobby.addPlayer(i);
+            when(userRepository.findById(i)).thenReturn(Optional.of(readyUser));
+        }
         testLobby.addPlayer(8L);
-    
-        // Configure userRepository mock to return a readyUser for each findById call
-        when(userRepository.findById(1L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(2L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(3L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(4L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(5L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(6L)).thenReturn(Optional.of(readyUser));
-        when(userRepository.findById(7L)).thenReturn(Optional.of(readyUser));
         when(userRepository.findById(8L)).thenReturn(Optional.of(notReadyUser));
-    
-        // Call the method under test
+
         boolean result = lobbyService.checkIfPlayersAreReady(testLobby);
-    
-        // Assert that the result is false (not all players are ready)
+
         assertFalse(result);
     }
 
     @Test
     public void checkIfPlayersAreReady_nonExistingUser_throwsException() {
-        // Add players to the testLobby
-        testLobby.addPlayer(1L);
-        testLobby.addPlayer(2L);
-        testLobby.addPlayer(3L);
-        testLobby.addPlayer(4L);
-        testLobby.addPlayer(5L);
-        testLobby.addPlayer(6L);
-        testLobby.addPlayer(7L);
-        testLobby.addPlayer(8L);
-    
-        // Configure userRepository mock to return null for each findById call
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
-        when(userRepository.findById(2L)).thenReturn(Optional.empty());
-        when(userRepository.findById(3L)).thenReturn(Optional.empty());
-        when(userRepository.findById(4L)).thenReturn(Optional.empty());
-        when(userRepository.findById(5L)).thenReturn(Optional.empty());
-        when(userRepository.findById(6L)).thenReturn(Optional.empty());
-        when(userRepository.findById(7L)).thenReturn(Optional.empty());
-        when(userRepository.findById(8L)).thenReturn(Optional.empty());
-    
-        // Call the method under test and assert that a ResponseStatusException is thrown
+        for (long i = 1; i <= 8; i++) {
+            testLobby.addPlayer(i);
+            when(userRepository.findById(i)).thenReturn(Optional.empty());
+        }
+
         assertThrows(ResponseStatusException.class, () -> lobbyService.checkIfPlayersAreReady(testLobby));
     }
 
-    /*@Test
-    public void checkIfLeaveLobby_existingUser_leavesLobby() {
-        Long userId = 1L;
-        testLobby.addPlayer(userId);
-        when(lobbyRepository.findById(testLobby.getLobbyId())).thenReturn(Optional.of(testLobby));
-        when(userRepository.findById(1L)).thenReturn(Optional.of(new User()));
+    
 
-        lobbyService.leaveLobby(userId, testLobby.getLobbyId());
+   
 
-        assertFalse(testLobby.getPlayers().contains(userId));
-    }
-
-    @Test
-    public void checkIfLeaveLobby_nonExistingUser_throwsException() {
-        Long nonExistingUser = 200L;
-        when(lobbyRepository.findByLobbyJoinCode(testLobby.getLobbyJoinCode())).thenReturn(Optional.of(testLobby));
-        when(userRepository.existsById(nonExistingUser)).thenReturn(false);
-
-        assertThrows(ResponseStatusException.class, () -> lobbyService.leaveLobby(nonExistingUser, testLobby.getLobbyId()));
-    }
-    */
+    
 }

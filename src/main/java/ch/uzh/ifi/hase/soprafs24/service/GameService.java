@@ -79,6 +79,84 @@ public class GameService {
     }
     return user;
   }
+
+  public void updateIfUsersLeave(long lobbyId){
+    Lobby lobby = getLobby(lobbyId);
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    Voting voting = round.getVoting();
+
+    //check if player has left and if remove from scoring and voting
+    List<Long> players = lobby.getPlayers();
+
+    if(voting != null){
+    //update voting
+    Map<Long, Integer> votes = voting.getUserVotes();
+    List<Long> removevotes = new ArrayList<Long>();
+
+    for(Long userId: votes.keySet()){
+      if(players.contains(userId)){
+        continue;
+      }
+      else{
+        removevotes.add(userId);
+      }
+    }
+
+    for(Long userId: removevotes){
+      votes.remove(userId);
+    }
+    }
+    //update RoundScore
+    if (round != null){
+    Map<Long, Integer> roundscores = round.getRoundScore();
+    List<Long> removeroundscores = new ArrayList<Long>();
+    for(Long userId: roundscores.keySet()){
+      if(players.contains(userId)){
+        continue;
+      }
+      else{
+        removeroundscores.add(userId);
+      }
+    }
+    for(Long userId: removeroundscores){
+      roundscores.remove(userId);
+    }
+    round.setRoundScore(roundscores);
+    //update meme
+    List<Meme> memes = round.getMemes();
+    List<Meme> removememes = new ArrayList<Meme>();
+    for(Meme meme: memes){
+      if(players.contains(meme.getUserId())){
+        continue;
+      }
+      else{
+        removememes.add(meme);
+      }
+    }
+    for(Meme meme: removememes){
+      memes.remove(meme);
+    }
+    round.setMemes(memes);
+    }
+    //update game score
+    if(game != null){
+    Map<Long, Integer> scores = game.getScores();
+    List<Long> removescores = new ArrayList<Long>();
+    for(Long userId: scores.keySet()){
+      if(players.contains(userId)){
+        continue;
+      }
+      else{
+        removescores.add(userId);
+      }
+    }
+    for(Long userId: removescores){
+      scores.remove(userId);
+    }
+    game.setScores(scores);
+    }
+  }
   
   public Game createGame(long lobbyId, long userId, int totalRounds, GameMode gameMode, int timer){
     Lobby lobby = getLobby(lobbyId);
@@ -97,6 +175,7 @@ public class GameService {
     game.setGameMode(gameMode);
     game.setTimer(timer);
     lobby.setGame(game);
+    lobbyRepository.flush();
     return game;
   }
 
@@ -114,6 +193,17 @@ public class GameService {
     game.setCurrentRound(0);
   }
 
+  //TODO implement correct
+  public boolean getUsersStillEditing(Long lobbyId){
+    updateIfUsersLeave(lobbyId);
+    Lobby lobby = getLobby(lobbyId);
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+
+    //implement
+    return true;
+  }
+
   public boolean startNextRound(long lobbyId){
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
@@ -123,6 +213,7 @@ public class GameService {
       }
       game.setCurrentRound(game.getCurrentRound() + 1);
       Round round = new Round();
+      round.setRoundInEdit(true);
       round.setCurrentRound(game.getCurrentRound());
       for (long userId : lobby.getPlayers()){
         round.addScore(userId, 0);
@@ -133,6 +224,7 @@ public class GameService {
         voting.setUserVote(userId, 0);
       }
       round.setVoting(voting);
+      //    updateIfUsersLeave(lobbyId);
       //You get a random Template of 100 (chrigi)
       Template template = templateService.fetchTemplate();
       round.setTemplate(template);
@@ -146,18 +238,38 @@ public class GameService {
   }
 
   public void endRound(long lobbyId){
+    updateIfUsersLeave(lobbyId);
     Lobby lobby = getLobby(lobbyId);
     Game game = getGame(lobbyId);
     Round round = game.getRound();
-    setRoundScore(round);
+    if(round.getRoundInEdit() == false)
+    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Round already ended");
+    Voting voting = round.getVoting();
+    setRoundScore(round, lobby);
     for (long userId : lobby.getPlayers()){
       updateScore(game, userId, round.getScore(userId));
-    
+      User user = getUser(userId);
+      if(user.getBestScore() == null || user.getBestScore() <= voting.getUserVote(userId)){
+        user.setBestScore(voting.getUserVote(userId));
+        List<Meme> roundMemes = round.getMemes();
+        for (Meme meme : roundMemes){
+          if(meme.getUserId() == userId){
+            user.setBestMeme(meme.getMemeURL());
+          }
+        }
+      }
     }
+    round.setRoundInEdit(false);
   }
 
 
   public void setVote(long lobbyId, long userId){
+    Lobby lobby = getLobby(lobbyId);
+    List<Long> players = lobby.getPlayers();
+    updateIfUsersLeave(lobbyId);
+    if(!players.contains(userId)){
+      return;
+    }
     Game game = getGame(lobbyId);
     Round round = game.getRound();
     Voting voting = round.getVoting();
@@ -167,6 +279,7 @@ public class GameService {
   }
 
   public int getSubmittedVotes(long lobbyId){
+    updateIfUsersLeave(lobbyId);
       Game game = getGame(lobbyId);
       Round round = game.getRound();
       return round.getSubmittedVotes();
@@ -181,6 +294,7 @@ public class GameService {
   }
 
   public List<Meme> getMemes(long lobbyId, long userId){
+    updateIfUsersLeave(lobbyId);
     Round round = getGame(lobbyId).getRound();
     List<Meme> allMemes = new ArrayList<>(round.getMemes()); // create a copy of the list
     allMemes.removeIf(meme -> meme.getUserId() == userId);
@@ -188,47 +302,16 @@ public class GameService {
   }
   
 
-
-  public void setRoundScore(Round round) {
+  public void setRoundScore(Round round, Lobby lobby){
+    updateIfUsersLeave(lobby.getLobbyId());
     Voting voting = round.getVoting();
     // Get the votes in a hashtable
     Map<Long, Integer> votes = voting.getUserVotes();
-    // Get the votes in a list and sort them
-    List<Map.Entry<Long, Integer>> list = new ArrayList<>(votes.entrySet());
-    list.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
 
-    int currentScore = 3;  // Start score for the top scorer
-    int usersAwarded = 0;  // Counter for how many users have been awarded a score
-
-    for (int i = 0; i < list.size(); i++) {
-        Map.Entry<Long, Integer> entry = list.get(i);
-        // 0 votes => 0 points
-        if (entry.getValue() == 0) {
-            round.addScore(entry.getKey(), 0);
-        } else {
-            // Award the current score if this is the first entry or if it matches the previous entry's votes
-            if (i == 0 || list.get(i).getValue().equals(list.get(i - 1).getValue())) {
-                if (usersAwarded < 3) {
-                    round.addScore(entry.getKey(), currentScore);
-                    usersAwarded++;
-                } else {
-                    round.addScore(entry.getKey(), 0);  // No points beyond the top 3 scores
-                }
-            } else {
-                // If current entry's votes do not match the previous one, decrement the score
-                if (usersAwarded < 3) {
-                    currentScore = 3 - usersAwarded;
-                    round.addScore(entry.getKey(), currentScore);
-                    usersAwarded++;
-                } else {
-                    round.addScore(entry.getKey(), 0);  // Outside of top 3 => 0 points
-                }
-            }
-        }
+    for(long userId: votes.keySet()){
+      round.addScore(userId, votes.get(userId));
     }
-}
-
-
+  }
 
   //could also be implemented directly in entity
   public void updateScore(Game game, long userId, int score){
@@ -246,7 +329,6 @@ public class GameService {
     return players;
   }
 
-
   //gives back a sorted list with the ranking of the players first at position 0 and so on
   public List<User> getRanking(long lobbyId){
     Game game = getGame(lobbyId);
@@ -260,9 +342,59 @@ public class GameService {
     return ranking;
   }
 
-
+  //TODO add setbestscore to testing
   public void endGame(Long lobbyId, Game game){
+    updateIfUsersLeave(lobbyId);
+    for (long userId : getLobby(lobbyId).getPlayers()){
+      User user = getUser(userId);
+      user.setBestScore(0);
+    }
     Lobby lobby = getLobby(lobbyId);
     lobby.setGameActive(false);
+  }
+
+  public void setTopic(long lobbyId, String topic) {
+    // Retrieve the game and associated round
+    Game game = getGame(lobbyId);
+    Round round = game.getRound();
+    Template template = round.getTemplate();
+
+    template.setTopic(topic);
+}
+
+public boolean isUserWithLowestScore(long lobbyId, long userId) {
+  updateIfUsersLeave(lobbyId);
+  Game game = getGame(lobbyId);
+  Round round = game.getRound();
+
+  // Check if the lowest scorer is already determined for this round
+  Long existingLowestScorer = round.getLowestScorerUserId();
+  if (existingLowestScorer != null) {
+      return existingLowestScorer.equals(userId);
+  }
+
+  // Fetch all player scores and find the lowest score value
+  Map<Long, Integer> scores = game.getScores();
+  int minScore = Collections.min(scores.values());
+
+  // Collect all user IDs with the lowest score
+  List<Long> lowestScoringUsers = new ArrayList<>();
+  for (Map.Entry<Long, Integer> entry : scores.entrySet()) {
+      if (entry.getValue() == minScore) {
+          lowestScoringUsers.add(entry.getKey());
+      }
+  }
+
+  if (lowestScoringUsers.isEmpty()) {
+      return false;
+  }
+
+   // Select a random user ID from those with the lowest score
+   Random random = new Random();
+   Long randomlySelectedUserId = lowestScoringUsers.get(random.nextInt(lowestScoringUsers.size()));
+   round.setLowestScorerUserId(randomlySelectedUserId);
+
+   // Return true if the randomly selected user ID matches the given user ID
+   return randomlySelectedUserId.equals(userId);
   }
 }

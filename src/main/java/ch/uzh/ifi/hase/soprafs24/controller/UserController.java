@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -59,29 +60,32 @@ public class UserController {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
         // create user
-        User createdUser = userService.createUser(userInput.getUsername(),userInput.getLobbyOwner(), userInput.getProfilePicture());
+        User createdUser = userService.createUser(userInput.getUsername(),userInput.getLobbyOwner());
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
-    private long convertStringtoLong(String userId) {
-        Long idLong;
-        try { idLong = Long.parseLong(userId);
-        }
-        catch (NumberFormatException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-        return idLong;
-    }
+
 
 
     //TODO: implement userService.deleteUser(); fallses Problem demit git, bide Jana melde
     @DeleteMapping("/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable("id") String id) {
-        Long idlong = convertStringtoLong(id);
-        userService.deleteUser(idlong);
+    public void deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
     }
 
+    @GetMapping("/users/{id}/memes")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String getBestMeme(@PathVariable("id") Long id) {
+        User user = userService.getUser(id);
+        return user.getBestMeme();
+    }
 
+    @PutMapping("/users/{id}/profilepictures")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateProfilePicture(@PathVariable("id") Long id) {
+        userService.updateProfilePicture(id);
+    }
 }

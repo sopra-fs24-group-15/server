@@ -1,10 +1,14 @@
- package ch.uzh.ifi.hase.soprafs24.controller;
+package ch.uzh.ifi.hase.soprafs24.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -26,15 +30,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserDeleteDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 
-/**
- * UserControllerTest
- * This is a WebMvcTest which allows to test the UserController i.e. GET/POST
- * request without actually sending them over the network.
- * This tests if the UserController works.
- */
 @WebMvcTest(UserController.class)
 public class UserControllerTest {
 
@@ -46,20 +45,15 @@ public class UserControllerTest {
 
     @Test
     public void givenUsers_whenGetUsers_thenReturnJsonArray() throws Exception {
-        // given
         User user = new User();
         user.setUsername("firstname@lastname");
 
         List<User> allUsers = Collections.singletonList(user);
 
-        // this mocks the UserService -> we define above what the userService should
-        // return when getUsers() is called
         given(userService.getUsers()).willReturn(allUsers);
 
-        // when
         MockHttpServletRequestBuilder getRequest = get("/users").contentType(MediaType.APPLICATION_JSON);
 
-        // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].username", is(user.getUsername())));
@@ -67,7 +61,6 @@ public class UserControllerTest {
 
     @Test
     public void createUser_validInput_userCreated() throws Exception {
-        // given
         User user = new User();
         user.setUsername("testUsername");
         user.setLobbyOwner(true);
@@ -75,36 +68,78 @@ public class UserControllerTest {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setUsername("testUsername");
         userPostDTO.setLobbyOwner(true);
-        userPostDTO.setProfilePicture("testProfilePicture");
 
-        given(userService.createUser(Mockito.anyString(), Mockito.anyBoolean(), Mockito.anyString())).willReturn(user);
+        given(userService.createUser(Mockito.anyString(), Mockito.anyBoolean())).willReturn(user);
 
-        // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPostDTO));
 
-        // then
         mockMvc.perform(postRequest)
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.username", is(user.getUsername())));
     }
 
-    /**
-     * Helper Method to convert userPostDTO into a JSON string such that the input
-     * can be processed
-     * Input will look like this: {"name": "Test User", "username": "testUsername"}
-     *
-     * @param object
-     * @return string
-     */
+    @Test
+    public void deleteUser_validId_noContent() throws Exception {
+        Long userId = 1L;
+        doNothing().when(userService).deleteUser(userId);
+
+        MockHttpServletRequestBuilder deleteRequest = delete("/users/{id}", userId);
+
+        mockMvc.perform(deleteRequest).andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void getBestMeme_validId_returnMeme() throws Exception {
+        Long userId = 1L;
+        String bestMeme = "Best Meme URL";
+
+        User user = new User();
+        user.setUserId(userId);
+        user.setBestMeme(bestMeme);
+
+        given(userService.getUser(userId)).willReturn(user);
+
+        MockHttpServletRequestBuilder getRequest = get("/users/{id}/memes", userId);
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", is(bestMeme)));
+    }
+
+    @Test
+    public void updateProfilePicture_validId_noContent() throws Exception {
+        Long userId = 1L;
+        doNothing().when(userService).updateProfilePicture(userId);
+
+        MockHttpServletRequestBuilder putRequest = put("/users/{id}/profilepictures", userId);
+
+        mockMvc.perform(putRequest).andExpect(status().isNoContent());
+    }
+
     private String asJsonString(final Object object) {
         try {
             return new ObjectMapper().writeValueAsString(object);
-        }
-        catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format("The request body could not be created.%s", e.toString()));
         }
     }
+
+    
+    @Test
+    public void UserDeleteDTOtestGettersAndSetters() {
+        UserDeleteDTO userDeleteDTO = new UserDeleteDTO();
+        
+        Long userId = 1L;
+        String username = "testUser";
+
+        userDeleteDTO.setUserId(userId);
+        userDeleteDTO.setUsername(username);
+
+        assertEquals(userId, userDeleteDTO.getUserId());
+        assertEquals(username, userDeleteDTO.getUsername());
+    }
+
 }

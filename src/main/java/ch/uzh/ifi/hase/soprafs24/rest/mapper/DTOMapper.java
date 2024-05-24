@@ -25,7 +25,6 @@ public interface DTOMapper {
 
   @Mapping(source = "username", target = "username")
   @Mapping(source = "lobbyOwner", target = "lobbyOwner")
-  @Mapping(source = "profilePicture", target = "profilePicture")
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
   @Mapping(source = "username", target = "username")
@@ -94,6 +93,7 @@ public interface DTOMapper {
   @Mapping(source = "templateId", target = "templateId")
   @Mapping(source = "boxCount", target = "boxCount")
   @Mapping(source = "topics", target = "topics")
+  @Mapping(source = "topic", target = "topic")
   TemplateGetDTO convertEntityToTemplateGetDTO(Template template);
 
   @Mapping(source = "memeURL", target = "memeURL")

@@ -67,6 +67,9 @@ public class Round implements Serializable {
     @Column()
     private Boolean roundInEdit;
 
+    @Column
+    private Long lowestScorerUserId;
+
 
     public Long getRoundId() {
         return roundId;
@@ -138,5 +141,13 @@ public class Round implements Serializable {
 
     public void setSubmittedVotes(int submittedVotes) {
         this.submittedVotes = submittedVotes;
+    }
+
+    public Long getLowestScorerUserId() {
+        return lowestScorerUserId;
+    }
+
+    public void setLowestScorerUserId(Long lowestScorerUserId) {
+        this.lowestScorerUserId = lowestScorerUserId;
     }
 }

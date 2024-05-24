@@ -58,7 +58,7 @@ public class UserService {
   }
 
 
-  public User createUser(String username, boolean lobbyOwner, String profilePicture) {
+  public User createUser(String username, boolean lobbyOwner) {
         // Check if username is already taken
       Optional<User> found = userRepository.findByUsername(username);
       if (found.isPresent()) {
@@ -70,7 +70,8 @@ public class UserService {
       newUser.setUserReady (false);
       newUser.setLobbyOwner(lobbyOwner);
       newUser.setUsername(username);
-      newUser.setProfilePicture(profilePicture);
+      Long randomProfilePicture = new Random().nextLong(1, 15);
+      newUser.setProfilePicture(randomProfilePicture);
       newUser = userRepository.saveAndFlush(newUser);
       log.debug("Created Information for User: {}", newUser);
       return newUser;
@@ -80,20 +81,23 @@ public class UserService {
     //TODO update class diagram updateProfile() (chrigi)
 
   // TODO Implement updateProfilePicture method (chrigi) we could save some limited pictures in the backend
-  public void updateProfilePicture(Long userId, String profilePicture) {
-      User user = userRepository.findById(userId).orElseThrow(() ->
-              new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
-      user.setProfilePicture(profilePicture);
+  public void updateProfilePicture(Long userId) {
+      User user = getUser(userId);
+      Long newProfilePicture;
+      do {
+          newProfilePicture = new Random().nextLong(1, 21);
+      } while (newProfilePicture.equals(user.getProfilePicture()));
+      user.setProfilePicture(newProfilePicture);
       userRepository.save(user);
   }
 
   public void deleteUser(Long userId) {
     // Find the user by their ID
-    User user = userRepository.findById(userId).orElseThrow(() ->
-            new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+    User user = getUser(userId);
 
     // Check if the user is in a lobby
     Long lobbyId = user.getLobbyId();
+
     if (lobbyId != null) {
         // Retrieve the lobby by its ID
         Lobby lobby = lobbyRepository.findById(lobbyId).orElseThrow(() ->
@@ -101,6 +105,9 @@ public class UserService {
 
         // Remove the user from the lobby's list of players
         lobby.removePlayer(userId);
+        if(lobby.getPlayers().size() < 3){
+            lobby.setGameActive(false);
+        }
 
         // If the user was the lobby owner, assign the lobby to another player
         if (user.getLobbyOwner()) {
@@ -111,16 +118,17 @@ public class UserService {
                 lobby.setLobbyOwner(newOwnerId);
 
                 // Update the new owner's User entity to mark them as the lobby owner
-                User newOwner = userRepository.findById(newOwnerId).orElse(null);
+                User newOwner = getUser(newOwnerId);
                 if (newOwner != null) {
                     newOwner.setLobbyOwner(true);
                     userRepository.save(newOwner);
                 }
-            } else {
-                // No players left, so delete the lobby
-                lobbyRepository.delete(lobby);
-                lobbyId = null; // Prevent further processing if the lobby is deleted
-            }
+              } 
+        else {
+            // No players left, so delete the lobby
+            lobbyRepository.delete(lobby);
+            lobbyId = null; // Prevent further processing if the lobby is deleted
+          }
         }
 
         // Persist changes to the lobby if it wasn't deleted
