@@ -1,21 +1,57 @@
-# SoPra RESTful Service Template FS24
+# MemeBattle
+![img_1.png](img_1.png)
 
-## Getting started with Spring Boot
--   Documentation: https://docs.spring.io/spring-boot/docs/current/reference/html/index.html
--   Guides: http://spring.io/guides
-    -   Building a RESTful Web Service: http://spring.io/guides/gs/rest-service/
-    -   Building REST services with Spring: https://spring.io/guides/tutorials/rest/
+Create the best Meme and win the game!
+## Introduction
 
-## Setup this Template with your IDE of choice
-Download your IDE of choice (e.g., [IntelliJ](https://www.jetbrains.com/idea/download/), [Visual Studio Code](https://code.visualstudio.com/), or [Eclipse](http://www.eclipse.org/downloads/)). Make sure Java 17 is installed on your system (for Windows, please make sure your `JAVA_HOME` environment variable is set to the correct version of Java).
+We were motivated to create MemeBattle to build a community-centric,
+interactive, creative and entertaining online game.
+With MemeBattle you can create hilarious memes, share them
+with your friends and competitors, and engage in friendly competition.
+By voting for your favorite meme of the round, all the users determine
+the ultimate winner. Whether you are an advanced meme-maker or just looking
+to enjoy a good laugh, MemeBattle offers you a space to express
+your creativity, to connect with others, and to celebrate the joy of memes.
 
-### IntelliJ
-If you consider to use IntelliJ as your IDE of choice, you can make use of your free educational license [here](https://www.jetbrains.com/community/education/#students).
-1. File -> Open... -> SoPra server template
-2. Accept to import the project as a `gradle project`
-3. To build right click the `build.gradle` file and choose `Run Build`
+### Technologies used
 
-### VS Code
+For the MemeBattle Webapplication we used the following technologies:
+
+- Frontend Development: HMTL, CSS, React, Imgflip API
+- Backend Development: Java, Springboot, RESTful API, Imgflip API
+- Deployment and Hosting: Google Cloud and Docker
+- Testing: Mockito and JUnit Tests
+- CI/CD: GitHub Actions
+
+### High-level Components
+1. #### Lobby:
+   ###### Role
+   The Lobby component serves as the central hub where users can gather, interact, and play a game. It manages the overall flow of the user experience and allows the LobbyOwner to change the GameSettings. It also allows every User to change his profilepicture and create memes.
+   ##### Correlation
+   The Lobby links all other components together. It ensures seamless transition and interaction between them.
+   ##### Reference
+   The main file for the Lobby component can be found at 'src/main/java/ch.uzh.ifi.hase.soprafs24/entity/Lobby'
+2. #### User:
+   ##### Role
+   The User components handles the creation of a UserProfile and all related aspects to it. This includes user authentication, so that there cannot be username duplicates. Additionally, it also handles profilepictures and saves them for later display in the ranking screen.
+   ##### Correlation
+   The User Component communicates with the Lobby to display User informations and with the Meme Component to save the votes a User has earned for their created meme.
+   ##### Reference
+   The main class for the User component is located in 'src/main/java/ch.uzh.ifi.hase.soprafs24/entity/User'
+
+3. #### Meme:
+   ##### Role
+   The Meme component is responsible for the creation and displaying of memes within the application. It handles all the meme-related functionalities such as creating a meme.
+   ##### Correlation
+   The Meme component interacts directly with the Lobby and the User component. It provides memes that users can interact with in the Lobby. It also tracks the votes from each user through the User component.
+   ##### Reference
+   the main functions for the Meme component are defined in 'src/main/java/ch.uzh.ifi.hase.soprafs24/controller/MemeController'
+
+
+### Launch & Deployment
+Make sure you have the required Software installed:
+for our project this includes Java 17 (for Windows, also make sure that your **JAVA_HOME** environment variable is set to the correct version of Java).
+
 The following extensions can help you get started more easily:
 -   `vmware.vscode-spring-boot`
 -   `vscjava.vscode-spring-initializr`
@@ -24,64 +60,64 @@ The following extensions can help you get started more easily:
 
 **Note:** You'll need to build the project first with Gradle, just click on the `build` command in the _Gradle Tasks_ extension. Then check the _Spring Boot Dashboard_ extension if it already shows `soprafs24` and hit the play button to start the server. If it doesn't show up, restart VS Code and check again.
 
-## Building with Gradle
-You can use the local Gradle Wrapper to build the application.
+
+Then start by cloning the Repository:
+
+```bash
+git clone ....
+```
+
+To build the application you can use the local Gradle Wrapper:
+
 -   macOS: `./gradlew`
 -   Linux: `./gradlew`
 -   Windows: `./gradlew.bat`
 
-More Information about [Gradle Wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html) and [Gradle](https://gradle.org/docs/).
-
-### Build
+to build it use the following:
 
 ```bash
 ./gradlew build
 ```
 
-### Run
-
+and then to run it:
 ```bash
-./gradlew bootRun   
+./gradlew bootRun
 ```
 
-You can verify that the server is running by visiting `localhost:8080` in your browser. test
+You can verify that the server is running by visiting **localhost:8080** in your browser.
 
-### Test
-
-```bash
-./gradlew test
-```
-
-### Development Mode
-You can start the backend in development mode, this will automatically trigger a new build and reload the application
-once the content of a file has been changed.
+##### development mode
+You can start the backend in development mode, this will automatically trigger a new build and reload the application once the content of a file has been changed.
 
 Start two terminal windows and run:
 
-`./gradlew build --continuous`
+```bash
+./gradlew build --continuous
+```
 
 and in the other one:
 
-`./gradlew bootRun`
+```bash
+./gradlew bootRun
+```
 
 If you want to avoid running all tests with every change, use the following command instead:
 
-`./gradlew build --continuous -xtest`
+```bash
+./gradlew build --continuous -xtest
+```
+### Roadmap
+MemeBattle currently consists of two GameModes. There are many more possible GameModes to implement.
+This could, for example, be a  GameMode where users can choose pictures from their own gallery as the template,
+allowing a more personalized and diverse MemeBattle experience. Another exciting option could be a
+GameMode where users could write a Topic themselves, prompting others to create memes based on those topics,
+fostering creativity and also a more personalized experience.
 
-## API Endpoint Testing with Postman
-We recommend using [Postman](https://www.getpostman.com) to test your API Endpoints.
 
-## Debugging
-If something is not working and/or you don't know what is going on. We recommend using a debugger and step-through the process step-by-step.
+### Authors and acknowledgment
+Authors: Jana Muheim, Marc Huber, Marc Amsler, Christof Steiner, Gian Seifert
 
-To configure a debugger for SpringBoot's Tomcat servlet (i.e. the process you start with `./gradlew bootRun` command), do the following:
+Acknowledgment: We want to thank the UZH and Prof. Fritz for offering the SoPra module. Without this module MemeBattle most likely would'nt exist. Furthermore, we want to say a big thanks to our tutor Miro Vannini. With his important and well-thought inputs MemeBattle wouldn't be what it is today.
 
-1. Open Tab: **Run**/Edit Configurations
-2. Add a new Remote Configuration and name it properly
-3. Start the Server in Debug mode: `./gradlew bootRun --debug-jvm`
-4. Press `Shift + F9` or the use **Run**/Debug "Name of your task"
-5. Set breakpoints in the application where you need it
-6. Step through the process one step at a time
-
-## Testing
-Have a look here: https://www.baeldung.com/spring-boot-testing
+### License
+This project is licensed under the Apache-2.0 license.
